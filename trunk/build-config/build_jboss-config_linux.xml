@@ -1,0 +1,29 @@
+<project name="jboss-config" default="deploy" basedir="../jboss-config/devLinux1">
+
+	<property name="server" location="/home/danielfreire/Developer/server/jboss-5.1.0.GA/server/default"/>
+	
+	<target name="conf" depends="lib">
+        <copy todir="${server}/conf">
+			<fileset dir="conf">
+				<include name="**"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="deploy" depends="conf">
+		<copy todir="${server}/deploy">
+			<fileset dir="deploy">
+				<include name="**"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="lib">
+		<copy todir="${server}/lib">
+			<fileset dir="lib">
+				<include name="**"/>
+			</fileset>
+		</copy>
+	</target>
+	
+</project>

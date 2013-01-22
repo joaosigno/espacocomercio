@@ -1,0 +1,81 @@
+ <!DOCTYPE html>	
+    <html lang="pt">
+    	<head>
+    		<meta charset="utf-8">
+    		<title>Administração SSO - danielfreire.net</title>
+    		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		    <link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+		    <link href="/library/css/admin.css" rel="stylesheet">
+    	</head>
+    	<body>
+    	
+    		<div id="menu"></div>
+    		
+    		<div id="content" class="container">
+   			    <ul class="breadcrumb">
+				    <li><a href="#">Sites</a> <span class="divider">/</span></li>
+				    <li class="active">Novo</li>
+			    </ul>
+    		
+				<form class="form-horizontal" style="display: block">
+					<div class="control-group">
+						<label class="control-label">Nome:</label>
+						<div class="controls">
+							<input name="name" type="text" class="input-block-level" placeholder="Nome do site…" maxlength="45">
+							<span id="spanError-name" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Descrição:</label>
+						<div class="controls">
+							<input name="description" type="text" class="input-block-level" placeholder="Descrição do site…" maxlength="255">
+							<span id="spanError-description" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">URL Administração:</label>
+						<div class="controls">
+							<input name="urladm" type="text" class="input-block-level" placeholder="http://…" maxlength="100">
+							<span id="spanError-urladm" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">URL Site:</label>
+						<div class="controls">
+							<input name="urlsite" type="text" class="input-block-level" placeholder="http://…" maxlength="100">
+							<span id="spanError-urlsite" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<button type="button" class="btn btn-primary" onclick="postJson('', '/sso-web/site/insert', $('form').serialize());">Salvar</button>
+							<button type="reset" class="btn">Limpar</button>
+						</div>
+					</div>
+					
+				</form>
+    		</div>
+    		
+    		<div id="footer"></div>
+		    
+    	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
+			<script src="/library/js/bootstrap.min.js"></script>
+			
+			<script src="/library/js/functions.js" charset="utf-8"></script>
+			<script src="/library/js/admin.js" charset="utf-8"></script>
+			
+			<script>
+				loadMenu('/sso/admin/menu.json');
+				loadFooter();
+				
+				function callback(id, data) {
+					if (data.status) {
+						alert("Site criado com sucesso.");
+						$('button[type="reset"]').click();
+					} else {
+						errorForm(data);
+					}
+				}
+			</script>
+    	</body>
+    </html>

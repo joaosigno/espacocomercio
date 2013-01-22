@@ -1,0 +1,49 @@
+{
+    "title": "Administração",
+	"menus": {
+        "Resumo": {
+        	"type": "link",
+        	"url": "/ecommerce/admin"
+        },
+        "Produtos": {
+        	"type": "dropdown",
+        	"url": "#",
+        	"options": {
+				"Categorias": "#",
+				"1. Novo": "/ecommerce/admin/product/category/new",
+				"2. Consultar": "/ecommerce/admin/product/category/consult",
+				"divider":"",
+				"Produtos": "#",
+				"3. Novo": "/ecommerce/admin/product/new",
+				"4. Consultar": "/ecommerce/admin/product/consult"
+			}
+        },
+        "Clientes": {
+        	"type": "dropdown",
+        	"url": "#",
+        	"options": {
+				"Consultar": "/ecommerce/admin/client/consult"
+			}
+        },
+        "Pedidos": {
+        	"type": "dropdown",
+        	"url": "#",
+        	"options": {
+				"Pedidos": "#",
+				"1. Consultar": "/ecommerce/admin/order/consult",
+				"divider":"",
+				"Forma de pgto": "#",
+				"2. Novo": "/ecommerce/admin/order/payment/new",
+				"3. Consultar": "/ecommerce/admin/order/payment/consult",
+				"divider":"",
+				"Frete": "#",
+				"4. Novo": "/ecommerce/admin/order/frete/new",
+				"5. Consultar": "/ecommerce/admin/order/frete/consult"
+			}
+        },
+        "Sair": {
+        	"type": "link",
+        	"url": "/ecommerce-web/logout"
+        }
+    }
+}

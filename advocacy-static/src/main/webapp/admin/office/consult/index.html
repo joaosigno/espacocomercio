@@ -1,0 +1,45 @@
+<!DOCTYPE html>	
+ <html lang="pt">
+	<head>
+		<meta charset="utf-8">
+		<title>Advocacy - Escritório</title>
+		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="/library/css/admin.css" rel="stylesheet">
+ 	</head>
+ 	<body>
+ 	
+		<div id="menu"></div>
+ 		
+		<div class="container">
+			<ul class="breadcrumb">
+			    <li><a href="#">Escritórios</a> <span class="divider">/</span></li>
+			    <li class="active">Consultar</li>
+		    </ul>
+    
+    		<div id="grid"></div>
+		</div>
+ 		
+ 		<div id="footer"></div>
+ 	
+ 		<div style="display: none;">
+ 			<form id="formEdit" action="/advocacy-web/admin/office/manage">
+ 				<input name="id" type="hidden">
+ 				<input name="name" type="text">
+ 				<input name="subtitle" type="text">
+ 			</form>
+ 		</div>
+   
+ 	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
+		<script src="/library/js/bootstrap.min.js"></script>
+
+		<script src="/library/js/functions.js" charset="utf-8"></script>
+		<script src="/library/js/admin.js" charset="utf-8"></script>
+
+		<script>
+			loadMenu('/advocacy-web/admin/menu', true);
+			loadFooter();
+			loadGrid('/advocacy-web/admin/office/consult', 'grid', 'formEdit');
+		</script>
+ 	</body>
+ </html>

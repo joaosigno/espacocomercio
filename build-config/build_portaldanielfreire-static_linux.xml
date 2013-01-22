@@ -1,0 +1,31 @@
+<project name="portaldanielfreire-static" default="deploy" basedir="../portaldanielfreire-static">
+
+	<property name="server" location="/home/danielfreire/Developer/server/jboss-5.1.0.GA/server/default/deploy/portal.war"/>
+	
+	<target name="clean">
+		<exec executable="/bin/sh" failonerror="true" dir=".">
+			<arg value="-c" />
+			<arg value="mvn clean" />
+		</exec>
+	</target>
+	
+	<target name="package" depends="clean">
+		<exec executable="/bin/sh" failonerror="true" dir=".">
+			<arg value="-c" />
+			<arg value="mvn install" />
+		</exec>
+	</target>
+	
+	<target name="deploy" depends="package">
+        <copy todir="${server}">
+			<fileset dir="target/portal">
+				<include name="**"/>
+			</fileset>
+		</copy>
+		<exec executable="/bin/sh" failonerror="true" dir=".">
+			<arg value="-c" />
+			<arg value="mvn clean" />
+		</exec>
+	</target>
+	
+</project>

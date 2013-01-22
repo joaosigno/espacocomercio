@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<title>Portal Daniel Freire</title>
+	<meta charset="utf-8">
+	
+	<link rel="stylesheet" href="css/reset.css" type="text/css" media="all">
+	<link rel="stylesheet" href="css/layout.css" type="text/css" media="all">
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="all">
+	<link rel="stylesheet" href="css/jquery.fancybox-1.3.4.css" type="text/css" media="all">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600,300' rel='stylesheet' type='text/css'>
+	
+	<!--[if lt IE 9]>
+	  	<script type="text/javascript" src="js/html5.js"></script>
+	    <link rel="stylesheet" href="css/ie.css" type="text/css" media="all">
+	<![endif]-->
+	<!--[if lt IE 8]>
+		<div style=' clear: both; text-align:center; position: relative;'>
+			<a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="images/warning_bar_0010_portuguese.jpeg" border="0" height="42" width="820" alt="Você esta usando uma versão desatualizada do Internet Explorer. Para navegação mais rápida e segura atualize agora." /></a>
+		</div>
+	<![endif]-->
+</head>
+<body>
+	<div class="glob">
+		<div class="page_spinner"></div>
+		<div class="main">
+			<div class="center">
+				<!--header -->
+				<div class="headerHolder">
+					<header>
+						<div class="logoHolder">
+							<h1>
+								<a href="#!/pagePortfolio" id="logo" onclick="goToPageHome()">oratorio</a>
+							</h1>
+						</div>
+					</header>
+					<div class="followHolder">
+						<span>Contato: +55 (11) 96368-9210</span>
+						<ul>
+							<li><a href="http://br.linkedin.com/in/danielbfreire" target="_blank"><img src="images/followIcon1.png" alt=""></a></li>
+							<li><a href="https://www.facebook.com/daniel.freire.58" target="_blank"><img src="images/followIcon2.png" alt=""></a></li>
+							<li><a href="https://plus.google.com/u/0/115453720647262271248/posts/p/pub" target="_blank"><img src="images/followIcon3.png" alt=""></a></li>
+
+						</ul>
+					</div>
+				</div>
+				<!--header end-->
+
+				<div class="menuHolder">
+					<nav class="menu">
+						<ul id="menu">
+
+							<li class="with_ul">
+								<a href="#!/pageCurriculum" onclick="openPage('pages/curriculum.html', 'Curriculum')">
+									<span class="overPlane"></span>
+									<span class="mText">curriculum</span>
+								</a>
+								<ul class="submenu_1">
+									<li><a href="#!/pageCurriculum" onclick="openPage('pages/curriculum.html', 'Curriculum')">Sobre mim</a></li>
+									<li><a href="#!/pageCurriculum" onclick="openPageScroll('pages/curriculum-resume.html', 'Curriculum')">Resumo</a></li>
+									<li><a href="#!/pageCurriculum" onclick="openPageScroll('pages/curriculum-experience.html', 'Curriculum')">Experiências</a></li>
+									<li><a href="#!/pageCurriculum" onclick="openPageScroll('pages/curriculum-capacitys.html', 'Curriculum')">Capacidades</a></li>
+								</ul></li>
+							<li>
+								<a href="#!/pageService" onclick="openPageScroll('pages/services.html', 'Service')">
+									<span class="overPlane"></span>
+									<span class="mText">serviços</span>
+								</a>
+							</li>
+							<li>
+								<a href="#!/pagePortfolio" onclick="goToPageHome()">
+									<span class="overPlane"></span>
+									<span class="mText">portfólio</span>
+								</a>
+							</li>
+							<li>
+								<a href="">
+									<span class="overPlane"></span>
+									<span class="mText">produtos</span>
+								</a>
+							</li>
+							<li>
+								<a href="">
+									<span class="overPlane"></span>
+									<span class="mText">contatos</span>
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+				<!--content -->
+				<article id="content">
+					<div class="iconHolder">
+						<div id="img_slider">
+							<ul>
+								<li>
+									<div class="picHold">
+										<a href="#!/pagePortfolioView" onclick="openPage('pages/portfolio-sulamerica.html', 'PortfolioView')">
+											<span class="zoomSp" title="Informações de alguns dos projetos e trabalhos realizados por mim para a empresa SulAmérica"></span>
+											<img src="images/portfolioSulamerica.jpg" alt="Informações de alguns dos projetos e trabalhos realizados por mim para a empresa SulAmérica">
+										</a>
+									</div>
+									<div class="picHold"></div>
+									<div class="picHold"></div>
+								</li>
+								<li>
+									<div class="picHold">
+										<a href="#!/pagePortfolioView" onclick="openPage('pages/portfolio-record.html', 'PortfolioView')">
+											<span class="zoomSp" title="Informações de alguns dos projetos e trabalhos realizados por mim para o portal R7.com"></span>
+											<img src="images/portfolioR7.jpg" alt="Informações de alguns dos projetos e trabalhos realizados por mim para o portal R7.com">
+										</a>
+									</div>
+									<div class="picHold"></div>
+									<div class="picHold"></div>
+								</li>
+								<li>
+									<div class="picHold"></div>
+									<div class="picHold"></div>
+									<div class="picHold"></div>
+								</li>
+								<li>
+									<div class="picHold">
+										<a href="#!/pagePortfolioView" onclick="openPage('pages/portfolio-ticket.html', 'PortfolioView')">
+											<span class="zoomSp" title="Informações de alguns dos projetos e trabalhos realizados por mim para o grupo Edenred"></span>
+											<img src="images/portfolioTicket.jpg" alt="Informações de alguns dos projetos e trabalhos realizados por mim para o grupo Edenred">
+										</a>
+									</div>
+									<div class="picHold">
+										<a href="#!/pagePortfolioView" onclick="openPage('pages/portfolio-bb.html', 'PortfolioView')">
+											<span class="zoomSp" title="Informações de alguns dos projetos e trabalhos realizados por mim para a empresa Banco do Brasil"></span>
+											<img src="images/portfolioBB.jpg" alt="Informações de alguns dos projetos e trabalhos realizados por mim para a empresa Banco do Brasil">
+										</a>
+									</div>
+									<div class="picHold"></div>
+								</li>
+							</ul>
+						</div>
+						<a href="#" id="next"><img src="images/gallNext1.png" alt=""></a>
+						<a href="#" id="prev"><img src="images/gallPrev1.png" alt=""></a>
+					</div>
+					
+					<ul>
+						<li id="pagePortfolio"></li>
+						<li id="pagePortfolioView">
+							<div class="box">
+								<div class="closePlane">
+									<a class="closeButton" href="#!/pagePortfolio" onclick="goToPageHome()">
+										X
+									</a>
+								</div>
+								<div class="containerContent" id="containerPagePortfolioView">
+
+								</div>
+							</div>
+						</li>
+						<li id="pageCurriculum">
+							<div class="box">
+								<div class="closePlane">
+									<a class="closeButton" href="#!/pagePortfolio" onclick="goToPageHome()">
+										X
+									</a>
+								</div>
+								<div class="containerContent" id="containerPageCurriculum">
+
+								</div>
+							</div>
+						</li>
+						<li id="pageService">
+							<div class="box">
+								<div class="closePlane">
+									<a class="closeButton" href="#!/pagePortfolio" onclick="goToPageHome()">
+										X
+									</a>
+								</div>
+								<div class="containerContent" id="containerPageService">
+
+								</div>
+							</div>
+						</li>
+					</ul>
+				</article>
+				<!--content end-->
+				<!--footer -->
+				<footer>
+					<!-- {%FOOTER_LINK} -->
+					<div class="mainFooter">
+						<div class="privHold">
+							<pre class="textPrivacy">
+								&copy; 2012 Portal Daniel Freire<br>
+							</pre>
+							<div style="display: none;">
+								<span class="color4">Website Template</span> by <a class="_link2"
+								rel="nofollow" href="http://www.templatemonster.com/">TemplateMonster.com</a>
+							</div>
+						</div>
+					</div>
+				</footer>
+				<!--footer end-->
+			</div>
+		</div>
+	</div>
+	
+	<a id="closeButton" href="#!/pagePortfolio"></a>
+	
+	<script type="text/javascript" src="js/jquery-1.7.1.js"></script>
+	<script type="text/javascript" src="js/scripts.js"></script>
+	
+	<script>
+		$(window).load(function() {	
+			$('.page_spinner').fadeOut();
+			$('body').css({overflow:'auto', 'min-height':'800px'})
+			
+			if (location.href.toString().indexOf('#!/pagePortfolio')!=-1 && location.href.toString().indexOf('#!/pagePortfolioView')==-1) {
+				goToPageHome();
+			} 
+		});
+		
+		function openPageScroll(page, id) {
+			$('li#page'+id).parent('ul').show();
+			$('div#containerPage'+id).load(page, function () {
+				var ele   = $('#scroll');
+			    var speed = 25, scroll = 5, scrolling;
+			    
+			    $('#scroll-up').mouseenter(function() {
+			        // Scroll the element up
+			        scrolling = window.setInterval(function() {
+			            ele.scrollTop( ele.scrollTop() - scroll );
+			        }, speed);
+			    });
+			    
+			    $('#scroll-down').mouseenter(function() {
+			        // Scroll the element down
+			        scrolling = window.setInterval(function() {
+			            ele.scrollTop( ele.scrollTop() + scroll );
+			        }, speed);
+			    });
+			    
+			    $('#scroll-up, #scroll-down').bind({
+			        click: function(e) {
+			            // Prevent the default click action
+			            e.preventDefault();
+			        },
+			        mouseleave: function() {
+			            if (scrolling) {
+			                window.clearInterval(scrolling);
+			                scrolling = false;
+			            }
+			        }
+			    });
+			    
+			    window.setTimeout(function (){
+					$('li#pagePortfolio').parent('ul').css('z-index', '10');
+				}, 800);
+			});
+			_gaq.push(['_trackPageview',page]);
+		}
+		
+		function openPage(page, id) {
+			$('li#page'+id).parent('ul').show();
+			$('div#containerPage'+id).load(page, function () {
+				window.setTimeout(function (){
+					$('li#pagePortfolio').parent('ul').css('z-index', '10');
+				}, 800);
+			});
+			_gaq.push(['_trackPageview',page]);
+		}
+		
+		function goToPageHome() {
+			$('a#closeButton').click();
+			$('li#pagePortfolio').parent('ul').hide();
+			$('li#pagePortfolio').parent('ul').css('z-index', '1');
+			$('.iconHolder').css('z-index', '2');
+		}
+	</script>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-37765652-1']);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	
+	</script>
+</body>
+</html>

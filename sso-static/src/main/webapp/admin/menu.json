@@ -1,0 +1,28 @@
+{
+    "title": "Administração",
+	"menus": {
+        "Resumo": {
+        	"type": "link",
+        	"url": "/sso/admin"
+        },
+        "Usuários": {
+        	"type": "dropdown",
+        	"url": "#",
+        	"options": {
+				"Consultar": "/sso/admin/user/consult"
+			}
+        },
+        "Sites": {
+        	"type": "dropdown",
+        	"url": "#",
+        	"options": {
+				"Novo": "/sso/admin/site/new",
+				"Consultar": "/sso/admin/site/consult"
+			}
+        },
+        "Sair": {
+        	"type": "link",
+        	"url": "/sso-web/logout"
+        }
+    }
+}

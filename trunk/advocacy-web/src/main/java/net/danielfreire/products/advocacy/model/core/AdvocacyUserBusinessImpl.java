@@ -137,15 +137,15 @@ public class AdvocacyUserBusinessImpl implements AdvocacyUserBusiness {
 			if (user.getManageUser()) {
 				submenuOptions.put("Usuários", "/advocacy/admin/office/user/manage");
 			}
-			menus.put("Escritórios", generateSubmenu(position, "dropdown", "#", submenuOptions));
+			menus.put("Escritório", generateSubmenu(position, "dropdown", "#", submenuOptions));
 			position++;
 		}
 		
 		if (user.getManageFinance()) {
 			HashMap<String, Object> submenuOptions = new HashMap<String, Object>();
-			submenuOptions.put("Despesas", "/advocacy/admin/finance/expenses");
-			submenuOptions.put("Receitas", "/advocacy/admin/finance/revenue");
-			submenuOptions.put("Relatórios", "/advocacy/admin/finance/report");
+			submenuOptions.put("Categorias", "/advocacy/admin/finance/category");
+			submenuOptions.put("Contas a pagar", "/advocacy/admin/finance/expenses");
+			submenuOptions.put("Contas a receber", "/advocacy/admin/finance/revenue");
 			menus.put("Finanças", generateSubmenu(position, "dropdown", "#", submenuOptions));
 			position++;
 		}

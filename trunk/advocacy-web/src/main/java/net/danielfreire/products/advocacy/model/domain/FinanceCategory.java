@@ -2,8 +2,6 @@ package net.danielfreire.products.advocacy.model.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -16,9 +14,8 @@ public class FinanceCategory extends AbstractPersistable<Integer> {
 	
 	@Column(name="title", length=45)
 	private String title;
-	@ManyToOne
-	@JoinColumn(name="advocacy_office_id", referencedColumnName="id")
-	private AdvocacyOffice advocacyOffice;
+	@Column(name="advocacy_office_id")
+	private Integer advocacyOffice;
 	
 	public String getTitle() {
 		return title;
@@ -26,10 +23,10 @@ public class FinanceCategory extends AbstractPersistable<Integer> {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public AdvocacyOffice getAdvocacyOffice() {
+	public Integer getAdvocacyOffice() {
 		return advocacyOffice;
 	}
-	public void setAdvocacyOffice(AdvocacyOffice advocacyOffice) {
+	public void setAdvocacyOffice(Integer advocacyOffice) {
 		this.advocacyOffice = advocacyOffice;
 	}
 }

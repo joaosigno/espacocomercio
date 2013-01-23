@@ -1,0 +1,146 @@
+<!DOCTYPE html>	
+ <html lang="pt">
+	<head>
+		<meta charset="utf-8">
+		<title>Advocacy - Escritório</title>
+		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="/library/css/admin.css" rel="stylesheet">
+ 	</head>
+ 	<body>
+ 	
+		<div id="menu"></div>
+ 		
+		<div class="container">
+			<ul class="breadcrumb">
+			    <li><a href="#">Finanças</a> <span class="divider">/</span></li>
+			    <li class="active">Despesas</li>
+		    </ul>
+		    
+		    <div class="row">
+			    <div class="span6"><a href="../new" style="color: black"><i class="icon-plus-sign"></i> Registrar despesa</a></div>
+			    <div class="span6">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>Filtros:</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									
+								    <div class="input-prepend input-append">
+								    	Mês/Ano:
+									    <input class="span1" id="appendedPrependedInput" type="text">
+									    <span class="add-on">/</span>
+									    <input class="span1" id="appendedPrependedInput" type="text">
+									    <button class="btn" type="button"><i class="icon-filter"></i></button>
+								    </div>
+								</td>
+							</tr>
+						</tbody>
+    				</table>
+				</div>
+			</div>
+		    
+    		<div id="grid"></div>
+		</div>
+ 		
+ 		<div id="footer"></div>
+ 		
+	    <div class="modal hide fade" id="modalPermissions"></div>
+ 	
+ 	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
+		<script src="/library/js/bootstrap.min.js"></script>
+
+		<script src="/library/js/functions.js" charset="utf-8"></script>
+		<script src="/library/js/admin.js" charset="utf-8"></script>
+
+		<script>
+			loadMenu('/advocacy-web/admin/menu', true);
+			loadFooter();
+			loadGrid('/advocacy-web/admin/office/user/consult', 'grid', 'formEdit', '/advocacy-web/admin/office/user/remove', true);
+			
+			function callback2(id, data) {
+				if (data.status) {
+					if (id=='preencheCb') {
+						var html = '';
+						$.each(data.generic, function(key, val) {
+							html += '<option value="'+val.id+'">'+val.name+'</option>';
+						});
+						$('select[name="office"]').html(html);
+					} else if ('viewPermissions') {
+						var html = 	'<div class="modal-header">';
+			    		html += 		'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+			    		html += 		'<h3>Permissões de acesso</h3>';
+			    		html += 	'</div>';
+			    		html += 	'<div class="modal-body">';
+			    		html += 		'<strong>Gerenciamento das configurações do sistema:</strong>&nbsp;';
+			    		if (data.generic.manageOffice) {
+			    			html += 'Permissão completa<br>';
+						} else {
+							html += 'Sem permissão<br>';
+						}
+		    			html += 		'<strong>Gerenciamento dos usuários do sistema:</strong>&nbsp;';
+		    			if (data.generic.manageUser) {
+		    				html += 'Permissão completa<br>';
+						} else {
+							html += 'Sem permissão<br>';
+						}
+	    				html += 		'<strong>Gerenciamento das finanças do escritório:</strong>&nbsp;';
+	    				if (data.generic.manageFinance) {
+	    					html += 'Permissão completa<br>';
+						} else {
+							html += 'Sem permissão<br>';
+						}
+    					html += 		'<strong>Gerenciamento dos contratos do escritório:</strong>&nbsp;';
+    					if (data.generic.manageContract) {
+    						html += 'Permissão completa<br>';
+						} else {
+							if (data.generic.viewContract) {
+								html += 'Permissão para consultar<br>';
+							} else {
+								html += 'Sem permissão<br>';
+							}
+						}
+						html += 		'<strong>Gerenciamento das clientes do escritório:</strong>&nbsp;';
+						if (data.generic.manageClient) {
+							html += 'Permissão completa<br>';
+						} else {
+							if (data.generic.viewClient) {
+								html += 'Permissão para consultar<br>';
+							} else {
+								html += 'Sem permissão<br>';
+							}
+						}
+						html += 		'<strong>Gerenciamento dos advogados do escritório:</strong>&nbsp;';
+						if (data.generic.manageLawyer) {
+							html += 'Permissão completa';
+						} else {
+							if (data.generic.manageLawyer) {
+								html += 'Permissão para consultar';
+							} else {
+								html += 'Sem permissão';
+							}
+						}
+						html += 	'</div>';
+						html += 	'<div class="modal-footer">';
+						html += 		'<a href="#" data-dismiss="modal" class="btn btn-primary">ok</a>';
+						html += 	'</div>';
+						
+						$('div#modalPermissions').html(html);
+						$('div#modalPermissions').modal('show');
+					}
+				} else {
+					errorForm(data);
+				} 
+			}
+			getJson2('preencheCb', '/advocacy-web/admin/office/usersession/list');
+			
+			function viewPermissions(id) {
+				getJson2('viewPermissions', '/advocacy-web/admin/office/user/load?id='+id);
+			}
+		</script>
+ 	</body>
+ </html>

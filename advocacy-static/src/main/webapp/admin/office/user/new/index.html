@@ -152,7 +152,7 @@
 				getJson2('', '/advocacy-web/admin/office/usersession/list');
 				
 				function submitForm() {
-					if ($('input[name="userpassword"]').val().equals($('input[name="userpasswordConfirm"]').val())) {
+					if ($('input[name="userpassword"]').val()==$('input[name="userpasswordConfirm"]').val()) {
 						postJson('', '/advocacy-web/admin/office/user/manage', $('form').serialize());
 					} else {
 						$('[name="userpassword"]').parent().parent().attr('class', $('[name="userpassword"]').parent().parent().attr('class')+" error");

@@ -29,4 +29,8 @@ public class FinanceCategory extends AbstractPersistable<Integer> {
 	public void setAdvocacyOffice(Integer advocacyOffice) {
 		this.advocacyOffice = advocacyOffice;
 	}
+	
+	public void setId(Integer id) {
+		super.setId(id);
+	}
 }

@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FinanceCategoryRepository extends JpaRepository<FinanceCategory, Integer> {
 	
 	Page<FinanceCategory> findByAdvocacyOffice(Integer advocacyOffice, Pageable pageable);
-
+	
 }

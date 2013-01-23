@@ -52,12 +52,14 @@ function loadMenu(urlJson, initData) {
 	}
 	$.getJSON( urlJson,  function(data) {
 		var raiz;
+		
 		if (initData) {
 			raiz = data.generic;
 			errorForm(data, '/advocacy');
 		} else {
 			raiz = data;
 		}
+		
 		var html = 	'<div class="navbar navbar-inverse navbar-fixed-top"><div class="navbar-inner">';
 		html += 		'<div class="container">';
 		html += 			'<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">';
@@ -483,7 +485,7 @@ function add(urlSubmit, urlJson, divId, formId, urlDelete) {
 			if (id!='control') {
 				html += '<td id="gridRowNew'+id.substring(2)+'"></td>'
 			} else {
-				html += '<td id="controlInsert" style="text-align: center;"><a onclick="saveGrid(\''+urlSubmit+'\', \''+urlJson+'\', \''+divId+'\', \''+formId+'\', \''+urlDelete+'\')" href="#"><i class="icon-plus"></i></a></td>'
+				html += '<td id="controlInsert" style="text-align: center;"><a onclick="saveGrid(\''+urlSubmit+'\', \''+urlJson+'\', \''+divId+'\', \''+formId+'\', \''+urlDelete+'\')" href="#"><i class="icon-ok-sign"></i></a><a href="#" onclick="cancelSaveGrid()"><i class="icon-minus-sign"></i></a></td>'
 			}
 		}
 		html += '</tr>';
@@ -525,4 +527,8 @@ function saveGrid(urlSubmit, urlJson, divId, formId, urlDelete) {
 			errorFormGrid(data, id, divId);
 		}
 	}, "json");
+}
+
+function cancelSaveGrid() {
+	$('tr#gridNewObject').remove();
 }

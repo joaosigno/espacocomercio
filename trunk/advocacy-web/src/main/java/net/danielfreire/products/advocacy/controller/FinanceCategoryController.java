@@ -3,7 +3,9 @@ package net.danielfreire.products.advocacy.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import net.danielfreire.products.advocacy.model.core.FinanceCategoryBusiness;
+import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
+import net.danielfreire.util.PortalTools;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,4 +23,29 @@ public class FinanceCategoryController {
 	public @ResponseBody GridResponse consult(HttpServletRequest request) {
 		return business.consult(request);
 	}
+	
+	@RequestMapping(value="/admin/finance/category/manage", method = RequestMethod.POST)
+	public @ResponseBody GenericResponse manage(HttpServletRequest request) {
+		try {
+			return business.manage(request);
+		} catch (Exception e) {
+			return PortalTools.getInstance().getRespError(e);
+		}
+	}
+	
+	@RequestMapping(value="/admin/finance/category/remove", method = RequestMethod.POST)
+	public @ResponseBody GenericResponse remove(HttpServletRequest request) {
+		try {
+			return business.remove(request);
+		} catch (Exception e) {
+			return PortalTools.getInstance().getRespError(e);
+		}
+	}
+	
+	@RequestMapping(value="/admin/finance/expenses/consult", method = RequestMethod.GET)
+	public @ResponseBody GridResponse expensesConsult(HttpServletRequest request) {
+		return business.consultExpenses(request);
+	}
+	
+	
 }

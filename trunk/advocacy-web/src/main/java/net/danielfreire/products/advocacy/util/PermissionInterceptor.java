@@ -36,7 +36,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 					permissionValid = false;
 				} else if (!user.getManageUser() && (uri.contains("/advocacy-web/admin/office/user/consult") || uri.contains("/admin/office/usersession/list") || uri.contains("/admin/office/user/manage") || uri.contains("/admin/office/user/load"))) {
 					permissionValid = false;
-				} else if (!user.getManageFinance() && (uri.contains("/advocacy-web/admin/finance/category/consult"))) {
+				} else if (!user.getManageFinance() && (uri.contains("/advocacy-web/admin/finance/category/consult") || uri.contains("/admin/finance/category/manage") || uri.contains("/admin/finance/category/remove"))) {
 					permissionValid = false;
 				}
 				

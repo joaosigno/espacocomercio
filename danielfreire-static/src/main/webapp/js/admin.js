@@ -149,9 +149,9 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 			$.each(data.titles, function(key, val) {
 				if (val.type=='text') {
 					if (val.id=='permissions') {
-						html += '<th style="text-align: center">'+val.title+'</th>';
+						html += '<th style="text-align: center" id="th'+val.id+'">'+val.title+'</th>';
 					} else {
-						html += '<th>'+val.title+'</th>';
+						html += '<th id="th'+val.id+'">'+val.title+'</th>';
 					}
 				} else if (val.type=='image') {
 					html += '<th><i class="'+val.imgClass+'"></i></th>';
@@ -161,7 +161,7 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 				i++;
 			});
 			
-			html += 				'<th style="text-align: center"><i class="icon-align-justify"></i></th>';
+			html += 				'<th style="text-align: center; width: 5%;"><i class="icon-align-justify"></i></th>';
 			html +=				'</tr>';
 			html += 		'</thead>';
 			html += 		'<tbody>';
@@ -454,4 +454,75 @@ function preencheTextArea() {
 function limpaTA() {
 	 $('textarea[name="description"]').val('');
 	 $('div.nicEdit-main').html('');
+}
+function generateAddButton(label, urlSubmit, urlJson, divId, formId, urlDelete) {
+	html = '<div class="row">';
+    html += '<div class="span6"><a href="#" onclick="add(\''+urlSubmit+'\', \''+urlJson+'\', \''+divId+'\', \''+formId+'\', \''+urlDelete+'\');" style="color: black"><i class="icon-plus-sign"></i> '+label+'</a></div>';
+    html += '</div>';
+	
+    $('div#control').html(html);
+}
+
+function add(urlSubmit, urlJson, divId, formId, urlDelete) {
+	if ($('tr#gridNewObject').size()==0) { 
+		var array = new Array();
+		var i = 0;
+		$('div#grid').find('th').each(function() {
+			var id = $(this).attr('id');
+			if (id != undefined && id != null && id != '') {
+				array[i] = id;
+			} else {
+				array[i] = 'control';
+			}
+			i++;
+		});
+		
+		var html = '<tr id="gridNewObject">';
+		for (var e=0; e<array.length; e++) {
+			var id = array[e];
+			if (id!='control') {
+				html += '<td id="gridRowNew'+id.substring(2)+'"></td>'
+			} else {
+				html += '<td id="controlInsert" style="text-align: center;"><a onclick="saveGrid(\''+urlSubmit+'\', \''+urlJson+'\', \''+divId+'\', \''+formId+'\', \''+urlDelete+'\')" href="#"><i class="icon-plus"></i></a></td>'
+			}
+		}
+		html += '</tr>';
+		
+		$('div#grid table tbody').prepend(html);
+		
+		for (var e=0; e<array.length; e++) {
+			var id = array[e];
+			if (id!='control') {
+				$('[name="'+id.substring(2)+'"]').clone().appendTo('#gridRowNew'+id.substring(2));
+			}
+		}
+	}
+}
+
+function saveGrid(urlSubmit, urlJson, divId, formId, urlDelete) {
+	var params = '';
+	
+	$('tr#gridNewObject').find('input').each(function() {
+		if (params == '') {
+			params += $(this).attr('name') + '=' + $(this).val();
+		} else {
+			params += '&' + $(this).attr('name') + '=' + $(this).val();
+		}
+	});
+	$('tr#gridNewObject').find('select').each(function() {
+		if (params == '') {
+			params += $(this).attr('name') + '=' + $(this).val();
+		} else {
+			params += '&' + $(this).attr('name') + '=' + $(this).val();
+		}
+	});
+	
+	$.post(urlSubmit, params, function(data){
+		if (data.status) {
+			alert("Inserção realizada com sucesso.");
+			loadGrid(urlJson, divId, formId, urlDelete);
+		} else {
+			errorFormGrid(data, id, divId);
+		}
+	}, "json");
 }

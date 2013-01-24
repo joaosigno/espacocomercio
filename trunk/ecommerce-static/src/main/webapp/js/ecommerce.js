@@ -1,6 +1,6 @@
 $("#btnLogin").click(function(){
 	$(this).button('loading');
-	postJson(0, "/sso-web/login", $('form').serialize());
+	postJson(0, "/ecommerce-web/login", $('form').serialize());
 });
 
 function callback(id, data) {

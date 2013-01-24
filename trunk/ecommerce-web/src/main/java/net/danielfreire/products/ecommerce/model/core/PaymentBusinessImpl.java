@@ -41,79 +41,83 @@ public class PaymentBusinessImpl implements PaymentBusiness {
 	}
 
 	private HashMap<String, Object> getPayment(HttpServletRequest request) {
-		final Integer siteId = Integer.parseInt(request.getSession().getAttribute(PortalTools.getInstance().idAdminSession).toString());
-		final String name = request.getParameter("name");
-		final String description = request.getParameter("description");
-		final String url = request.getParameter("url");
-		final String id = request.getParameter("id");
+//		final Integer siteId = Integer.parseInt(request.getSession().getAttribute(PortalTools.getInstance().idAdminSession).toString());
+//		final String name = request.getParameter("name");
+//		final String description = request.getParameter("description");
+//		final String url = request.getParameter("url");
+//		final String id = request.getParameter("id");
+//		
+//		HashMap<String, String> errors = new HashMap<String, String>();
+//		
+//		if (ValidateTools.getInstancia().isNullEmpty(name)) {
+//			errors.put("name", PortalTools.getInstance().getMessage("name.invalid"));
+//		}
+//		
+//		HashMap<String, Object> resp = new HashMap<String, Object>();
+//		if (errors.size()>0) {
+//			resp.put("errors", errors);
+//			resp.put("client", null);
+//		} else {
+//			Payment payment = new Payment();
+//			if (ValidateTools.getInstancia().isNumber(id)) {
+//				payment = new Payment(Integer.parseInt(id));
+//			}
+//			payment.setName(name);
+//			payment.setSiteId(siteId);
+//			payment.setDescription(description);
+//			payment.setUrl(url);
+//			
+//			resp.put("errors", null);
+//			resp.put("payment", payment);
+//		}
+//		
+//		return resp;
 		
-		HashMap<String, String> errors = new HashMap<String, String>();
-		
-		if (ValidateTools.getInstancia().isNullEmpty(name)) {
-			errors.put("name", PortalTools.getInstance().getMessage("name.invalid"));
-		}
-		
-		HashMap<String, Object> resp = new HashMap<String, Object>();
-		if (errors.size()>0) {
-			resp.put("errors", errors);
-			resp.put("client", null);
-		} else {
-			Payment payment = new Payment();
-			if (ValidateTools.getInstancia().isNumber(id)) {
-				payment = new Payment(Integer.parseInt(id));
-			}
-			payment.setName(name);
-			payment.setSiteId(siteId);
-			payment.setDescription(description);
-			payment.setUrl(url);
-			
-			resp.put("errors", null);
-			resp.put("payment", payment);
-		}
-		
-		return resp;
+		return null;
 	}
 
 	@Override
 	public GridResponse consult(HttpServletRequest request) throws Exception {
-		String siteId = (String) request.getSession().getAttribute(PortalTools.getInstance().idAdminSession);
-		String page = request.getParameter("page");
+//		String siteId = (String) request.getSession().getAttribute(PortalTools.getInstance().idAdminSession);
+//		String page = request.getParameter("page");
+//		
+//		int pagination = 0;
+//		
+//		if (ValidateTools.getInstancia().isNumber(page)) {
+//			pagination = Integer.parseInt(page)-1;
+//		} 
+//		
+//		ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
+//		
+//		GridTitleResponse title = new GridTitleResponse();
+//		title.setId("name");
+//		title.setTitle("Nome");
+//		title.setType("text");
+//		titles.add(title);
+//		
+//		title = new GridTitleResponse();
+//		title.setId("description");
+//		title.setTitle("Descrição");
+//		title.setType("text");
+//		titles.add(title);
+//		
+//		title = new GridTitleResponse();
+//		title.setId("url");
+//		title.setTitle("Token");
+//		title.setType("text");
+//		titles.add(title);
+//		
+//		Page<Payment> pageable = repository.findBySiteId(Integer.parseInt(siteId), new PageRequest(pagination, 10));
+//		
+//		GridResponse grid = new GridResponse();
+//		grid.setRows(pageable.getContent());
+//		grid.setTitles(titles);
+//		grid.setPage(pageable.getNumber()+1);
+//		grid.setTotalPages(pageable.getTotalPages());
+//		
+//		return grid;
 		
-		int pagination = 0;
-		
-		if (ValidateTools.getInstancia().isNumber(page)) {
-			pagination = Integer.parseInt(page)-1;
-		} 
-		
-		ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
-		
-		GridTitleResponse title = new GridTitleResponse();
-		title.setId("name");
-		title.setTitle("Nome");
-		title.setType("text");
-		titles.add(title);
-		
-		title = new GridTitleResponse();
-		title.setId("description");
-		title.setTitle("Descrição");
-		title.setType("text");
-		titles.add(title);
-		
-		title = new GridTitleResponse();
-		title.setId("url");
-		title.setTitle("Token");
-		title.setType("text");
-		titles.add(title);
-		
-		Page<Payment> pageable = repository.findBySiteId(Integer.parseInt(siteId), new PageRequest(pagination, 10));
-		
-		GridResponse grid = new GridResponse();
-		grid.setRows(pageable.getContent());
-		grid.setTitles(titles);
-		grid.setPage(pageable.getNumber()+1);
-		grid.setTotalPages(pageable.getTotalPages());
-		
-		return grid;
+		return null;
 	}
 
 	@Override
@@ -124,10 +128,12 @@ public class PaymentBusinessImpl implements PaymentBusiness {
 
 	@Override
 	public GenericResponse list(HttpServletRequest request) throws Exception {
-		GenericResponse resp = new GenericResponse();
-		resp.setGenericList(repository.findBySiteId(Integer.parseInt(request.getSession().getAttribute(PortalTools.getInstance().idAdminSession).toString())));
+//		GenericResponse resp = new GenericResponse();
+//		resp.setGenericList(repository.findBySiteId(Integer.parseInt(request.getSession().getAttribute(PortalTools.getInstance().idAdminSession).toString())));
+//		
+//		return resp;
 		
-		return resp;
+		return null;
 	}
 
 }

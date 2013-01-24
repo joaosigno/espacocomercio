@@ -133,4 +133,10 @@ public class FinanceExpensesBusinessImpl implements FinanceExpensesBusiness {
 		return retorno;
 	}
 
+	@Override
+	public GenericResponse remove(HttpServletRequest request) throws Exception {
+		repository.delete(Integer.parseInt(request.getParameter("id")));
+		return new GenericResponse();
+	}
+
 }

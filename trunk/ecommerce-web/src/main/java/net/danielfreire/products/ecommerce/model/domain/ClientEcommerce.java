@@ -2,6 +2,8 @@ package net.danielfreire.products.ecommerce.model.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -12,8 +14,9 @@ public class ClientEcommerce extends AbstractPersistable<Integer> {
 
 	private static final long serialVersionUID = -7283021108945100297L;
 	
-	@Column(name="site_id")
-	private Integer siteId;
+	@ManyToOne
+	@JoinColumn(name="site_id", referencedColumnName="id")
+	private Site site;
 	@Column(name="active")
 	private Boolean active;
 	@Column(name="name", length=100)
@@ -34,6 +37,14 @@ public class ClientEcommerce extends AbstractPersistable<Integer> {
 	private String addressCity;
 	@Column(name="address_complement", length=255)
 	private String addressComplement;
+	@Column(name="permission_type1")
+	private Boolean permission_type1;
+	@Column(name="permission_type2")
+	private Boolean permission_type2;
+	@Column(name="permission_type3")
+	private Boolean permission_type3;
+	@Column(name="permission_type4")
+	private Boolean permission_type4;
 	
 	public ClientEcommerce() {
 		super();
@@ -104,13 +115,47 @@ public class ClientEcommerce extends AbstractPersistable<Integer> {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Integer getSiteId() {
-		return siteId;
-	}
-	public void setSiteId(Integer siteId) {
-		this.siteId = siteId;
-	}
 	public void setId(Integer id) {
 		super.setId(id);
+	}
+
+	public Site getSite() {
+		return site;
+	}
+
+	public void setSite(Site site) {
+		this.site = site;
+	}
+
+	public Boolean getPermission_type1() {
+		return permission_type1;
+	}
+
+	public void setPermission_type1(Boolean permission_type1) {
+		this.permission_type1 = permission_type1;
+	}
+
+	public Boolean getPermission_type2() {
+		return permission_type2;
+	}
+
+	public void setPermission_type2(Boolean permission_type2) {
+		this.permission_type2 = permission_type2;
+	}
+
+	public Boolean getPermission_type3() {
+		return permission_type3;
+	}
+
+	public void setPermission_type3(Boolean permission_type3) {
+		this.permission_type3 = permission_type3;
+	}
+
+	public Boolean getPermission_type4() {
+		return permission_type4;
+	}
+
+	public void setPermission_type4(Boolean permission_type4) {
+		this.permission_type4 = permission_type4;
 	}
 }

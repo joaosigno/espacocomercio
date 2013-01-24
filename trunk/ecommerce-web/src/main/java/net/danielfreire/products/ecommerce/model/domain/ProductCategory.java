@@ -2,6 +2,8 @@ package net.danielfreire.products.ecommerce.model.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -12,8 +14,9 @@ public class ProductCategory extends AbstractPersistable<Integer> {
 
 	private static final long serialVersionUID = -1899243292932798398L;
 	
-	@Column(name="site_id")
-	private Integer siteId;
+	@ManyToOne
+	@JoinColumn(name="site_id", referencedColumnName="id")
+	private Site site;
 	@Column(name="name", length=45)
 	private String name;
 	@Column(name="description", length=255)
@@ -30,12 +33,14 @@ public class ProductCategory extends AbstractPersistable<Integer> {
 		super.setId(id);
 	}
 	
-	public Integer getSiteId() {
-		return siteId;
+	public Site getSite() {
+		return site;
 	}
-	public void setSiteId(Integer siteId) {
-		this.siteId = siteId;
+
+	public void setSite(Site site) {
+		this.site = site;
 	}
+
 	public String getName() {
 		return name;
 	}

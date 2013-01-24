@@ -33,4 +33,12 @@ public class FinanceRevenueController {
 		}
 	}
 
+	@RequestMapping(value="/admin/finance/revenue/remove", method = RequestMethod.POST)
+	public @ResponseBody GenericResponse remove(HttpServletRequest request) {
+		try {
+			return business.remove(request);
+		} catch (Exception e) {
+			return PortalTools.getInstance().getRespError(e);
+		}
+	}
 }

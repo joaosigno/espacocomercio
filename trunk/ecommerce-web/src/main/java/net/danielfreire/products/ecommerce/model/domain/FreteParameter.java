@@ -2,6 +2,8 @@ package net.danielfreire.products.ecommerce.model.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -12,8 +14,9 @@ public class FreteParameter extends AbstractPersistable<Integer> {
 
 	private static final long serialVersionUID = 1548202239998245775L;
 	
-	@Column(name="site_id")
-	private Integer siteId;
+	@ManyToOne
+	@JoinColumn(name="site_id", referencedColumnName="id")
+	private Site site;
 	@Column(name="state")
 	private String state;
 	@Column(name="value")
@@ -38,12 +41,6 @@ public class FreteParameter extends AbstractPersistable<Integer> {
 		super.setId(id);
 	}
 	
-	public Integer getSiteId() {
-		return siteId;
-	}
-	public void setSiteId(Integer siteId) {
-		this.siteId = siteId;
-	}
 	public String getState() {
 		return state;
 	}
@@ -55,6 +52,14 @@ public class FreteParameter extends AbstractPersistable<Integer> {
 	}
 	public void setValue(Double value) {
 		this.value = value;
+	}
+
+	public Site getSite() {
+		return site;
+	}
+
+	public void setSite(Site site) {
+		this.site = site;
 	}
 
 }

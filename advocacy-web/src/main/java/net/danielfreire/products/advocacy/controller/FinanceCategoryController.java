@@ -42,10 +42,13 @@ public class FinanceCategoryController {
 		}
 	}
 	
-	@RequestMapping(value="/admin/finance/expenses/consult", method = RequestMethod.GET)
-	public @ResponseBody GridResponse expensesConsult(HttpServletRequest request) {
-		return business.consultExpenses(request);
+	@RequestMapping(value="/admin/finance/category/list", method = RequestMethod.GET)
+	public @ResponseBody GenericResponse list(HttpServletRequest request) {
+		try {
+			return business.list(request);
+		} catch (Exception e) {
+			return PortalTools.getInstance().getRespError(e);
+		}
 	}
-	
 	
 }

@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,8 +28,9 @@ public class FinanceExpenses extends AbstractPersistable<Integer> {
 	private Calendar datePayment;
 	@Column(name="description", length=1000)
 	private String description;
-	@Column(name="advocacy_office_id")
-	private Integer advocacyOffice;
+	@ManyToOne
+	@JoinColumn(name="finance_category_id", referencedColumnName="id")
+	private FinanceCategory category;
 	
 	public String getTitle() {
 		return title;
@@ -53,10 +56,10 @@ public class FinanceExpenses extends AbstractPersistable<Integer> {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Integer getAdvocacyOffice() {
-		return advocacyOffice;
+	public FinanceCategory getCategory() {
+		return category;
 	}
-	public void setAdvocacyOffice(Integer advocacyOffice) {
-		this.advocacyOffice = advocacyOffice;
+	public void setCategory(FinanceCategory category) {
+		this.category = category;
 	}
 }

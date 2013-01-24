@@ -12,7 +12,7 @@ public interface FinanceCategoryBusiness {
 	GenericResponse manage(HttpServletRequest request) throws Exception;
 	
 	GenericResponse remove(HttpServletRequest request) throws Exception;
-
-	GridResponse consultExpenses(HttpServletRequest request) throws Exception;
 	
+	GenericResponse list(HttpServletRequest request) throws Exception;
+
 }

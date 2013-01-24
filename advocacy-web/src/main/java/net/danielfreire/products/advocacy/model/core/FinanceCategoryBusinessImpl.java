@@ -86,27 +86,11 @@ public class FinanceCategoryBusinessImpl implements FinanceCategoryBusiness {
 		
 		return resp;
 	}
-
+	
 	@Override
-	public GridResponse consultExpenses(HttpServletRequest request)
-			throws Exception {
-		String page = request.getParameter("page");
-		
-		int pagination = 0;
-		
-		if (ValidateTools.getInstancia().isNumber(page)) {
-			pagination = Integer.parseInt(page)-1;
-		} 
-		
-		ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
-		titles.add(PortalTools.getInstance().getRowGrid("title", "Título", "text"));
-		titles.add(PortalTools.getInstance().getRowGrid("dateExpiration", "Vencimento", "text"));
-		titles.add(PortalTools.getInstance().getRowGrid("datePayment", "Pagamento", "text"));
-		titles.add(PortalTools.getInstance().getRowGrid("description", "Descrição", "text"));
-		
-		Page<FinanceCategory> pageable = null;
-		pageable = repository.findByAdvocacyOffice(AdvocacyUtil.getInstancia().getSessionUser(request).getAdvocacyOffice().getId(), new PageRequest(pagination, 10));
-		
-		return PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
+	public GenericResponse list(HttpServletRequest request) throws Exception {
+		GenericResponse resp = new GenericResponse();
+		resp.setGeneric(repository.findByAdvocacyOffice(AdvocacyUtil.getInstancia().getSessionUser(request).getAdvocacyOffice().getId()));
+		return resp;
 	}
 }

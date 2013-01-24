@@ -17,6 +17,14 @@ public class FinanceCategory extends AbstractPersistable<Integer> {
 	@Column(name="advocacy_office_id")
 	private Integer advocacyOffice;
 	
+	public FinanceCategory() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public FinanceCategory(Integer id) {
+		super.setId(id);
+	}
+	
 	public String getTitle() {
 		return title;
 	}

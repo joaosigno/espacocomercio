@@ -70,7 +70,7 @@
 				
 				function callback(id, data) {
 					if (data.status) {
-						alert("Site criado com sucesso.");
+						alert("Site criado com sucesso.", true);
 						$('button[type="reset"]').click();
 					} else {
 						errorForm(data);

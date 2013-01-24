@@ -56,7 +56,7 @@
 				
 				function callback(id, data) {
 					if (data.status) {
-						alert("Escritório criado com sucesso.");
+						alert("Escritório criado com sucesso.", true);
 						$('button[type="reset"]').click();
 					} else {
 						errorForm(data);

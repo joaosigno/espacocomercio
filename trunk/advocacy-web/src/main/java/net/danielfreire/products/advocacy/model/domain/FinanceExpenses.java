@@ -31,6 +31,16 @@ public class FinanceExpenses extends AbstractPersistable<Integer> {
 	@ManyToOne
 	@JoinColumn(name="finance_category_id", referencedColumnName="id")
 	private FinanceCategory category;
+	@Column(name="value")
+	private Double value;
+	
+	public FinanceExpenses() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public FinanceExpenses(Integer id) {
+		super.setId(id);
+	}
 	
 	public String getTitle() {
 		return title;
@@ -61,5 +71,12 @@ public class FinanceExpenses extends AbstractPersistable<Integer> {
 	}
 	public void setCategory(FinanceCategory category) {
 		this.category = category;
+	}
+	public Double getValue() {
+		return value;
+	}
+
+	public void setValue(Double value) {
+		this.value = value;
 	}
 }

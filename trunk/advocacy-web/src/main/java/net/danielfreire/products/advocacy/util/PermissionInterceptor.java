@@ -32,9 +32,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 				final String uri = request.getRequestURI();
 				
 				boolean permissionValid = true;
-				if ((uri.contains("/advocacy-web/admin/office/")) && user.getId()!=0) {
-					permissionValid = false;
-				} else if (!user.getManageUser() && (uri.contains("/advocacy-web/admin/office/user/") || uri.contains("/admin/office/usersession/"))) {
+				if (!user.getManageUser() && (uri.contains("/advocacy-web/admin/office/user/") || uri.contains("/admin/office/usersession/"))) {
 					permissionValid = false;
 				} else if (!user.getManageFinance() && uri.contains("/advocacy-web/admin/finance/")) {
 					permissionValid = false;

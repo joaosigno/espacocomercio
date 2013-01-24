@@ -1,6 +1,6 @@
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 DROP SCHEMA IF EXISTS `portais` ;
 CREATE SCHEMA IF NOT EXISTS `portais` DEFAULT CHARACTER SET latin1 ;
@@ -311,6 +311,7 @@ CREATE  TABLE IF NOT EXISTS `advocacy`.`advocacy_user` (
   `view_contract` TINYINT(1) NOT NULL ,
   `view_lawyer` TINYINT(1) NOT NULL ,
   `advocacy_office_id` INT NOT NULL ,
+  `manage_lawyer` TINYINT(1) NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_advocacy_user_advocacy_office` (`advocacy_office_id` ASC) ,
   CONSTRAINT `fk_advocacy_user_advocacy_office`
@@ -328,11 +329,12 @@ DROP TABLE IF EXISTS `advocacy`.`finance_expenses` ;
 
 CREATE  TABLE IF NOT EXISTS `advocacy`.`finance_expenses` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `finance_category_id` INT NOT NULL ,
   `title` VARCHAR(200) NOT NULL ,
   `date_expiration` DATE NOT NULL ,
   `date_payment` DATE NULL ,
   `description` VARCHAR(1000) NULL ,
-  `finance_category_id` INT NOT NULL ,
+  `value` DOUBLE NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_finance_expenses_finance_category1` (`finance_category_id` ASC) ,
   CONSTRAINT `fk_finance_expenses_finance_category1`
@@ -350,10 +352,11 @@ DROP TABLE IF EXISTS `advocacy`.`finance_revenue` ;
 
 CREATE  TABLE IF NOT EXISTS `advocacy`.`finance_revenue` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `finance_category_id` INT NOT NULL ,
   `title` VARCHAR(200) NOT NULL ,
   `date_payment` DATE NOT NULL ,
   `description` VARCHAR(1000) NULL ,
-  `finance_category_id` INT NOT NULL ,
+  `value` DOUBLE NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_finance_revenue_finance_category1` (`finance_category_id` ASC) ,
   CONSTRAINT `fk_finance_revenue_finance_category1`
@@ -363,6 +366,9 @@ CREATE  TABLE IF NOT EXISTS `advocacy`.`finance_revenue` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+USE `portais` ;
+USE `ecommerce` ;
+USE `advocacy` ;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

@@ -96,7 +96,7 @@
 			
 			function callback(id, data) {
 				if (data.status) {
-					alert("Frete criado com sucesso.");
+					alert("Frete criado com sucesso.", true);
 					$('button[type="reset"]').click();
 				} else {
 					errorForm(data);

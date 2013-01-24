@@ -57,7 +57,7 @@
 			
 			function callback(id, data) {
 				if (data.status) {
-					alert("Categoria criado com sucesso.");
+					alert("Categoria criado com sucesso.", true);
 					$('button[type="reset"]').click();
 				} else {
 					errorForm(data);

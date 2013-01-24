@@ -10,7 +10,7 @@ function errorForm(data, context) {
 	if (!data.status) {
 		$.each(data.messageError, function(key, val) {
 			if (key=='generic') {
-				alert(val);
+				alert(val, false);
 			} else if (key=='sessionInvalid') {
 				location.href=context+'?error='+val;
 			} else {
@@ -25,7 +25,7 @@ function errorFormGrid(data, id, divTableId) {
 	if (!data.status) {
 		$.each(data.messageError, function(key, val) {
 			if (key=='generic') {
-				alert(val);
+				alert(val, false);
 			} else if (key=='sessionInvalid') {
 				location.href='/sso?error='+val;
 			} else {
@@ -146,7 +146,7 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 			$.unblockUI();
 			$.each(data.messageError, function(key, val) {
 				if (key=='generic') {
-					alert(val);
+					alert(val, false);
 				} else if (key=='sessionInvalid') {
 					location.href='/sso?error='+val;
 				}
@@ -199,11 +199,29 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 						} else {
 							html += '<td id="' + idcomp + menu[e] + '">R$ 0,00</td>';
 						}
-					} else if (menu[e]=='dateCreate' || menu[e]=='datePayment') {
+					} else if (menu[e]=='dateCreate' || menu[e]=='datePayment' || menu[e]=='dateExpiration') {
 						if (val[menu[e]]!=null && val[menu[e]]!=undefined && val[menu[e]]!='') {
 							var dat = new Date();
 							dat.setTime(val[menu[e]].toString());
-							html += '<td id="' + idcomp + menu[e] + '">'+dat.getDate()+'/'+(dat.getMonth()+1)+'/'+dat.getFullYear()+' '+dat.getHours()+':'+dat.getMinutes()+'</td>';
+							var hour = '';
+							if (dat.getHours()!=0 && dat.getMinutes()!=0) {
+								hour = ' '+dat.getHours()+':'+dat.getMinutes();
+							} 
+							
+							var dtAll = '';
+							if (dat.getDate().toString().length==1) {
+								dtAll += '0'+dat.getDate()+'/';
+							} else {
+								dtAll += dat.getDate()+'/';
+							}
+							if ((dat.getMonth()+1).toString().length==1) {
+								dtAll += '0'+(dat.getMonth()+1).toString()+'/';
+							} else {
+								dtAll += (dat.getMonth()+1).toString()+'/';
+							}
+							dtAll+=dat.getFullYear();
+							
+							html += '<td id="' + idcomp + menu[e] + '">'+dtAll+hour+'</td>';
 						} else {
 							html += '<td id="' + idcomp + menu[e] + '"></td>';
 						}
@@ -295,6 +313,7 @@ function editTable(id, divId, formId, urlJson, urlDelete) {
 	
 	$('form#'+formId).find('input').each(function() {
 		var name = $(this).attr('name');
+		var clas = $(this).attr('class');
 		if (name=='id') {
 			$(this).val(id);
 		} else {
@@ -302,7 +321,9 @@ function editTable(id, divId, formId, urlJson, urlDelete) {
 			var tdvalue = $('td#'+idtk).text();
 			
 			if ($(this).attr('type')=='text') {
-				if (tdvalue.indexOf('R$ ')!=-1) {
+				if (clas.indexOf('datePickerInput')!=-1) {
+					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level datePickerInput">');
+				} else if (tdvalue.indexOf('R$ ')!=-1) {
 					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+(tdvalue.replace('R$ ', ''))+'" class="input-block-level money">');
 				} else {
 					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level">');
@@ -333,10 +354,15 @@ function editTable(id, divId, formId, urlJson, urlDelete) {
 	if ($("input.money").size()>0) {
 		$("input.money").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: false});
 	}
+	
+	$( "#grid .datePickerInput" ).datepicker();
+	$( "#grid .datePickerInput" ).datepicker( "option", "dateFormat", 'dd/mm/yy' );
+	
 	$('td#'+idcomp).html('<a href="#" onclick="submitEdit(\''+id+'\', \''+divId+'\', \''+formId+'\', \''+urlJson+'\', \''+urlDelete+'\');"><i class="icon-ok"></i></a><a href="#" onclick="loadGrid(\''+urlJson+'\', \''+divId+'\', \''+formId+'\', \''+urlDelete+'\');"><i class="icon-remove"></i></a>');
 }
 
 function submitEdit(id, divId, formId, urlJson, urlDelete) {
+	$( ".datePickerInput" ).datepicker( "destroy" );
 	var idcomp = divId + id;
 	
 	$('form#'+formId).find('input').each(function() {
@@ -354,7 +380,7 @@ function submitEdit(id, divId, formId, urlJson, urlDelete) {
 	
 	$.post($('form#'+formId).attr('action'), $('form#'+formId).serialize(), function(data){
 		if (data.status) {
-			alert("Alteração realizada com sucesso.");
+			alert("Alteração realizada com sucesso.", true);
 			loadGrid(urlJson, divId, formId, urlDelete);
 		} else {
 			errorFormGrid(data, id, divId);
@@ -365,7 +391,7 @@ function submitEdit(id, divId, formId, urlJson, urlDelete) {
 function removeTable(urlDelete, id, divId, formId, urlJson) {
 	$.post(urlDelete, 'id='+id, function(data){
 		if (data.status) {
-			alert("Alteração realizada com sucesso.");
+			alert("Alteração realizada com sucesso.", true);
 			loadGrid(urlJson, divId, formId, urlDelete);
 		} else {
 			errorFormGrid(data, id, divId);
@@ -480,6 +506,7 @@ function generateAddButton(label, urlSubmit, urlJson, divId, formId, urlDelete) 
 }
 
 function add(urlSubmit, urlJson, divId, formId, urlDelete) {
+	$('form#'+formId).reset();
 	if ($('tr#gridNewObject').size()==0) { 
 		var array = new Array();
 		var i = 0;
@@ -513,11 +540,16 @@ function add(urlSubmit, urlJson, divId, formId, urlDelete) {
 			}
 		}
 	}
-	$( ".datePickerInput" ).datepicker();
-	$( ".datePickerInput" ).datepicker( "option", "dateFormat", 'dd/mm/yy' );
+	$( "#gridNewObject .datePickerInput" ).datepicker();
+	$( "#gridNewObject .datePickerInput" ).datepicker( "option", "dateFormat", 'dd/mm/yy' );
+	
+	if ($("input.money").size()>0) {
+		$("input.money").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: false});
+	}
 }
 
 function saveGrid(urlSubmit, urlJson, divId, formId, urlDelete) {
+	$( ".datePickerInput" ).datepicker( "destroy" );
 	var params = '';
 	
 	$('tr#gridNewObject').find('input').each(function() {
@@ -537,14 +569,68 @@ function saveGrid(urlSubmit, urlJson, divId, formId, urlDelete) {
 	
 	$.post(urlSubmit, params, function(data){
 		if (data.status) {
-			alert("Inserção realizada com sucesso.");
-			loadGrid(urlJson, divId, formId, urlDelete);
+			alert("Inserção realizada com sucesso.", true);
+			loadGrid(getFilterParams(urlJson), divId, formId, urlDelete);
 		} else {
-			alert(data.messageError.generic)
+			alert(data.messageError.generic, false);
 		}
 	}, "json");
 }
 
 function cancelSaveGrid() {
+	$( ".datePickerInput" ).datepicker( "destroy" );
 	$('tr#gridNewObject').remove();
+}
+
+function getFilterParams(url) {
+	if ($('div#filter').size()>0) {
+		var param = '';
+		if (url.indexOf('?')==-1) {
+			param = '?';
+		}
+		$('div#filter').find('input[type="text"]').each(function(){
+			if (param!='?' && param!='') {
+				param += '&'+$(this).attr('name') + "=" + $(this).val();
+			} else {
+				param += $(this).attr('name') + "=" + $(this).val();
+			}
+		});
+		$('div#filter').find('select').each(function(){
+			if (param!='?' && param!='') {
+				param += '&'+$(this).attr('name') + "=" + $(this).val();
+			} else {
+				param += $(this).attr('name') + "=" + $(this).val();
+			}
+		});
+		
+		url += param;
+	}
+	
+	return url;
+}
+
+function alert(msg, success) {
+	$('div#divErrorAlert').remove();
+
+	if (!success) {
+		var html = 	'<div id="divErrorAlert" class="alert alert-block alert-error fade in">';
+	    html += 		'<button id="divErrorAlertButtonClose" type="button" class="close" data-dismiss="alert">×</button>';
+	    html += 		'<h4 class="alert-heading">Ocorreu um erro!</h4>';
+	    html += 		'<p>Motivo: '+msg+'</p>';
+	    html += 		'<p>';
+	    html += 			'<a class="btn btn-danger" onclick="$(\'#divErrorAlertButtonClose\').click();" href="#">Ok</a>';
+	    html += 		'</p>';
+	    html += 	'</div>';
+	} else {
+		var html = 	'<div id="divErrorAlert" class="alert alert-block alert-success fade in">';
+	    html += 		'<button id="divErrorAlertButtonClose" type="button" class="close" data-dismiss="alert">×</button>';
+	    html += 		'<h4 class="alert-heading">Sucesso!</h4>';
+	    html += 		'<p>Motivo: '+msg+'</p>';
+	    html += 		'<p>';
+	    html += 			'<a class="btn btn-success" onclick="$(\'#divErrorAlertButtonClose\').click();" data-dismiss="alert" href="#">Ok</a>';
+	    html += 		'</p>';
+	    html += 	'</div>';
+	}
+    
+	$('.breadcrumb').after(html);
 }

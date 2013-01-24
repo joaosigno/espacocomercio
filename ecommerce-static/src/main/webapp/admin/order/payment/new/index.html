@@ -68,7 +68,7 @@
 			
 			function callback(id, data) {
 				if (data.status) {
-					alert("Forma de pagamento criada com sucesso.");
+					alert("Forma de pagamento criada com sucesso.", true);
 					$('button[type="reset"]').click();
 				} else {
 					errorForm(data);

@@ -123,7 +123,7 @@
 				
 				function callback(id, data) {
 					if (data.status) {
-						alert("Usuário salvo com sucesso.");
+						alert("Usuário salvo com sucesso.", true);
 						location.href='../manage';
 					} else {
 						errorForm(data, '/advocacy');

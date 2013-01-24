@@ -89,7 +89,7 @@
  			<form action="/ecommerce-web/product/upload" id="form_upload" enctype="multipart/form-data" method="post" target="upload_target">
  				<input type="file" name="uploadFile" id="uploadFile" onchange="$('form#form_upload').submit()" accept="image/*">
  				<input type="hidden" name="positionFile" id="positionFile">
- 				<input type="button" id="alertError" onclick="alert(this.value)">
+ 				<input type="button" id="alertError" onclick="alert(this.value, false)">
  			</form>
  			<iframe id="upload_target" name="upload_target" src="#"></iframe>
  		</div>
@@ -111,7 +111,7 @@
 				if (data.status) {
 					if (id=='postEdit') {
 						
-						alert("Produto criado com sucesso.");
+						alert("Produto criado com sucesso.", true);
 						$('button[type="reset"]').click();
 						preencheImages();
 						

@@ -2,71 +2,24 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-DROP SCHEMA IF EXISTS `portais` ;
-CREATE SCHEMA IF NOT EXISTS `portais` DEFAULT CHARACTER SET latin1 ;
 DROP SCHEMA IF EXISTS `ecommerce` ;
 CREATE SCHEMA IF NOT EXISTS `ecommerce` DEFAULT CHARACTER SET latin1 ;
 DROP SCHEMA IF EXISTS `advocacy` ;
 CREATE SCHEMA IF NOT EXISTS `advocacy` ;
-USE `portais` ;
+USE `ecommerce` ;
 
 -- -----------------------------------------------------
--- Table `portais`.`site`
+-- Table `ecommerce`.`site`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `portais`.`site` ;
+DROP TABLE IF EXISTS `ecommerce`.`site` ;
 
-CREATE  TABLE IF NOT EXISTS `portais`.`site` (
+CREATE  TABLE IF NOT EXISTS `ecommerce`.`site` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
-  `description` VARCHAR(255) NULL DEFAULT NULL ,
-  `urlsite` VARCHAR(100) NOT NULL ,
-  `urladm` VARCHAR(100) NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
+  `description` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Table `portais`.`client`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `portais`.`client` ;
-
-CREATE  TABLE IF NOT EXISTS `portais`.`client` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `site_id` INT NOT NULL ,
-  `usermail` VARCHAR(255) NOT NULL ,
-  `userpassword` VARCHAR(20) NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `usermail_UNIQUE` (`usermail` ASC) ,
-  INDEX `fk_client_site1_idx` (`site_id` ASC) ,
-  CONSTRAINT `fk_client_site1`
-    FOREIGN KEY (`site_id` )
-    REFERENCES `portais`.`site` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `portais`.`newsletter`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `portais`.`newsletter` ;
-
-CREATE  TABLE IF NOT EXISTS `portais`.`newsletter` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `site_id` INT NOT NULL ,
-  `title` VARCHAR(255) NOT NULL ,
-  `description` TEXT NOT NULL ,
-  INDEX `fk_newsletter_site1_idx` (`site_id` ASC) ,
-  PRIMARY KEY (`id`) ,
-  CONSTRAINT `fk_newsletter_site1`
-    FOREIGN KEY (`site_id` )
-    REFERENCES `portais`.`site` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-USE `ecommerce` ;
 
 -- -----------------------------------------------------
 -- Table `ecommerce`.`product`
@@ -75,7 +28,6 @@ DROP TABLE IF EXISTS `ecommerce`.`product` ;
 
 CREATE  TABLE IF NOT EXISTS `ecommerce`.`product` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `site_id` INT NOT NULL ,
   `name` VARCHAR(45) NOT NULL ,
   `introduction` VARCHAR(255) NOT NULL ,
   `images` TEXT NOT NULL ,
@@ -85,7 +37,14 @@ CREATE  TABLE IF NOT EXISTS `ecommerce`.`product` (
   `datecreate` DATETIME NOT NULL ,
   `key_url` VARCHAR(45) NOT NULL ,
   `quantity_frete` DOUBLE NOT NULL ,
-  PRIMARY KEY (`id`) )
+  `site_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_product_site1_idx` (`site_id` ASC) ,
+  CONSTRAINT `fk_product_site1`
+    FOREIGN KEY (`site_id` )
+    REFERENCES `ecommerce`.`site` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -117,11 +76,17 @@ DROP TABLE IF EXISTS `ecommerce`.`product_category` ;
 
 CREATE  TABLE IF NOT EXISTS `ecommerce`.`product_category` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `site_id` INT NOT NULL ,
   `name` VARCHAR(45) NOT NULL ,
   `description` VARCHAR(255) NULL DEFAULT NULL ,
   `key_url` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`id`) )
+  `site_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_product_category_site1_idx` (`site_id` ASC) ,
+  CONSTRAINT `fk_product_category_site1`
+    FOREIGN KEY (`site_id` )
+    REFERENCES `ecommerce`.`site` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -157,7 +122,6 @@ DROP TABLE IF EXISTS `ecommerce`.`client_ecommerce` ;
 
 CREATE  TABLE IF NOT EXISTS `ecommerce`.`client_ecommerce` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `site_id` INT NOT NULL ,
   `name` VARCHAR(100) NOT NULL ,
   `usermail` VARCHAR(255) NOT NULL ,
   `userpassword` VARCHAR(20) NOT NULL ,
@@ -168,7 +132,18 @@ CREATE  TABLE IF NOT EXISTS `ecommerce`.`client_ecommerce` (
   `address_city` VARCHAR(100) NOT NULL ,
   `address_complement` VARCHAR(255) NULL DEFAULT NULL ,
   `active` TINYINT NOT NULL ,
-  PRIMARY KEY (`id`) )
+  `site_id` INT NOT NULL ,
+  `permission_type1` TINYINT(1) NOT NULL ,
+  `permission_type2` TINYINT(1) NOT NULL ,
+  `permission_type3` TINYINT(1) NOT NULL ,
+  `permission_type4` TINYINT(1) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_client_ecommerce_site1_idx` (`site_id` ASC) ,
+  CONSTRAINT `fk_client_ecommerce_site1`
+    FOREIGN KEY (`site_id` )
+    REFERENCES `ecommerce`.`site` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -179,11 +154,17 @@ DROP TABLE IF EXISTS `ecommerce`.`payment` ;
 
 CREATE  TABLE IF NOT EXISTS `ecommerce`.`payment` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `site_id` INT NOT NULL ,
   `name` VARCHAR(255) NOT NULL ,
   `description` VARCHAR(255) NULL DEFAULT NULL ,
   `url` VARCHAR(255) NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) )
+  `site_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_payment_site1_idx` (`site_id` ASC) ,
+  CONSTRAINT `fk_payment_site1`
+    FOREIGN KEY (`site_id` )
+    REFERENCES `ecommerce`.`site` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -252,11 +233,17 @@ DROP TABLE IF EXISTS `ecommerce`.`frete_parameter` ;
 
 CREATE  TABLE IF NOT EXISTS `ecommerce`.`frete_parameter` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `site_id` INT NOT NULL ,
   `state` VARCHAR(5) NOT NULL ,
   `value` DOUBLE NOT NULL ,
   `quantity_day` INT NOT NULL ,
-  PRIMARY KEY (`id`) )
+  `site_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_frete_parameter_site1_idx` (`site_id` ASC) ,
+  CONSTRAINT `fk_frete_parameter_site1`
+    FOREIGN KEY (`site_id` )
+    REFERENCES `ecommerce`.`site` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 USE `advocacy` ;
@@ -366,7 +353,6 @@ CREATE  TABLE IF NOT EXISTS `advocacy`.`finance_revenue` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `portais` ;
 USE `ecommerce` ;
 USE `advocacy` ;
 

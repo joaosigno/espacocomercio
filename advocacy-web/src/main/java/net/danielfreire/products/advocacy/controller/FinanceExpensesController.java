@@ -32,5 +32,14 @@ public class FinanceExpensesController {
 			return PortalTools.getInstance().getRespError(e);
 		}
 	}
-
+	
+	@RequestMapping(value="/admin/finance/expenses/remove", method = RequestMethod.POST)
+	public @ResponseBody GenericResponse remove(HttpServletRequest request) {
+		try {
+			return business.remove(request);
+		} catch (Exception e) {
+			return PortalTools.getInstance().getRespError(e);
+		}
+	}
+	
 }

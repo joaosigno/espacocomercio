@@ -10,5 +10,7 @@ public interface FinanceExpensesBusiness {
 	GridResponse consult(HttpServletRequest request);
 
 	GenericResponse manage(HttpServletRequest request) throws Exception;
+
+	GenericResponse remove(HttpServletRequest request) throws Exception;
 	
 }

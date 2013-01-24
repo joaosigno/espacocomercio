@@ -20,7 +20,7 @@ public class HeaderResponse implements Serializable {
 		ArrayList<ProductCategory> menuNew = new ArrayList<ProductCategory>();
 		for (ProductCategory pc : menu) {
 			pc.setDescription("");
-			pc.setSiteId(null);
+			//pc.setSiteId(null);
 			menuNew.add(pc);
 		}
 		this.menu = menuNew;

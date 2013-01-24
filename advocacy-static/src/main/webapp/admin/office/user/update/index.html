@@ -27,6 +27,14 @@
 						</div>
 					</div>
 					<div class="control-group">
+						<label class="control-label">Senha: <span class="help-block"><input type="checkbox" onclick="alterPassword()"> Alterar senha</span></label>
+						<div class="controls">
+							<input name="userpassword" type="password" class="span3" placeholder="Senha…" maxlength="10" disabled>
+							<input name="userpasswordConfirm" type="password" class="span3" placeholder="Confirmar…" maxlength="10" disabled>
+							<span id="spanError-userpassword" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
 						<label class="control-label">Escritório:</label>
 						<div class="controls">
 							<select name="office"></select>
@@ -102,7 +110,6 @@
 						<div class="controls">
 							<input type="hidden" name="id">
 							<button type="button" class="btn btn-primary" onclick="submitForm()">Salvar</button>
-							<button type="reset" class="btn">Limpar</button>
 						</div>
 					</div>
 					
@@ -194,7 +201,25 @@
 				getJson2('preencheUser', '/advocacy-web/admin/office/user/load?id='+getURLParameter('pid'));
 				
 				function submitForm() {
-					postJson('', '/advocacy-web/admin/office/user/manage', $('form').serialize());
+					if ($('input[name="userpassword"]').val()!='' || $('input[name="userpasswordConfirm"]').val()!='') { 
+						if ($('input[name="userpassword"]').val()==$('input[name="userpasswordConfirm"]').val()) {
+							postJson('', '/advocacy-web/admin/office/user/manage', $('form').serialize());
+						} else {
+							$('[name="userpassword"]').parent().parent().attr('class', $('[name="userpassword"]').parent().parent().attr('class')+" error");
+							$('#spanError-userpassword').text('As senhas digitadas estão diferentes.');
+						}
+					} else {
+						postJson('', '/advocacy-web/admin/office/user/manage', $('form').serialize());
+					}
+				}
+				
+				function alterPassword() {
+					$("input[type=password]").val('');
+					if ($('input[type="checkbox"]').is(':checked')) {
+						$("input[type=password]").attr("disabled",false);
+					} else {
+						$("input[type=password]").attr("disabled",true);
+					}
 				}
 			</script>
     	</body>

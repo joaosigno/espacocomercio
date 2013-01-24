@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,8 +18,9 @@ public class Product extends AbstractPersistable<Integer> {
 
 	private static final long serialVersionUID = -2709345858968454136L;
 	
-	@Column(name="site_id")
-	private Integer siteId;
+	@ManyToOne
+	@JoinColumn(name="site_id", referencedColumnName="id")
+	private Site site;
 	@Column(name="name", length=45)
 	private String name;
 	@Column(name="introduction", length=255)
@@ -47,12 +50,6 @@ public class Product extends AbstractPersistable<Integer> {
 		super.setId(id);
 	}
 	
-	public Integer getSiteId() {
-		return siteId;
-	}
-	public void setSiteId(Integer siteId) {
-		this.siteId = siteId;
-	}
 	public String getName() {
 		return name;
 	}
@@ -112,6 +109,14 @@ public class Product extends AbstractPersistable<Integer> {
 
 	public void setQuantityFrete(Double quantityFrete) {
 		this.quantityFrete = quantityFrete;
+	}
+
+	public Site getSite() {
+		return site;
+	}
+
+	public void setSite(Site site) {
+		this.site = site;
 	}
 	
 

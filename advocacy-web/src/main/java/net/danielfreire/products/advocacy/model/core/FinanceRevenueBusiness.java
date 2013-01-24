@@ -11,4 +11,6 @@ public interface FinanceRevenueBusiness {
 
 	GenericResponse manage(HttpServletRequest request) throws Exception;
 
+	GenericResponse remove(HttpServletRequest request) throws Exception;
+
 }

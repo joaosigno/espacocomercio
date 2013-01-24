@@ -209,7 +209,9 @@ public class AdvocacyUserBusinessImpl implements AdvocacyUserBusiness {
 		AdvocacyUser user = new AdvocacyUser();
 		if (ValidateTools.getInstancia().isNumber(id)) {
 			user = repository.findOne(Integer.parseInt(id));
-		} else {
+		} 
+		
+		if (!ValidateTools.getInstancia().isNullEmpty(userpassword)) {
 			user.setUserpassword(userpassword);
 		}
 		

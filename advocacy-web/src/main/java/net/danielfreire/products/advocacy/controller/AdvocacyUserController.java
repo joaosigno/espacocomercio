@@ -1,6 +1,9 @@
 package net.danielfreire.products.advocacy.controller;
 
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.danielfreire.products.advocacy.model.core.AdvocacyUserBusiness;
 import net.danielfreire.util.GenericResponse;
@@ -25,6 +28,20 @@ public class AdvocacyUserController {
 			return business.login(request);
 		} catch (Exception e) {
 			return PortalTools.getInstance().getRespError(e);
+		}
+	}
+	
+	@RequestMapping(value="/logout", method = RequestMethod.GET)
+	public @ResponseBody void logout(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			request.getSession().removeAttribute(PortalTools.getInstance().idSession);
+			
+			response.setContentType("text/html");
+		    PrintWriter out = response.getWriter();
+
+		    out.println("<HTML><HEAD><script>location.href='/advocacy';</script></HEAD><BODY></BODY></HTML>");
+		} catch (Exception e) {
+			PortalTools.getInstance().getRespError(e);
 		}
 	}
 	

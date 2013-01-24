@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Advocacy - Escritório</title>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
 		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
 		<link href="/library/css/admin.css" rel="stylesheet">
@@ -23,38 +24,24 @@
 					<table class="table table-bordered">
 						<thead>
 							<tr>
-								<th>Filtros:</th>
+								<th>Filtros de pesquisa:</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<td>
 								    <div class="input-prepend input-append">
-								    	<span class="add-on">Mês/Ano:</span>
-									    <select class="span1" id="appendedPrependedInput">
-									    	<option>1</option>
-									    	<option>2</option>
-									    	<option>3</option>
-									    	<option>4</option>
-									    	<option>5</option>
-									    	<option>6</option>
-									    	<option>7</option>
-									    	<option>8</option>
-									    	<option>9</option>
-									    	<option>10</option>
-									    	<option>11</option>
-									    	<option>12</option>
+								    	<span class="add-on" style="background-color: white; border: 0px;">Mês/Ano:</span>
+									    <select class="span1" id="cbMonth">
+									    	<option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
 									    </select>
 									    <span class="add-on">/</span>
-									    <select class="span2" id="appendedPrependedInput">
-									    	<option>2013</option>
-									    	<option>2014</option>
-									    	<option>2015</option>
-									    	<option>2016</option>
-									    	<option>2017</option>
-									    	<option>2018</option>
+									    <select class="span1" id="cbYear">
+									    	<option>2013</option><option>2014</option><option>2015</option><option>2016</option><option>2017</option><option>2018</option>
 									    </select>
-									    <button class="btn" type="button"><i class="icon-filter"></i></button>
+									    <span class="add-on" style="background-color: white; border: 0px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Categoria:</span>
+									    <select class="span2" id="cbCategory"></select>
+									    <button class="btn" type="button" onclick="filter();"><i class="icon-filter"></i></button>
 								    </div>
 								</td>
 							</tr>
@@ -71,7 +58,11 @@
  		<div style="display: none;">
  			<form id="formEdit" action="/advocacy-web/admin/finance/category/manage">
  				<input name="id" type="hidden">
- 				<input name="title" type="text" placeholder="Nome da categoria..." class="input-block-level">
+ 				<input name="title" type="text" placeholder="Titulo...">
+ 				<input name="dateExpiration" type="text" placeholder="Vencimento..." class="datePickerInput">
+ 				<input name="datePayment" type="text" placeholder="Pagamento..." class="datePickerInput">
+ 				<input name="description" type="text" placeholder="Descrição...">
+ 				<select name="category"></select>
  			</form>
  		</div>
  		
@@ -84,8 +75,30 @@
 		<script>
 			loadMenu('/advocacy-web/admin/menu', true);
 			loadFooter();
-			loadGrid('/advocacy-web/admin/finance/expenses/consult', 'grid', 'formEdit', '/advocacy-web/admin/finance/category/remove');
-			generateAddButton('Adicionar categoria', '/advocacy-web/admin/finance/category/manage', '/advocacy-web/admin/finance/category/consult', 'grid', 'formEdit', '/advocacy-web/admin/finance/category/remove');
+			generateAddButton('Adicionar despesa', '/advocacy-web/admin/finance/category/manage', '/advocacy-web/admin/finance/category/consult', 'grid', 'formEdit', '/advocacy-web/admin/finance/category/remove');
+			
+			function callback(id, data) {
+				if (data.status) {
+					if (id=='preencheCombo') {
+						var html = '';
+						$.each(data.generic, function(key, val) {
+							html += '<option value="'+val.id+'">'+val.title+'</option>';
+						});
+						$('select#cbCategory').html(html);
+						$('select[name=category]').html(html);
+						
+						filter();
+					}
+				} else {
+					errorForm(data);
+				}
+			}
+			
+			function filter() {
+				loadGrid('/advocacy-web/admin/finance/expenses/consult?cid='+$('select#cbCategory').val()+'&m='+$('select#cbMonth').val()+'&a='+$('select#cbYear').val(), 'grid', 'formEdit', '/advocacy-web/admin/finance/category/remove');
+			}
+			
+			getJson('preencheCombo', '/advocacy-web/admin/finance/category/list');
 		</script>
  	</body>
  </html>

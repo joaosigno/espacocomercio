@@ -1,5 +1,11 @@
 package net.danielfreire.products.advocacy.model.core;
 
-public interface FinanceExpensesBusiness {
+import javax.servlet.http.HttpServletRequest;
 
+import net.danielfreire.util.GridResponse;
+
+public interface FinanceExpensesBusiness {
+	
+	GridResponse consult(HttpServletRequest request);
+	
 }

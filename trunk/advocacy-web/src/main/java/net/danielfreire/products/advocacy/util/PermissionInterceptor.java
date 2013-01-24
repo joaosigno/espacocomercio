@@ -32,11 +32,11 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 				final String uri = request.getRequestURI();
 				
 				boolean permissionValid = true;
-				if ((uri.contains("/advocacy-web/admin/office/manage") || uri.contains("/advocacy-web/admin/office/consult")) && user.getId()!=0) {
+				if ((uri.contains("/advocacy-web/admin/office/")) && user.getId()!=0) {
 					permissionValid = false;
-				} else if (!user.getManageUser() && (uri.contains("/advocacy-web/admin/office/user/consult") || uri.contains("/admin/office/usersession/list") || uri.contains("/admin/office/user/manage") || uri.contains("/admin/office/user/load"))) {
+				} else if (!user.getManageUser() && (uri.contains("/advocacy-web/admin/office/user/") || uri.contains("/admin/office/usersession/"))) {
 					permissionValid = false;
-				} else if (!user.getManageFinance() && (uri.contains("/advocacy-web/admin/finance/category/consult") || uri.contains("/admin/finance/category/manage") || uri.contains("/admin/finance/category/remove"))) {
+				} else if (!user.getManageFinance() && uri.contains("/advocacy-web/admin/finance/")) {
 					permissionValid = false;
 				}
 				

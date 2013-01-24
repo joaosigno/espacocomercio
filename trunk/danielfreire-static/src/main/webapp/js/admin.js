@@ -122,6 +122,18 @@ function generateItemMenu(key, val) {
 }
 
 function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
+	$.blockUI({ 
+        message: '<h3>Processando</h3>',
+        css: { 
+            border: 'none', 
+            padding: '15px', 
+            backgroundColor: '#000', 
+            '-webkit-border-radius': '10px', 
+            '-moz-border-radius': '10px', 
+            opacity: .5, 
+            color: '#fff' 
+        } 
+	});
 	
 	if (editUrl==undefined || editUrl==null) {
 		editUrl = false;
@@ -131,6 +143,7 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 	
 	$.getJSON( urlJson,  function(data) {
 		if (data.status!=undefined && !data.status) {
+			$.unblockUI();
 			$.each(data.messageError, function(key, val) {
 				if (key=='generic') {
 					alert(val);
@@ -272,6 +285,7 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 			html += 	'</div>';
 			
 			$('div#'+divId).html(html);
+			$.unblockUI();
 		}
 	});
 }
@@ -499,6 +513,8 @@ function add(urlSubmit, urlJson, divId, formId, urlDelete) {
 			}
 		}
 	}
+	$( ".datePickerInput" ).datepicker();
+	$( ".datePickerInput" ).datepicker( "option", "dateFormat", 'dd/mm/yy' );
 }
 
 function saveGrid(urlSubmit, urlJson, divId, formId, urlDelete) {
@@ -524,7 +540,7 @@ function saveGrid(urlSubmit, urlJson, divId, formId, urlDelete) {
 			alert("Inserção realizada com sucesso.");
 			loadGrid(urlJson, divId, formId, urlDelete);
 		} else {
-			errorFormGrid(data, id, divId);
+			alert(data.messageError.generic)
 		}
 	}, "json");
 }

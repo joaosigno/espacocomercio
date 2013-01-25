@@ -1,6 +1,6 @@
 $("#btnLogin").click(function(){
 	$(this).button('loading');
-	postJson(0, "/ecommerce-web/login", $('form').serialize());
+	submit();
 });
 
 function callback(id, data) {
@@ -8,10 +8,16 @@ function callback(id, data) {
 		$("#btnLogin").button('reset');
 		errorData(data);
 	} else {
-		if (data.generic.tk!=undefined && data.generic.tk!=null) {
-			location.href=insertParam(data.generic.to, 'tk', data.generic.tk);
+		if (data.generic!=undefined && data.generic!=null) {
+			var html = '<h3>Escolha o ecommerce que deseja acessar:</h3><br><select>';
+			$.each(data.generic, function(key, val) {
+				html += '<option value="'+val.id+'">'+val.name+'</option>'
+			});
+			html+='</select><br><button class="btn btn-primary" onclick="submit();">Acessar</button>';
+			
+			modal(html);
 		} else {
-			location.href=data.generic;
+			location.href="/ecommerce/admin";
 		}
 	}
 }
@@ -20,4 +26,11 @@ $('.form-signin-heading').html('<img alt="" src="img/iconeSeguro.jpg"> '+documen
 
 if (getURLParameter("error")!=null && getURLParameter("error")!=undefined && getURLParameter("error")!='' && getURLParameter("error")!='null') {
 	$("#box-alert").html(getErrorMsg(getURLParameter("error")));
+}
+
+function submit() {
+	if ($('select') != undefined) {
+		$('input[name=s]').val($('select').val());
+	}
+	postJson(0, "/ecommerce-web/admin/login", $('form').serialize());
 }

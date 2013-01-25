@@ -801,3 +801,20 @@ function getAddress(cep) {
 	
 	return null;
 }
+
+function modal(conteudo) {
+	$('div#myModalGeneric').modal('hide');
+	$('div#myModalGeneric').remove();
+	
+	var html = 	'<div id="myModalGeneric" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+	html += 		'<div class="modal-body">';
+	html += 			conteudo;
+	html += 		'</div>';
+	html += 		'<div class="modal-footer">';
+	html += 			'<button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>';
+	html +=     	'</div>';
+	html += 	'</div>';
+	
+	$('body').append(html);
+	$('div#myModalGeneric').modal('show');
+}

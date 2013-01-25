@@ -18,46 +18,7 @@
 	<mvc:interceptors>
 
 		<mvc:interceptor>
-			<mvc:mapping path="/product/category/insert" />
-			<mvc:mapping path="/product/category/insert/" />
-			<mvc:mapping path="/product/category/consult" />
-			<mvc:mapping path="/product/category/consult/" />
-			<mvc:mapping path="/product/category/update" />
-			<mvc:mapping path="/product/category/update/" />
-			<mvc:mapping path="/product/category/remove" />
-			<mvc:mapping path="/product/category/remove/" />
-			<mvc:mapping path="/product/category/list" />
-			<mvc:mapping path="/product/category/list/" />
-			<mvc:mapping path="/product/upload" />
-			<mvc:mapping path="/product/upload/" />
-			<mvc:mapping path="/product/insert" />
-			<mvc:mapping path="/product/insert/" />
-			<mvc:mapping path="/product/consult" />
-			<mvc:mapping path="/product/consult/" />
-			<mvc:mapping path="/product/remove" />
-			<mvc:mapping path="/product/remove/" />
-			<mvc:mapping path="/product/load" />
-			<mvc:mapping path="/product/load/" />
-			<mvc:mapping path="/client/admin/consult" />
-			<mvc:mapping path="/client/admin/consult/" />
-			<mvc:mapping path="/client/admin/update" />
-			<mvc:mapping path="/client/admin/update/" />
-			<mvc:mapping path="/admin/client/list" />
-			<mvc:mapping path="/admin/client/list/" />
-			<mvc:mapping path="/admin/payment/insert" />
-			<mvc:mapping path="/admin/payment/insert/" />
-			<mvc:mapping path="/admin/payment/consult" />
-			<mvc:mapping path="/admin/payment/consult/" />
-			<mvc:mapping path="/admin/order/consult" />
-			<mvc:mapping path="/admin/order/consult/" />
-			<mvc:mapping path="/admin/order/product/list" />
-			<mvc:mapping path="/admin/order/product/list/" />
-			<mvc:mapping path="/admin/order/update" />
-			<mvc:mapping path="/admin/order/update/" />
-			<mvc:mapping path="/admin/frete/consult" />
-			<mvc:mapping path="/admin/frete/consult/" />
-			<mvc:mapping path="/admin/frete/save" />
-			<mvc:mapping path="/admin/frete/save/" />
+			<mvc:mapping path="/admin/**" />
 			
 			<bean class="net.danielfreire.products.ecommerce.util.SessionAdminInterceptor" />
 		</mvc:interceptor>

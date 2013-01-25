@@ -3,9 +3,9 @@ package net.danielfreire.products.ecommerce.util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.danielfreire.products.ecommerce.model.domain.ClientAdmin;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.PortalTools;
-import net.danielfreire.util.ValidateTools;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -25,10 +25,17 @@ public class SessionAdminInterceptor extends HandlerInterceptorAdapter {
 
 	private GenericResponse preHandle(HttpServletRequest request) {
 		try {
-			if (ValidateTools.getInstancia().isNumber(request.getSession().getAttribute(PortalTools.getInstance().idAdminSession).toString())) {
-				return new GenericResponse();
+			final String uri = request.getRequestURI();
+			
+			if (!uri.contains("/admin/login")) {
+				ClientAdmin client = EcommerceUtil.getInstance().getSessionAdmin(request);
+				if (client!=null) {
+					return new GenericResponse();
+				} else {
+					return PortalTools.getInstance().getRespError("session.invalid");
+				}
 			} else {
-				return PortalTools.getInstance().getRespError("session.invalid");
+				return new GenericResponse();
 			}
 		} catch (Exception e) {
 			return PortalTools.getInstance().getRespError("session.invalid");

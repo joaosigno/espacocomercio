@@ -1,25 +1,19 @@
 package net.danielfreire.products.ecommerce.model.core;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import net.danielfreire.products.ecommerce.model.domain.ClientEcommerce;
 import net.danielfreire.products.ecommerce.model.repository.ClientEcommerceRepository;
-import net.danielfreire.util.ConvertTools;
+import net.danielfreire.products.ecommerce.util.EcommerceUtil;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
-import net.danielfreire.util.GridTitleResponse;
-import net.danielfreire.util.MailUtil;
 import net.danielfreire.util.PortalTools;
 import net.danielfreire.util.ValidateTools;
-import nl.captcha.Captcha;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 @Component("clientEcommerceBusiness")
@@ -27,7 +21,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 	
 	@Autowired
 	private ClientEcommerceRepository repository;
-
+	
 	@Override
 	public GridResponse consult(HttpServletRequest request) throws Exception {
 //		String siteId = (String) request.getSession().getAttribute(PortalTools.getInstance().idAdminSession);

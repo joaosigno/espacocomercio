@@ -1,6 +1,6 @@
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
 DROP SCHEMA IF EXISTS `ecommerce` ;
 CREATE SCHEMA IF NOT EXISTS `ecommerce` DEFAULT CHARACTER SET latin1 ;
@@ -43,27 +43,6 @@ CREATE  TABLE IF NOT EXISTS `ecommerce`.`product` (
   CONSTRAINT `fk_product_site1`
     FOREIGN KEY (`site_id` )
     REFERENCES `ecommerce`.`site` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ecommerce`.`product_reserved`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `ecommerce`.`product_reserved` ;
-
-CREATE  TABLE IF NOT EXISTS `ecommerce`.`product_reserved` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `product_id` INT NOT NULL ,
-  `datereserved` DATETIME NOT NULL ,
-  `quantity` DOUBLE NOT NULL ,
-  `active` TINYINT(1) NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `fk_product_reserved_product1_idx` (`product_id` ASC) ,
-  CONSTRAINT `fk_product_reserved_product1`
-    FOREIGN KEY (`product_id` )
-    REFERENCES `ecommerce`.`product` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -133,10 +112,6 @@ CREATE  TABLE IF NOT EXISTS `ecommerce`.`client_ecommerce` (
   `address_complement` VARCHAR(255) NULL DEFAULT NULL ,
   `active` TINYINT NOT NULL ,
   `site_id` INT NOT NULL ,
-  `permission_type1` TINYINT(1) NOT NULL ,
-  `permission_type2` TINYINT(1) NOT NULL ,
-  `permission_type3` TINYINT(1) NOT NULL ,
-  `permission_type4` TINYINT(1) NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_client_ecommerce_site1_idx` (`site_id` ASC) ,
   CONSTRAINT `fk_client_ecommerce_site1`
@@ -240,6 +215,27 @@ CREATE  TABLE IF NOT EXISTS `ecommerce`.`frete_parameter` (
   PRIMARY KEY (`id`) ,
   INDEX `fk_frete_parameter_site1_idx` (`site_id` ASC) ,
   CONSTRAINT `fk_frete_parameter_site1`
+    FOREIGN KEY (`site_id` )
+    REFERENCES `ecommerce`.`site` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ecommerce`.`client_admin`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `ecommerce`.`client_admin` ;
+
+CREATE  TABLE IF NOT EXISTS `ecommerce`.`client_admin` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `usermail` VARCHAR(255) NOT NULL ,
+  `userpassword` VARCHAR(10) NOT NULL ,
+  `permission_type` INT NOT NULL ,
+  `site_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_client_admin_site1` (`site_id` ASC) ,
+  CONSTRAINT `fk_client_admin_site1`
     FOREIGN KEY (`site_id` )
     REFERENCES `ecommerce`.`site` (`id` )
     ON DELETE NO ACTION
@@ -353,8 +349,6 @@ CREATE  TABLE IF NOT EXISTS `advocacy`.`finance_revenue` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `ecommerce` ;
-USE `advocacy` ;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

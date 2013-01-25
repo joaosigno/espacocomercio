@@ -20,40 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ClientController {
 	
 	@Autowired
-	ClientEcommerceBusiness clientBusiness;
-	
-	@RequestMapping(value="/admin", method = RequestMethod.GET)
-	public @ResponseBody void categoryinsert(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			
-			String tk = PortalTools.getInstance().Decode(request.getParameter("tk"));
-			String token = tk.split("---")[0];
-			
-			response.setContentType("text/html");
-		    PrintWriter out = response.getWriter();
-			
-			if (PortalTools.getInstance().validToken(token)) {
-				String siteId = tk.split("---")[1];
-				
-				request.getSession().setAttribute(PortalTools.getInstance().idAdminSession, siteId);
-				
-				out.println("<HTML><HEAD><script>location.href='/ecommerce/admin';</script></HEAD><BODY></BODY></HTML>");
-			} else {
-			    out.println("<HTML><HEAD><script>location.href='/sso';</script></HEAD><BODY></BODY></HTML>");
-			}
-			
-		} catch (Exception e) {
-			PortalTools.getInstance().getRespError(e);
-			try {
-				response.setContentType("text/html");
-			    PrintWriter out = response.getWriter();
-	
-			    out.println("<HTML><HEAD><script>location.href='/sso';</script></HEAD><BODY></BODY></HTML>");
-			} catch (Exception ex) {
-				PortalTools.getInstance().getRespError(ex);
-			}
-		}
-	}
+	ClientEcommerceBusiness business;
 	
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public @ResponseBody void logout(HttpServletRequest request, HttpServletResponse response) {
@@ -84,7 +51,7 @@ public class ClientController {
 	@RequestMapping(value="/client/admin/consult", method = RequestMethod.GET)
 	public @ResponseBody GridResponse categoryconsult(HttpServletRequest request) {
 		try {
-			return clientBusiness.consult(request);
+			return business.consult(request);
 		} catch (Exception e) {
 			PortalTools.getInstance().getRespError(e);
 			return new GridResponse();
@@ -94,7 +61,7 @@ public class ClientController {
 	@RequestMapping(value="/client/admin/update", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse clientupdate(HttpServletRequest request) {
 		try {
-			return clientBusiness.updateAdmin(request);
+			return business.updateAdmin(request);
 		} catch (Exception e) {
 			PortalTools.getInstance().getRespError(e);
 			return new GenericResponse();
@@ -104,7 +71,7 @@ public class ClientController {
 	@RequestMapping(value="/admin/client/list", method = RequestMethod.GET)
 	public @ResponseBody GenericResponse list(HttpServletRequest request) {
 		try {
-			return clientBusiness.list(request);
+			return business.list(request);
 		} catch (Exception e) {
 			return PortalTools.getInstance().getRespError(e);
 		}

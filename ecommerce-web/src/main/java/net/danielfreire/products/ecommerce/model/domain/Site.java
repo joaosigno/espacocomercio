@@ -13,21 +13,22 @@ public class Site extends AbstractPersistable<Integer> {
 	private static final long serialVersionUID = -7943887864617331179L;
 	
 	@Column(name="name", length=45)
-	private Integer name;
+	private String name;
 	@Column(name="description", length=255)
-	private Integer description;
+	private String description;
 	
-	public Integer getName() {
+	public String getName() {
 		return name;
 	}
-	public void setName(Integer name) {
+	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getDescription() {
+	public String getDescription() {
 		return description;
 	}
-	public void setDescription(Integer description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	
 }

@@ -24,7 +24,7 @@
  		<div id="footer"></div>
  	
  		<div style="display: none;">
- 			<form id="formEdit" action="/ecommerce-web/client/admin/update">
+ 			<form id="formEdit" action="/ecommerce-web/admin/client/update">
  				<input name="id" type="hidden">
  				<input name="name" type="text">
  				<input name="user" type="text">
@@ -52,9 +52,9 @@
 		<script src="/library/js/admin.js" charset="utf-8"></script>
 
 		<script>
-			loadMenu('/ecommerce/admin/menu.json');
+			loadMenuEcommerce();
 			loadFooter();
-			loadGrid('/ecommerce-web/client/admin/consult', 'grid', 'formEdit', '');
+			loadGrid('/ecommerce-web/admin/client/consult', 'grid', 'formEdit', '');
 		</script>
  	</body>
  </html>

@@ -25,7 +25,7 @@ public class ProductController {
 	@Autowired
 	ProductBusiness productBusiness;
 	
-	@RequestMapping(value="/product/category/insert", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/product/category/insert", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse categoryinsert(HttpServletRequest request) {
 		try {
 			return categoryBusiness.insert(request);
@@ -34,7 +34,7 @@ public class ProductController {
 		}
 	}
 	
-	@RequestMapping(value="/product/category/consult", method = RequestMethod.GET)
+	@RequestMapping(value="/admin/product/category/consult", method = RequestMethod.GET)
 	public @ResponseBody GridResponse categoryconsult(HttpServletRequest request) {
 		try {
 			return categoryBusiness.consult(request);
@@ -44,7 +44,7 @@ public class ProductController {
 		}
 	}
 	
-	@RequestMapping(value="/product/category/list", method = RequestMethod.GET)
+	@RequestMapping(value="/admin/product/category/list", method = RequestMethod.GET)
 	public @ResponseBody GenericResponse categorylist(HttpServletRequest request) {
 		try {
 			return categoryBusiness.list(request);
@@ -53,7 +53,7 @@ public class ProductController {
 		}
 	}
 	
-	@RequestMapping(value="/product/category/update", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/product/category/update", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse categoryupdate(HttpServletRequest request) {
 		try {
 			return categoryBusiness.update(request);
@@ -62,7 +62,7 @@ public class ProductController {
 		}
 	}
 	
-	@RequestMapping(value="/product/category/remove", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/product/category/remove", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse categoryremove(HttpServletRequest request) {
 		try {
 			return categoryBusiness.remove(request);
@@ -71,7 +71,7 @@ public class ProductController {
 		}
 	}
 	
-	@RequestMapping(value="/product/insert", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/product/insert", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse insert(HttpServletRequest request) {
 		try {
 			return productBusiness.insertUpdate(request);
@@ -80,7 +80,7 @@ public class ProductController {
 		}
 	}
 	
-	@RequestMapping(value="/product/consult", method = RequestMethod.GET)
+	@RequestMapping(value="/admin/product/consult", method = RequestMethod.GET)
 	public @ResponseBody GridResponse consult(HttpServletRequest request) {
 		try {
 			return productBusiness.consult(request);
@@ -90,7 +90,7 @@ public class ProductController {
 		}
 	}
 	
-	@RequestMapping(value="/product/load", method = RequestMethod.GET)
+	@RequestMapping(value="/admin/product/load", method = RequestMethod.GET)
 	public @ResponseBody GenericResponse load(HttpServletRequest request) {
 		try {
 			return productBusiness.load(request);
@@ -100,7 +100,7 @@ public class ProductController {
 		}
 	}
 	
-	@RequestMapping(value="/product/remove", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/product/remove", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse remove(HttpServletRequest request) {
 		try {
 			return productBusiness.detele(request);
@@ -109,7 +109,7 @@ public class ProductController {
 		}
 	}
 	
-	@RequestMapping(value="/product/upload", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/product/upload", method = RequestMethod.POST)
 	public void productupload(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			productBusiness.upload(request, response);

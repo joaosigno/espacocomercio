@@ -17,6 +17,7 @@ import net.danielfreire.products.ecommerce.model.domain.ProductCategory;
 import net.danielfreire.products.ecommerce.model.repository.CategoryHasProductRepository;
 import net.danielfreire.products.ecommerce.model.repository.ProductCategoryRepository;
 import net.danielfreire.products.ecommerce.model.repository.ProductRepository;
+import net.danielfreire.products.ecommerce.util.EcommerceUtil;
 import net.danielfreire.util.ConvertTools;
 import net.danielfreire.util.FileUtil;
 import net.danielfreire.util.GenericResponse;
@@ -32,7 +33,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
@@ -51,34 +51,32 @@ public class ProductBusinessImpl implements ProductBusiness {
 	@SuppressWarnings("unchecked")
 	@Override
 	public GenericResponse insertUpdate(HttpServletRequest request) throws Exception {
-//		GenericResponse resp = new GenericResponse();
-//		
-//		HashMap<String, Object> map = getProduct(request);
-//		
-//		if (map.get("errors")!=null) {
-//			resp = PortalTools.getInstance().getRespError((HashMap<String, String>) map.get("errors"));
-//		} else {
-//			Product p = repository.save((Product) map.get("product"));
-//			
-//			for (CategoryHasProduct cp : chpRepository.findByProductId(p.getId())) {
-//				chpRepository.delete(cp);
-//			}
-//			
-//			String[] categorys = request.getParameter("category").toString().replace("[LIN]", "-").split("-");
-//			for (String category : categorys) {
-//				CategoryHasProduct cp = new CategoryHasProduct();
-//				cp.setCategory(new ProductCategory(Integer.parseInt(category)));
-//				cp.setProduct(p);
-//				
-//				chpRepository.save(cp);
-//			}
-//			
-//			FileUtil.getInstance().createFile(PortalTools.getInstance().getEcommerceProperties("location.json"), "product"+PortalTools.getInstance().Encode(p.getSiteId().toString())+p.getKeyUrl()+".json", new Gson().toJson(p));
-//		}
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
 		
-		return null;
+		HashMap<String, Object> map = getProduct(request);
+		
+		if (map.get("errors")!=null) {
+			resp = PortalTools.getInstance().getRespError((HashMap<String, String>) map.get("errors"));
+		} else {
+			Product p = repository.save((Product) map.get("product"));
+			
+			for (CategoryHasProduct cp : chpRepository.findByProductId(p.getId())) {
+				chpRepository.delete(cp);
+			}
+			
+			String[] categorys = request.getParameter("category").toString().replace("[LIN]", "-").split("-");
+			for (String category : categorys) {
+				CategoryHasProduct cp = new CategoryHasProduct();
+				cp.setCategory(new ProductCategory(Integer.parseInt(category)));
+				cp.setProduct(p);
+				
+				chpRepository.save(cp);
+			}
+			
+			generateProductCache(p, request);
+		}
+		
+		return resp;
 	}
 
 	@Override
@@ -150,128 +148,94 @@ public class ProductBusinessImpl implements ProductBusiness {
 	}
 	
 	private HashMap<String, Object> getProduct(HttpServletRequest request) {
-//		final Integer siteId = Integer.parseInt(request.getSession().getAttribute(PortalTools.getInstance().idAdminSession).toString());
-//		final String name = request.getParameter("name");
-//		final String introduction = request.getParameter("introduction");
-//		final String images = request.getParameter("images");
-//		final String description = request.getParameter("description");
-//		final String quantity = request.getParameter("quantity");
-//		final String unityvalue = request.getParameter("unityvalue").replace(",", ".");
-//		final String id = request.getParameter("id");
-//		final String category =  request.getParameter("category");
-//		final String quantityFrete = request.getParameter("quantityFrete");
-//		
-//		HashMap<String, String> errors = new HashMap<String, String>();
-//		
-//		if (ValidateTools.getInstancia().isNullEmpty(name)) {
-//			errors.put("name", PortalTools.getInstance().getMessage("name.invalid"));
-//		}
-//		if (ValidateTools.getInstancia().isNullEmpty(introduction)) {
-//			errors.put("introduction", PortalTools.getInstance().getMessage("introduction.invalid"));
-//		}
-//		if (ValidateTools.getInstancia().isNullEmpty(images)) {
-//			errors.put("images", PortalTools.getInstance().getMessage("images.invalid"));
-//		}
-//		if (!ValidateTools.getInstancia().isNumber(quantity)) {
-//			errors.put("quantity", PortalTools.getInstance().getMessage("quantity.invalid"));
-//		}
-//		if (!ValidateTools.getInstancia().isDouble(unityvalue)) {
-//			errors.put("unityvalue", PortalTools.getInstance().getMessage("unityvalue.invalid"));
-//		}
-//		if (!ValidateTools.getInstancia().isDouble(quantityFrete)) {
-//			errors.put("quantityFrete", PortalTools.getInstance().getMessage("quantityFrete.invalid"));
-//		}
-//		if (ValidateTools.getInstancia().isNullEmpty(category)) {
-//			errors.put("category", PortalTools.getInstance().getMessage("category.invalid"));
-//		}
-//		if ((!ValidateTools.getInstancia().isNumber(id) && repository.findByKeyUrlAndSiteId(ConvertTools.getInstance().normalizeString(name), siteId)!=null) || (ValidateTools.getInstancia().isNumber(id) && !repository.findOne(Integer.parseInt(id)).getName().equals(name) && repository.findByKeyUrlAndSiteId(ConvertTools.getInstance().normalizeString(name), siteId)!=null)) {
-//			errors.put("name", PortalTools.getInstance().getMessage("name.exist"));
-//		}
-//		
-//		HashMap<String, Object> resp = new HashMap<String, Object>();
-//		if (errors.size()>0) {
-//			resp.put("errors", errors);
-//			resp.put("product", null);
-//		} else {
-//			Product product = new Product();
-//			if (ValidateTools.getInstancia().isNumber(id)) {
-//				product = repository.findOne(Integer.parseInt(id));
-//			} else {
-//				product.setDatecreate(Calendar.getInstance());
-//			}
-//			product.setDescription(description);
-//			product.setImages(images);
-//			product.setIntroduction(introduction);
-//			product.setName(name);
-//			product.setQuantity(Double.parseDouble(quantity));
-//			product.setUnityvalue(Double.parseDouble(unityvalue));
-//			product.setSiteId(siteId);
-//			product.setKeyUrl(ConvertTools.getInstance().normalizeString(name));
-//			product.setQuantityFrete(Double.parseDouble(quantityFrete));
-//			
-//			resp.put("errors", null);
-//			resp.put("product", product);
-//		}
-//		
-//		return resp;
+		final String name = request.getParameter("name");
+		final String introduction = request.getParameter("introduction");
+		final String images = request.getParameter("images");
+		final String description = request.getParameter("description");
+		final String quantity = request.getParameter("quantity");
+		final String unityvalue = request.getParameter("unityvalue").replace(",", ".");
+		final String id = request.getParameter("id");
+		final String category =  request.getParameter("category");
+		final String quantityFrete = request.getParameter("quantityFrete");
 		
-		return null;
+		HashMap<String, String> errors = new HashMap<String, String>();
+		
+		if (ValidateTools.getInstancia().isNullEmpty(name)) {
+			errors.put("name", PortalTools.getInstance().getMessage("name.invalid"));
+		}
+		if (ValidateTools.getInstancia().isNullEmpty(introduction)) {
+			errors.put("introduction", PortalTools.getInstance().getMessage("introduction.invalid"));
+		}
+		if (ValidateTools.getInstancia().isNullEmpty(images)) {
+			errors.put("images", PortalTools.getInstance().getMessage("images.invalid"));
+		}
+		if (!ValidateTools.getInstancia().isNumber(quantity)) {
+			errors.put("quantity", PortalTools.getInstance().getMessage("quantity.invalid"));
+		}
+		if (!ValidateTools.getInstancia().isDouble(unityvalue)) {
+			errors.put("unityvalue", PortalTools.getInstance().getMessage("unityvalue.invalid"));
+		}
+		if (!ValidateTools.getInstancia().isDouble(quantityFrete)) {
+			errors.put("quantityFrete", PortalTools.getInstance().getMessage("quantityFrete.invalid"));
+		}
+		if (ValidateTools.getInstancia().isNullEmpty(category)) {
+			errors.put("category", PortalTools.getInstance().getMessage("category.invalid"));
+		}
+		if ((!ValidateTools.getInstancia().isNumber(id) 
+				&& repository.findByKeyUrlAndSite(ConvertTools.getInstance().normalizeString(name), EcommerceUtil.getInstance().getSessionAdmin(request).getSite())!=null) 
+				|| (ValidateTools.getInstancia().isNumber(id) 
+						&& !repository.findOne(Integer.parseInt(id)).getName().equals(name) 
+						&& repository.findByKeyUrlAndSite(ConvertTools.getInstance().normalizeString(name), EcommerceUtil.getInstance().getSessionAdmin(request).getSite())!=null)) {
+			errors.put("name", PortalTools.getInstance().getMessage("name.exist"));
+		}
+		
+		HashMap<String, Object> resp = new HashMap<String, Object>();
+		if (errors.size()>0) {
+			resp.put("errors", errors);
+			resp.put("product", null);
+		} else {
+			Product product = new Product();
+			if (ValidateTools.getInstancia().isNumber(id)) {
+				product = repository.findOne(Integer.parseInt(id));
+			} else {
+				product.setDatecreate(Calendar.getInstance());
+			}
+			product.setDescription(description);
+			product.setImages(images);
+			product.setIntroduction(introduction);
+			product.setName(name);
+			product.setQuantity(Double.parseDouble(quantity));
+			product.setUnityvalue(Double.parseDouble(unityvalue));
+			product.setSite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite());
+			product.setKeyUrl(ConvertTools.getInstance().normalizeString(name));
+			product.setQuantityFrete(Double.parseDouble(quantityFrete));
+			
+			resp.put("errors", null);
+			resp.put("product", product);
+		}
+		
+		return resp;
 	}
 
 	@Override
 	public GridResponse consult(HttpServletRequest request) throws Exception {
-//		String siteId = (String) request.getSession().getAttribute(PortalTools.getInstance().idAdminSession);
-//		String page = request.getParameter("page");
-//		
-//		int pagination = 0;
-//		
-//		if (ValidateTools.getInstancia().isNumber(page)) {
-//			pagination = Integer.parseInt(page)-1;
-//		} 
-//		
-//		ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
-//		
-//		GridTitleResponse title = new GridTitleResponse();
-//		title.setId("name");
-//		title.setTitle("Nome");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("introduction");
-//		title.setTitle("Introdução");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("images");
-//		title.setTitle("Imagens");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("quantity");
-//		title.setTitle("Quantidade");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("unityvalue");
-//		title.setTitle("Valor unitário (R$)");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		Page<Product> pageable = repository.findBySiteId(Integer.parseInt(siteId), new PageRequest(pagination, 10));
-//		
-//		GridResponse grid = new GridResponse();
-//		grid.setRows(pageable.getContent());
-//		grid.setTitles(titles);
-//		grid.setPage(pageable.getNumber()+1);
-//		grid.setTotalPages(pageable.getTotalPages());
-//		
-//		return grid;
+		String page = request.getParameter("page");
 		
-		return null;
+		int pagination = 0;
+		if (ValidateTools.getInstancia().isNumber(page)) {
+			pagination = Integer.parseInt(page)-1;
+		} 
+		
+		ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
+		titles.add(PortalTools.getInstance().getRowGrid("name", "Nome", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("introduction", "Introdução", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("images", "Imagens", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("quantity", "Quantidade", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("unityvalue", "Valor unitário (R$)", "text"));
+		
+		Page<Product> pageable = repository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), new PageRequest(pagination, 10));
+		
+		return PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
 	}
 
 	@Override
@@ -380,6 +344,10 @@ public class ProductBusinessImpl implements ProductBusiness {
 //		return resp;
 		
 		return null;
+	}
+	
+	private void generateProductCache(Product p, HttpServletRequest request) throws Exception {
+		FileUtil.getInstance().createFile(PortalTools.getInstance().getEcommerceProperties("location.json"), "product"+PortalTools.getInstance().Encode(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId().toString())+p.getKeyUrl()+".json", new Gson().toJson(p));
 	}
 
 }

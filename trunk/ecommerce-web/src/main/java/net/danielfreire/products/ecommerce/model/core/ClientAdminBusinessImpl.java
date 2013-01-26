@@ -62,4 +62,14 @@ public class ClientAdminBusinessImpl implements ClientAdminBusiness {
 		return resp;
 	}
 
+	@Override
+	public GenericResponse menu(HttpServletRequest request) throws Exception {
+		final ClientAdmin user = EcommerceUtil.getInstance().getSessionAdmin(request);
+		
+		GenericResponse resp = new GenericResponse();
+		resp.setGeneric(user.getPermission());
+		
+		return resp;
+	}
+	
 }

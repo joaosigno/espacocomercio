@@ -35,7 +35,7 @@
 					</div>
 					<div class="control-group">
 						<div class="controls">
-							<button type="button" class="btn btn-primary" onclick="postJson('', '/ecommerce-web/product/category/insert', $('form').serialize());">Salvar</button>
+							<button type="button" class="btn btn-primary" onclick="postJson('', '/ecommerce-web/admin/product/category/insert', $('form').serialize());">Salvar</button>
 							<button type="reset" class="btn">Limpar</button>
 						</div>
 					</div>
@@ -52,7 +52,7 @@
 		<script src="/library/js/admin.js" charset="utf-8"></script>
 
 		<script>
-			loadMenu('/ecommerce/admin/menu.json');
+			loadMenuEcommerce();
 			loadFooter();
 			
 			function callback(id, data) {

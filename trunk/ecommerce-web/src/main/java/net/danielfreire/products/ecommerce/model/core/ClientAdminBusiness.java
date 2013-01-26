@@ -8,4 +8,6 @@ public interface ClientAdminBusiness {
 	
 	GenericResponse login(HttpServletRequest request) throws Exception;
 
+	GenericResponse menu(HttpServletRequest request) throws Exception;
+
 }

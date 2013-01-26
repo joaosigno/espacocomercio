@@ -314,6 +314,11 @@ function editTable(id, divId, formId, urlJson, urlDelete) {
 	$('form#'+formId).find('input').each(function() {
 		var name = $(this).attr('name');
 		var clas = $(this).attr('class');
+		
+		if (clas==undefined || clas==null) {
+			clas='';
+		}
+		
 		if (name=='id') {
 			$(this).val(id);
 		} else {
@@ -633,4 +638,15 @@ function alert(msg, success) {
 	}
     
 	$('.breadcrumb').after(html);
+}
+
+function loadMenuEcommerce() {
+	$.getJSON('/ecommerce-web/admin/menu', function(data) {
+		if (data.status) {
+			loadMenu('/ecommerce/admin/menu'+data.generic+'.json');
+		} else {
+			errorForm(data, '/ecommerce')
+		}
+		
+	});
 }

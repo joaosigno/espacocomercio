@@ -14,7 +14,7 @@
 		<div class="container">
 			<ul class="breadcrumb">
 				<li>Resumo <span class="divider">/</span></li>
-				<li>Categorias <span class="divider">/</span></li>
+				<li>Produtos <span class="divider">/</span></li>
 				<li class="active">novo</li>
 			</ul>
 			
@@ -76,7 +76,7 @@
 				</div>
 				<div class="control-group">
 					<div class="controls">
-						<button type="button" class="btn btn-primary" onclick="preencheTextArea();postJson('postEdit', '/ecommerce-web/product/insert', $('form#form').serialize());">Salvar</button>
+						<button type="button" class="btn btn-primary" onclick="preencheTextArea();postJson('postEdit', '/ecommerce-web/admin/product/insert', $('form#form').serialize());">Salvar</button>
 						<button type="reset" class="btn" onclick="preencheImages();cleanCategory();limpaTA();">Limpar</button>
 					</div>
 				</div>
@@ -86,7 +86,7 @@
  		<div id="footer"></div>
  	
  		<div style="display: none;">
- 			<form action="/ecommerce-web/product/upload" id="form_upload" enctype="multipart/form-data" method="post" target="upload_target">
+ 			<form action="/ecommerce-web/admin/product/upload" id="form_upload" enctype="multipart/form-data" method="post" target="upload_target">
  				<input type="file" name="uploadFile" id="uploadFile" onchange="$('form#form_upload').submit()" accept="image/*">
  				<input type="hidden" name="positionFile" id="positionFile">
  				<input type="button" id="alertError" onclick="alert(this.value, false)">
@@ -104,7 +104,7 @@
 		<script src="/library/js/admin.js" charset="utf-8"></script>
 
 		<script>
-			loadMenu('/ecommerce/admin/menu.json');
+			loadMenuEcommerce();
 			loadFooter();
 			
 			function callback(id, data) {
@@ -148,7 +148,7 @@
 			$("input[name='quantity']").mask("9?999");
 			$("input[name='unityvalue']").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: false});
 			
-			getJson('preencheCbCategory', '/ecommerce-web/product/category/list');
+			getJson('preencheCbCategory', '/ecommerce-web/admin/product/category/list');
 			
 			bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
 		</script>

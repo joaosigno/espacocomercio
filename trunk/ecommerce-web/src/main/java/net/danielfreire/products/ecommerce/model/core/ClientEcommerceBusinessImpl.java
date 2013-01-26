@@ -1,19 +1,25 @@
 package net.danielfreire.products.ecommerce.model.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import net.danielfreire.products.ecommerce.model.domain.ClientEcommerce;
+import net.danielfreire.products.ecommerce.model.domain.Site;
 import net.danielfreire.products.ecommerce.model.repository.ClientEcommerceRepository;
 import net.danielfreire.products.ecommerce.util.EcommerceUtil;
+import net.danielfreire.util.ConvertTools;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
+import net.danielfreire.util.GridTitleResponse;
 import net.danielfreire.util.PortalTools;
 import net.danielfreire.util.ValidateTools;
+import nl.captcha.Captcha;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 @Component("clientEcommerceBusiness")
@@ -24,223 +30,156 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 	
 	@Override
 	public GridResponse consult(HttpServletRequest request) throws Exception {
-//		String siteId = (String) request.getSession().getAttribute(PortalTools.getInstance().idAdminSession);
-//		String page = request.getParameter("page");
-//		
-//		int pagination = 0;
-//		
-//		if (ValidateTools.getInstancia().isNumber(page)) {
-//			pagination = Integer.parseInt(page)-1;
-//		} 
-//		
-//		ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
-//		
-//		GridTitleResponse title = new GridTitleResponse();
-//		title.setId("name");
-//		title.setTitle("Nome");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("user");
-//		title.setTitle("E-mail");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("password");
-//		title.setTitle("Senha");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("newsletter");
-//		title.setTitle("Notícias");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("addressStreet");
-//		title.setTitle("Rua");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("addressNumber");
-//		title.setTitle("Número");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("addressZipcode");
-//		title.setTitle("CEP");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("addressCity");
-//		title.setTitle("Cidade");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("addressComplement");
-//		title.setTitle("Complemento");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		title = new GridTitleResponse();
-//		title.setId("active");
-//		title.setTitle("Ativo");
-//		title.setType("text");
-//		titles.add(title);
-//		
-//		Page<ClientEcommerce> pageable = repository.findBySiteId(Integer.parseInt(siteId), new PageRequest(pagination, 10));
-//		
-//		GridResponse grid = new GridResponse();
-//		grid.setRows(pageable.getContent());
-//		grid.setTitles(titles);
-//		grid.setPage(pageable.getNumber()+1);
-//		grid.setTotalPages(pageable.getTotalPages());
-//		
-//		return grid;
+		String page = request.getParameter("page");
 		
-		return null;
+		int pagination = 0;
+		if (ValidateTools.getInstancia().isNumber(page)) {
+			pagination = Integer.parseInt(page)-1;
+		} 
+		
+		ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
+		titles.add(PortalTools.getInstance().getRowGrid("name", "Nome", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("user", "E-mail", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("password", "Senha", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("newsletter", "Notícias", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("addressStreet", "Rua", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("addressNumber", "Número", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("addressZipcode", "CEP", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("addressCity", "Cidade", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("addressComplement", "Complemento", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("active", "Ativo", "text"));
+		
+		Page<ClientEcommerce> pageable = repository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), new PageRequest(pagination, 10));
+		
+		return PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public GenericResponse updateAdmin(HttpServletRequest request)
 			throws Exception {
-//		GenericResponse resp = new GenericResponse();
-//		
-//		HashMap<String, Object> map = getClient(request, true);
-//		
-//		if (map.get("errors")!=null) {
-//			resp = PortalTools.getInstance().getRespError((HashMap<String, String>) map.get("errors"));
-//		} else {
-//			repository.save((ClientEcommerce) map.get("client"));
-//		}
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
 		
-		return null;
+		HashMap<String, Object> map = getClient(request, true);
+		
+		if (map.get("errors")!=null) {
+			resp = PortalTools.getInstance().getRespError((HashMap<String, String>) map.get("errors"));
+		} else {
+			repository.save((ClientEcommerce) map.get("client"));
+		}
+		
+		return resp;
 	}
 	
 	private HashMap<String, Object> getClient(HttpServletRequest request, boolean admin) {
-//		Integer siteId = null;
-//		final String name = request.getParameter("name");
-//		final String user = request.getParameter("user");
-//		final String password = request.getParameter("password");
-//		String newsletter = request.getParameter("newsletter");
-//		final String addressStreet = request.getParameter("addressStreet");
-//		final String addressNumber = request.getParameter("addressNumber");
-//		String addressZipcode = request.getParameter("addressZipcode");
-//		if (addressZipcode!=null) {
-//			addressZipcode = addressZipcode.replace("-", "");
-//		}
-//		final String addressCity = request.getParameter("addressCity");
-//		final String addressComplement = request.getParameter("addressComplement");
-//		String active = "false";
-//		final String id = request.getParameter("id");
-//		boolean captchaIsValid = true;
-//		
-//		if (admin) {
-//			siteId = Integer.parseInt(request.getSession().getAttribute(PortalTools.getInstance().idAdminSession).toString());
-//			active = request.getParameter("active");
-//		} else {
-//			siteId = Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")));
-//			final Captcha captcha = (Captcha) request.getSession().getAttribute(Captcha.NAME);
-//			if (!captcha.isCorrect(request.getParameter("captcha"))) {
-//				captchaIsValid = false;
-//			}
-//		}
-//		
-//		HashMap<String, String> errors = new HashMap<String, String>();
-//		
-//		if (ValidateTools.getInstancia().isNullEmpty(name)) {
-//			errors.put("name", PortalTools.getInstance().getMessage("name.invalid"));
-//		}
-//		if (!ValidateTools.getInstancia().isEmail(user)) {
-//			errors.put("user", PortalTools.getInstance().getMessage("email.invalid"));
-//		}
-//		
-//		if (!admin && !ValidateTools.getInstancia().isNumber(id)) {
-//			if (repository.findBySiteIdAndUser(siteId, user)!=null) {
-//				errors.put("user", PortalTools.getInstance().getMessage("email.exists"));
-//			}
-//		}
-//		if (admin && ValidateTools.getInstancia().isNumber(id)) {
-//			ClientEcommerce oth = repository.findBySiteIdAndUser(siteId, user);
-//			if (oth!=null && oth.getId()!=Integer.parseInt(id)) {
-//				errors.put("user", PortalTools.getInstance().getMessage("email.exists"));
-//			}
-//		}
-//		
-//		if (!ValidateTools.getInstancia().isPassword(password)) {
-//			errors.put("password", PortalTools.getInstance().getMessage("password.invalid"));
-//		}
-//		if (ValidateTools.getInstancia().isNullEmpty(newsletter)) {
-//			newsletter = "false";
-//		}
-//		if (ValidateTools.getInstancia().isNullEmpty(addressStreet)) {
-//			errors.put("addressStreet", PortalTools.getInstance().getMessage("addressStreet.invalid"));
-//		}
-//		if (ValidateTools.getInstancia().isNullEmpty(addressNumber)) {
-//			errors.put("addressNumber", PortalTools.getInstance().getMessage("addressNumber.invalid"));
-//		}
-//		if (!ValidateTools.getInstancia().isCep(addressZipcode)) {
-//			errors.put("addressZipcode", PortalTools.getInstance().getMessage("addressZipcode.invalid"));
-//		}
-//		if (ValidateTools.getInstancia().isNullEmpty(addressCity)) {
-//			errors.put("addressCity", PortalTools.getInstance().getMessage("addressCity.invalid"));
-//		}
-//		if (ValidateTools.getInstancia().isNullEmpty(id) || ValidateTools.getInstancia().isNullEmpty(active)) {
-//			active = "false";
-//		} 
-//		if (!captchaIsValid) {
-//			errors.put("captcha", PortalTools.getInstance().getMessage("captcha.invalid"));
-//		}
-//		
-//		HashMap<String, Object> resp = new HashMap<String, Object>();
-//		if (errors.size()>0) {
-//			resp.put("errors", errors);
-//			resp.put("client", null);
-//		} else {
-//			ClientEcommerce client = new ClientEcommerce();
-//			if (ValidateTools.getInstancia().isNumber(id)) {
-//				client = new ClientEcommerce(Integer.parseInt(id));
-//			}
-//			client.setName(name);
-//			client.setSiteId(siteId);
-//			client.setActive(ConvertTools.getInstance().convertBoolean(active));
-//			client.setAddressCity(addressCity);
-//			client.setAddressComplement(addressComplement);
-//			client.setAddressNumber(addressNumber);
-//			client.setAddressStreet(addressStreet);
-//			client.setAddressZipcode(addressZipcode);
-//			client.setNewsletter(ConvertTools.getInstance().convertBoolean(newsletter));
-//			client.setPassword(password);
-//			client.setUser(user);
-//			
-//			resp.put("errors", null);
-//			resp.put("client", client);
-//		}
-//		
-//		return resp;
+		Site site = null;
+		final String name = request.getParameter("name");
+		final String user = request.getParameter("user");
+		final String password = request.getParameter("password");
+		String newsletter = request.getParameter("newsletter");
+		final String addressStreet = request.getParameter("addressStreet");
+		final String addressNumber = request.getParameter("addressNumber");
+		String addressZipcode = request.getParameter("addressZipcode");
+		if (addressZipcode!=null) {
+			addressZipcode = addressZipcode.replace("-", "");
+		}
+		final String addressCity = request.getParameter("addressCity");
+		final String addressComplement = request.getParameter("addressComplement");
+		String active = "false";
+		final String id = request.getParameter("id");
+		boolean captchaIsValid = true;
 		
-		return null;
+		if (admin) {
+			site = EcommerceUtil.getInstance().getSessionAdmin(request).getSite();
+			active = request.getParameter("active");
+		} else {
+			site = new Site(Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid"))));
+			final Captcha captcha = (Captcha) request.getSession().getAttribute(Captcha.NAME);
+			if (!captcha.isCorrect(request.getParameter("captcha"))) {
+				captchaIsValid = false;
+			}
+		}
+		
+		HashMap<String, String> errors = new HashMap<String, String>();
+		
+		if (ValidateTools.getInstancia().isNullEmpty(name)) {
+			errors.put("name", PortalTools.getInstance().getMessage("name.invalid"));
+		}
+		if (!ValidateTools.getInstancia().isEmail(user)) {
+			errors.put("user", PortalTools.getInstance().getMessage("email.invalid"));
+		}
+		
+		if (!admin && !ValidateTools.getInstancia().isNumber(id)) {
+			if (repository.findBySiteAndUser(site, user)!=null) {
+				errors.put("user", PortalTools.getInstance().getMessage("email.exists"));
+			}
+		}
+		if (admin && ValidateTools.getInstancia().isNumber(id)) {
+			ClientEcommerce oth = repository.findBySiteAndUser(site, user);
+			if (oth!=null && oth.getId()!=Integer.parseInt(id)) {
+				errors.put("user", PortalTools.getInstance().getMessage("email.exists"));
+			}
+		}
+		
+		if (!ValidateTools.getInstancia().isPassword(password)) {
+			errors.put("password", PortalTools.getInstance().getMessage("password.invalid"));
+		}
+		if (ValidateTools.getInstancia().isNullEmpty(newsletter)) {
+			newsletter = "false";
+		}
+		if (ValidateTools.getInstancia().isNullEmpty(addressStreet)) {
+			errors.put("addressStreet", PortalTools.getInstance().getMessage("addressStreet.invalid"));
+		}
+		if (ValidateTools.getInstancia().isNullEmpty(addressNumber)) {
+			errors.put("addressNumber", PortalTools.getInstance().getMessage("addressNumber.invalid"));
+		}
+		if (!ValidateTools.getInstancia().isCep(addressZipcode)) {
+			errors.put("addressZipcode", PortalTools.getInstance().getMessage("addressZipcode.invalid"));
+		}
+		if (ValidateTools.getInstancia().isNullEmpty(addressCity)) {
+			errors.put("addressCity", PortalTools.getInstance().getMessage("addressCity.invalid"));
+		}
+		if (ValidateTools.getInstancia().isNullEmpty(id) || ValidateTools.getInstancia().isNullEmpty(active)) {
+			active = "false";
+		} 
+		if (!captchaIsValid) {
+			errors.put("captcha", PortalTools.getInstance().getMessage("captcha.invalid"));
+		}
+		
+		HashMap<String, Object> resp = new HashMap<String, Object>();
+		if (errors.size()>0) {
+			resp.put("errors", errors);
+			resp.put("client", null);
+		} else {
+			ClientEcommerce client = new ClientEcommerce();
+			if (ValidateTools.getInstancia().isNumber(id)) {
+				client = new ClientEcommerce(Integer.parseInt(id));
+			}
+			client.setName(name);
+			client.setSite(site);
+			client.setActive(ConvertTools.getInstance().convertBoolean(active));
+			client.setAddressCity(addressCity);
+			client.setAddressComplement(addressComplement);
+			client.setAddressNumber(addressNumber);
+			client.setAddressStreet(addressStreet);
+			client.setAddressZipcode(addressZipcode);
+			client.setNewsletter(ConvertTools.getInstance().convertBoolean(newsletter));
+			client.setPassword(password);
+			client.setUser(user);
+			
+			resp.put("errors", null);
+			resp.put("client", client);
+		}
+		
+		return resp;
 	}
 
 	@Override
 	public GenericResponse list(HttpServletRequest request) throws Exception {
-//		GenericResponse resp = new GenericResponse();
-//		
-//		resp.setGenericList(repository.findBySiteId(Integer.parseInt(request.getSession().getAttribute(PortalTools.getInstance().idAdminSession).toString())));
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
+		resp.setGenericList(repository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite()));
 		
-		return null;
+		return resp;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -17,6 +17,14 @@ public class Site extends AbstractPersistable<Integer> {
 	@Column(name="description", length=255)
 	private String description;
 	
+	public Site() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Site(Integer id) {
+		super.setId(id);
+	}
+	
 	public String getName() {
 		return name;
 	}

@@ -24,7 +24,7 @@
  		<div id="footer"></div>
  	
  		<div style="display: none;">
- 			<form id="formEdit" action="/ecommerce-web/product/category/update">
+ 			<form id="formEdit" action="/ecommerce-web/admin/product/category/update">
  				<input name="id" type="hidden">
  				<input name="name" type="text">
  				<input name="description" type="text">
@@ -38,9 +38,9 @@
 		<script src="/library/js/admin.js" charset="utf-8"></script>
 
 		<script>
-			loadMenu('/ecommerce/admin/menu.json');
+			loadMenuEcommerce();
 			loadFooter();
-			loadGrid('/ecommerce-web/product/category/consult', 'grid', 'formEdit', '/ecommerce-web/product/category/remove');
+			loadGrid('/ecommerce-web/admin/product/category/consult', 'grid', 'formEdit', '/ecommerce-web/admin/product/category/remove');
 		</script>
  	</body>
  </html>

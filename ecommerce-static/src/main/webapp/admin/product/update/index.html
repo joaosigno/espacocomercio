@@ -77,7 +77,7 @@
 				<input type="hidden" name="id" value="">
 				<div class="control-group">
 					<div class="controls">
-						<button type="button" class="btn btn-primary" onclick="preencheTextArea();postJson('editForm', '/ecommerce-web/product/insert', $('form#form').serialize());">Salvar</button>
+						<button type="button" class="btn btn-primary" onclick="preencheTextArea();postJson('editForm', '/ecommerce-web/admin/product/insert', $('form#form').serialize());">Salvar</button>
 						<button type="reset" class="btn" onclick="preencheImages();limpaTA();">Limpar</button>
 					</div>
 				</div>
@@ -87,7 +87,7 @@
  		<div id="footer"></div>
  	
  		<div style="display: none;">
- 			<form action="/ecommerce-web/product/upload" id="form_upload" enctype="multipart/form-data" method="post" target="upload_target">
+ 			<form action="/ecommerce-web/admin/product/upload" id="form_upload" enctype="multipart/form-data" method="post" target="upload_target">
  				<input type="file" name="uploadFile" id="uploadFile" onchange="$('form#form_upload').submit()" accept="image/*">
  				<input type="hidden" name="positionFile" id="positionFile">
  				<input type="button" id="alertError" onclick="alert(this.value, false)">
@@ -105,7 +105,7 @@
 		<script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script>
 
 		<script>
-			loadMenu('/ecommerce/admin/menu.json');
+			loadMenuEcommerce();
 			loadFooter();
 			bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
 			
@@ -164,7 +164,7 @@
 				$('#imagesDivUpload').html(html);
 			}
 			
-			getJson2('', '/ecommerce-web/product/load?id='+getURLParameter('pid'));
+			getJson2('', '/ecommerce-web/admin/product/load?id='+getURLParameter('pid'));
 			
 			$("input[name='quantity']").mask("9?999");
 			$("input[name='unityvalue']").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: false});
@@ -175,7 +175,7 @@
 				});
 			}
 			
-			getJson('preencheCbCategory', '/ecommerce-web/product/category/list');
+			getJson('preencheCbCategory', '/ecommerce-web/admin/product/category/list');
 		</script>
  	</body>
  </html>

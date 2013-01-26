@@ -48,7 +48,7 @@ public class ClientController {
 		}
 	}
 	
-	@RequestMapping(value="/client/admin/consult", method = RequestMethod.GET)
+	@RequestMapping(value="/admin/client/consult", method = RequestMethod.GET)
 	public @ResponseBody GridResponse categoryconsult(HttpServletRequest request) {
 		try {
 			return business.consult(request);
@@ -58,7 +58,7 @@ public class ClientController {
 		}
 	}
 	
-	@RequestMapping(value="/client/admin/update", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/client/update", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse clientupdate(HttpServletRequest request) {
 		try {
 			return business.updateAdmin(request);

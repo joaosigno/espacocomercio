@@ -1,0 +1,26 @@
+{
+    "title": "Administração",
+	"menus": {
+        "Resumo": {
+        	"type": "link",
+        	"url": "/ecommerce/admin"
+        },
+        "Produtos": {
+        	"type": "dropdown",
+        	"url": "#",
+        	"options": {
+				"Categorias": "#",
+				"1. Novo": "/ecommerce/admin/product/category/new",
+				"2. Consultar": "/ecommerce/admin/product/category/consult",
+				"divider":"",
+				"Produtos": "#",
+				"3. Novo": "/ecommerce/admin/product/new",
+				"4. Consultar": "/ecommerce/admin/product/consult"
+			}
+        },
+        "Sair": {
+        	"type": "link",
+        	"url": "/ecommerce-web/logout"
+        }
+    }
+}

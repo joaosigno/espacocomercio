@@ -26,5 +26,14 @@ public class ClientAdminController {
 			return PortalTools.getInstance().getRespError(e);
 		}
 	}
+	
+	@RequestMapping(value="/admin/menu", method = RequestMethod.GET)
+	public @ResponseBody GenericResponse menu(HttpServletRequest request) {
+		try {
+			return business.menu(request);
+		} catch (Exception e) {
+			return PortalTools.getInstance().getRespError(e);
+		}
+	}
 
 }

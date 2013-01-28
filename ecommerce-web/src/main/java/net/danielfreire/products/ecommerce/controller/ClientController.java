@@ -1,9 +1,6 @@
 package net.danielfreire.products.ecommerce.controller;
 
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.danielfreire.products.ecommerce.model.core.ClientEcommerceBusiness;
 import net.danielfreire.util.GenericResponse;
@@ -21,32 +18,6 @@ public class ClientController {
 	
 	@Autowired
 	ClientEcommerceBusiness business;
-	
-	@RequestMapping(value="/logout", method = RequestMethod.GET)
-	public @ResponseBody void logout(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			
-			request.getSession().removeAttribute(PortalTools.getInstance().idAdminMasterSession);
-			request.getSession().removeAttribute(PortalTools.getInstance().idSession);
-			request.getSession().removeAttribute(PortalTools.getInstance().idAdminSession);
-			
-			response.setContentType("text/html");
-		    PrintWriter out = response.getWriter();
-
-		    out.println("<HTML><HEAD><script>location.href='/sso';</script></HEAD><BODY></BODY></HTML>");
-			
-		} catch (Exception e) {
-			PortalTools.getInstance().getRespError(e);
-			try {
-				response.setContentType("text/html");
-			    PrintWriter out = response.getWriter();
-	
-			    out.println("<HTML><HEAD><script>location.href='/sso';</script></HEAD><BODY></BODY></HTML>");
-			} catch (Exception ex) {
-				PortalTools.getInstance().getRespError(ex);
-			}
-		}
-	}
 	
 	@RequestMapping(value="/admin/client/consult", method = RequestMethod.GET)
 	public @ResponseBody GridResponse categoryconsult(HttpServletRequest request) {

@@ -14,12 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import net.danielfreire.products.ecommerce.model.domain.CategoryHasProduct;
 import net.danielfreire.products.ecommerce.model.domain.Product;
 import net.danielfreire.products.ecommerce.model.domain.ProductCategory;
+import net.danielfreire.products.ecommerce.model.domain.Site;
 import net.danielfreire.products.ecommerce.model.repository.CategoryHasProductRepository;
 import net.danielfreire.products.ecommerce.model.repository.ProductCategoryRepository;
 import net.danielfreire.products.ecommerce.model.repository.ProductRepository;
 import net.danielfreire.products.ecommerce.util.EcommerceUtil;
 import net.danielfreire.util.ConvertTools;
-import net.danielfreire.util.FileUtil;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
 import net.danielfreire.util.GridTitleResponse;
@@ -33,9 +33,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
-
-import com.google.gson.Gson;
 
 
 @Component("productBusiness")
@@ -82,20 +81,29 @@ public class ProductBusinessImpl implements ProductBusiness {
 	@Override
 	public GenericResponse load(HttpServletRequest request) {
 		GenericResponse resp = new GenericResponse();
-		
-		resp.setGeneric(repository.findOne(Integer.parseInt(request.getParameter("id"))));
-		resp.setGenericList(chpRepository.findByProductId(Integer.parseInt(request.getParameter("id"))));
+		Product p = repository.findOne(Integer.parseInt(request.getParameter("id")));
+		if (p.getSite().getId() == EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId()) {
+			resp.setGeneric(repository.findOne(Integer.parseInt(request.getParameter("id"))));
+			resp.setGenericList(chpRepository.findByProductId(Integer.parseInt(request.getParameter("id"))));
+		} else {
+			resp = PortalTools.getInstance().getRespError("permission.invalid");
+		}
 		
 		return resp;
 	}
 
 	@Override
 	public GenericResponse detele(HttpServletRequest request) {
-		for (CategoryHasProduct cp : chpRepository.findByProductId(Integer.parseInt(request.getParameter("id")))) {
-			chpRepository.delete(cp);
+		Product p = repository.findOne(Integer.parseInt(request.getParameter("id")));
+		if (p.getSite().getId()==EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId()) {
+			for (CategoryHasProduct cp : chpRepository.findByProductId(Integer.parseInt(request.getParameter("id")))) {
+				chpRepository.delete(cp);
+			}
+			repository.delete(p);
+			return new GenericResponse();
+		} else {
+		 	return PortalTools.getInstance().getRespError("permission.invalid");
 		}
-		repository.delete(Integer.parseInt(request.getParameter("id")));
-		return new GenericResponse();
 	}
 
 	@Override
@@ -132,10 +140,13 @@ public class ProductBusinessImpl implements ProductBusiness {
 					} else {
 						String finalimage = (new Date().getTime())+domainName;
 						
-						File savedFile = new File(PortalTools.getInstance().getEcommerceProperties("location.upload")+"/"+finalimage);
+						File savedFile = 
+								new File(PortalTools.getInstance().getEcommerceProperties("location.generatesite")+
+								"/"+ConvertTools.getInstance().normalizeString(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getName())+
+								"/upload/"+finalimage);
 						item.write(savedFile);
 						
-						String locationUrl = PortalTools.getInstance().getEcommerceProperties("url.upload")+"/"+finalimage;
+						String locationUrl = "/ecommerce/"+ConvertTools.getInstance().normalizeString(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getName())+"/upload/"+finalimage;
 						
 						String reponseText = "<html><head><script src=\"/library/js/jquery-1.8.3.min.js\"></script><script src=\"/library/js/uploadAdmin.js\"></script><script>upload('"+locationUrl+"');</script></head><body></body></html>";
 						
@@ -241,46 +252,42 @@ public class ProductBusinessImpl implements ProductBusiness {
 	@Override
 	public GridResponse listToPortal(String sid, String categoryId,
 			String search, String page) throws Exception {
-//		String siteId = PortalTools.getInstance().Decode(sid);
-//		
-//		int pagination = 0;
-//		if (ValidateTools.getInstancia().isNumber(page)) {
-//			pagination = Integer.parseInt(page)-1;
-//		} 
-//		
-//		Page<?> pageable = null;
-//		if (ValidateTools.getInstancia().isNullEmpty(categoryId) && ValidateTools.getInstancia().isNullEmpty(search)) {
-//			pageable = repository.findBySiteId(Integer.parseInt(siteId), new PageRequest(pagination, 9, Direction.DESC, "datecreate"));
-//		} else if (!ValidateTools.getInstancia().isNullEmpty(categoryId)) {
-//			pageable = chpRepository.findByCategory(categoryRepository.findByKeyUrlAndSiteId(categoryId, Integer.parseInt(siteId)), new PageRequest(pagination, 9, Direction.DESC, "product.datecreate"));
-//		} else if (!ValidateTools.getInstancia().isNullEmpty(search)) {
-//			
-//		}
-//		
-//		GridResponse grid = new GridResponse();
-//		grid.setRows(pageable.getContent());
-//		grid.setPage(pageable.getNumber()+1);
-//		grid.setTotalPages(pageable.getTotalPages());
-//		
-//		return grid;
+		String siteId = PortalTools.getInstance().Decode(sid);
 		
-		return null;
+		int pagination = 0;
+		if (ValidateTools.getInstancia().isNumber(page)) {
+			pagination = Integer.parseInt(page)-1;
+		} 
+		
+		Page<?> pageable = null;
+		if (ValidateTools.getInstancia().isNullEmpty(categoryId) && ValidateTools.getInstancia().isNullEmpty(search)) {
+			pageable = repository.findBySite(new Site(Integer.parseInt(siteId)), new PageRequest(pagination, 9, Direction.DESC, "datecreate"));
+		} else if (!ValidateTools.getInstancia().isNullEmpty(categoryId)) {
+			pageable = chpRepository.findByCategory(categoryRepository.findByKeyUrlAndSite(categoryId, new Site(Integer.parseInt(siteId))), new PageRequest(pagination, 9, Direction.DESC, "product.datecreate"));
+		} else if (!ValidateTools.getInstancia().isNullEmpty(search)) {
+			
+		}
+		
+		GridResponse grid = new GridResponse();
+		grid.setRows(pageable.getContent());
+		grid.setPage(pageable.getNumber()+1);
+		grid.setTotalPages(pageable.getTotalPages());
+		
+		return grid;
 	}
 
 	@Override
 	public GenericResponse load(String siteId, String productId)
 			throws Exception {
-//		GenericResponse resp = new GenericResponse();
-//		
-//		if (ValidateTools.getInstancia().isNullEmpty(productId) || ValidateTools.getInstancia().isNullEmpty(siteId) || !ValidateTools.getInstancia().isNumber(PortalTools.getInstance().Decode(siteId))) {
-//			resp.setStatus(false);
-//		} else {
-//			resp.setGeneric(repository.findByKeyUrlAndSiteId(productId, Integer.parseInt(PortalTools.getInstance().Decode(siteId))));
-//		}
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
 		
-		return null;
+		if (ValidateTools.getInstancia().isNullEmpty(productId) || ValidateTools.getInstancia().isNullEmpty(siteId) || !ValidateTools.getInstancia().isNumber(PortalTools.getInstance().Decode(siteId))) {
+			resp.setStatus(false);
+		} else {
+			resp.setGeneric(repository.findByKeyUrlAndSite(productId, new Site(Integer.parseInt(PortalTools.getInstance().Decode(siteId)))));
+		}
+		
+		return resp;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -314,40 +321,24 @@ public class ProductBusinessImpl implements ProductBusiness {
 	@SuppressWarnings("unchecked")
 	@Override
 	public GenericResponse myCart(HttpServletRequest request) throws Exception {
-//		GenericResponse resp = new GenericResponse();
-//		
-//		ArrayList<Product> list = new ArrayList<Product>();
-//		for (Product p : (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().idCartSession)) {
-//			Product product = repository.findOne(p.getId());
-//			
-//			ArrayList<ProductReserved> listReserved = productReservedRepository.findByProductIdAndActive(p.getId(), true);
-//			for (ProductReserved reserved : listReserved) {
-//				Calendar now = Calendar.getInstance();
-//				now.add(Calendar.HOUR_OF_DAY, -3);
-//				
-//				if (reserved.getDateReserved().after(now)) {
-//					product.setQuantity(product.getQuantity()-reserved.getQuantity());
-//				} else {
-//					reserved.setActive(false);
-//					productReservedRepository.save(reserved);
-//				}
-//			}
-//			
-//			list.add(product);
-//		}
-//		
-//		HashMap<String, Object> ret = new HashMap<String, Object>();
-//		ret.put("cart", list);
-//		
-//		resp.setGeneric(ret);
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
 		
-		return null;
+		ArrayList<Product> list = new ArrayList<Product>();
+		for (Product p : (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().idCartSession)) {
+			Product product = repository.findOne(p.getId());
+			list.add(product);
+		}
+		
+		HashMap<String, Object> ret = new HashMap<String, Object>();
+		ret.put("cart", list);
+		
+		resp.setGeneric(ret);
+		
+		return resp;
 	}
 	
 	private void generateProductCache(Product p, HttpServletRequest request) throws Exception {
-		FileUtil.getInstance().createFile(PortalTools.getInstance().getEcommerceProperties("location.json"), "product"+PortalTools.getInstance().Encode(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId().toString())+p.getKeyUrl()+".json", new Gson().toJson(p));
+		EcommerceUtil.getInstance().generateProductCache(p, EcommerceUtil.getInstance().getSessionAdmin(request).getSite());
 	}
 
 }

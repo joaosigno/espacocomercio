@@ -2,6 +2,7 @@ package net.danielfreire.products.ecommerce.model.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +14,7 @@ import net.danielfreire.util.ConvertTools;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
 import net.danielfreire.util.GridTitleResponse;
+import net.danielfreire.util.MailUtil;
 import net.danielfreire.util.PortalTools;
 import net.danielfreire.util.ValidateTools;
 import nl.captcha.Captcha;
@@ -185,229 +187,215 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 	@SuppressWarnings("unchecked")
 	@Override
 	public GenericResponse insert(HttpServletRequest request) throws Exception {
-//		GenericResponse resp = new GenericResponse();
-//		
-//		final String contextid = request.getParameter("contextid");
-//		
-//		HashMap<String, Object> map = getClient(request, false);
-//		
-//		if (map.get("errors")!=null) {
-//			resp = PortalTools.getInstance().getRespError((HashMap<String, String>) map.get("errors"));
-//		} else {
-//			ClientEcommerce client = (ClientEcommerce) map.get("client");
-//			client.setId(null);
-//			repository.save(client);
-//			
-//			//Enviar e-mail para ativar cadastro
-//			new MailUtil().newUser(client.getUser(), client.getName(), client.getPassword(), contextid);
-//		}
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
 		
-		return null;
+		final String contextid = request.getParameter("contextid");
+		
+		HashMap<String, Object> map = getClient(request, false);
+		
+		if (map.get("errors")!=null) {
+			resp = PortalTools.getInstance().getRespError((HashMap<String, String>) map.get("errors"));
+		} else {
+			ClientEcommerce client = (ClientEcommerce) map.get("client");
+			client.setId(null);
+			repository.save(client);
+			
+			//Enviar e-mail para ativar cadastro
+			new MailUtil().newUser(client.getUser(), client.getName(), client.getPassword(), contextid);
+		}
+		
+		return resp;
 	}
 
 	@Override
 	public GenericResponse login(HttpServletRequest request) throws Exception {
-//		GenericResponse resp = new GenericResponse();
-//		
-//		final String user = request.getParameter("user");
-//		final String password = request.getParameter("password");
-//		final Integer siteId = Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")));
-//		final String contextid = request.getParameter("contextid");
-//		
-//		if (!ValidateTools.getInstancia().isEmail(user) || !ValidateTools.getInstancia().isPassword(password)) {
-//			resp = PortalTools.getInstance().getRespError("login.invalid");
-//		}
-//		
-//		if (resp.getStatus()) {
-//			ClientEcommerce client = repository.findBySiteIdAndUserAndPassword(siteId, user, password);
-//			if (client!=null) {
-//				
-//				if (client.getActive()) {
-//					client.setPassword(null);
-//					request.getSession().setAttribute(PortalTools.getInstance().idSession, client);
-//				} else {
-//					resp = PortalTools.getInstance().getRespError("login.non.active");
-//					new MailUtil().activationClient(client.getUser(), client.getName(), contextid);
-//				}
-//				
-//			} else {
-//				resp = PortalTools.getInstance().getRespError("login.invalid");
-//			}
-//		}
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
 		
-		return null;
+		final String user = request.getParameter("user");
+		final String password = request.getParameter("password");
+		final Integer siteId = Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")));
+		final String contextid = request.getParameter("contextid");
+		
+		if (!ValidateTools.getInstancia().isEmail(user) || !ValidateTools.getInstancia().isPassword(password)) {
+			resp = PortalTools.getInstance().getRespError("login.invalid");
+		}
+		
+		if (resp.getStatus()) {
+			ClientEcommerce client = repository.findBySiteAndUserAndPassword(new Site(siteId), user, password);
+			if (client!=null) {
+				
+				if (client.getActive()) {
+					client.setPassword(null);
+					request.getSession().setAttribute(PortalTools.getInstance().idSession, client);
+				} else {
+					resp = PortalTools.getInstance().getRespError("login.non.active");
+					new MailUtil().activationClient(client.getUser(), client.getName(), contextid);
+				}
+				
+			} else {
+				resp = PortalTools.getInstance().getRespError("login.invalid");
+			}
+		}
+		
+		return resp;
 	}
 
 	@Override
 	public GenericResponse forgotPassword(HttpServletRequest request)
 			throws Exception {
-//		GenericResponse resp = new GenericResponse();
-//		
-//		final String user = request.getParameter("user");
-//		final Integer siteId = Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")));
-//		final String contextid = request.getParameter("contextid");
-//		
-//		if (!ValidateTools.getInstancia().isEmail(user)) {
-//			resp = PortalTools.getInstance().getRespError("user.invalid");
-//		}
-//		
-//		if (resp.getStatus()) {
-//			ClientEcommerce client = repository.findBySiteIdAndUser(siteId, user);
-//			if (client!=null) {
-//				if (client.getActive()) {
-//					
-//					String newPass = UUID.randomUUID().toString();
-//					if (newPass.length()>5) {
-//						newPass = newPass.substring(0,5)+"0a";
-//					} else {
-//						newPass = "abc123";
-//					}
-//					client.setPassword(newPass);
-//					repository.save(client);
-//					
-//					//Enviar e-mail com a nova senha
-//					new MailUtil().newPassword(client.getUser(), client.getName(), client.getPassword(), contextid);
-//				} else {
-//					//Enviar e-mail para ativação do cadastro
-//					new MailUtil().activationClient(client.getUser(), client.getName(), contextid);
-//				}
-//			}
-//		}
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
 		
-		return null;
+		final String user = request.getParameter("user");
+		final Integer siteId = Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")));
+		final String contextid = request.getParameter("contextid");
+		
+		if (!ValidateTools.getInstancia().isEmail(user)) {
+			resp = PortalTools.getInstance().getRespError("user.invalid");
+		}
+		
+		if (resp.getStatus()) {
+			ClientEcommerce client = repository.findBySiteAndUser(new Site(siteId), user);
+			if (client!=null) {
+				if (client.getActive()) {
+					
+					String newPass = UUID.randomUUID().toString();
+					if (newPass.length()>5) {
+						newPass = newPass.substring(0,5)+"0a";
+					} else {
+						newPass = "abc123";
+					}
+					client.setPassword(newPass);
+					repository.save(client);
+					
+					//Enviar e-mail com a nova senha
+					new MailUtil().newPassword(client.getUser(), client.getName(), client.getPassword(), contextid);
+				} else {
+					//Enviar e-mail para ativação do cadastro
+					new MailUtil().activationClient(client.getUser(), client.getName(), contextid);
+				}
+			}
+		}
+		
+		return resp;
 	}
 
 	@Override
 	public GenericResponse updatePassword(HttpServletRequest request)
 			throws Exception {
-//		GenericResponse resp = new GenericResponse();
-//		
-//		final String senha1 = request.getParameter("senha1");
-//		final String senha2 = request.getParameter("senha2");
-//		
-//		if (!ValidateTools.getInstancia().isPassword(senha1) || !ValidateTools.getInstancia().isPassword(senha2)) {
-//			resp = PortalTools.getInstance().getRespError("password.invalid");
-//		}
-//		
-//		if (resp.getStatus()) {
-//			ClientEcommerce client = repository.findOne(((ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession)).getId());
-//			if (!client.getPassword().equals(senha1)) {
-//				resp = PortalTools.getInstance().getRespError("password.atual");
-//			} else {
-//				client.setPassword(senha2);
-//				repository.save(client);
-//			}
-//		}
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
 		
-		return null;
+		final String senha1 = request.getParameter("senha1");
+		final String senha2 = request.getParameter("senha2");
+		
+		if (!ValidateTools.getInstancia().isPassword(senha1) || !ValidateTools.getInstancia().isPassword(senha2)) {
+			resp = PortalTools.getInstance().getRespError("password.invalid");
+		}
+		
+		if (resp.getStatus()) {
+			ClientEcommerce client = repository.findOne(((ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession)).getId());
+			if (!client.getPassword().equals(senha1)) {
+				resp = PortalTools.getInstance().getRespError("password.atual");
+			} else {
+				client.setPassword(senha2);
+				repository.save(client);
+			}
+		}
+		
+		return resp;
 	}
 
 	@Override
 	public GenericResponse updateAddress(HttpServletRequest request)
 			throws Exception {
-//		GenericResponse resp = new GenericResponse();
-//		
-//		final String addressStreet = request.getParameter("addressStreet");
-//		final String addressComplement = request.getParameter("addressComplement");
-//		final String addressNumber = request.getParameter("addressNumber");
-//		final String addressZipcode = request.getParameter("addressZipcode");
-//		final String addressCity = request.getParameter("addressCity");
-//		
-//		if (ValidateTools.getInstancia().isNullEmpty(addressStreet) || ValidateTools.getInstancia().isNullEmpty(addressCity) || ValidateTools.getInstancia().isNullEmpty(addressNumber) || !ValidateTools.getInstancia().isCep(addressZipcode)) {
-//			resp = PortalTools.getInstance().getRespError("address.invalid");
-//		}
-//		
-//		if (resp.getStatus()) {
-//			ClientEcommerce client = repository.findOne(((ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession)).getId());
-//			
-//			client.setAddressCity(addressCity);
-//			client.setAddressComplement(addressComplement);
-//			client.setAddressNumber(addressNumber);
-//			client.setAddressStreet(addressStreet);
-//			client.setAddressZipcode(addressZipcode);
-//			
-//			repository.save(client);
-//			
-//			client.setPassword(null);
-//			request.getSession().setAttribute(PortalTools.getInstance().idSession, client);
-//		}
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
 		
-		return null;
+		final String addressStreet = request.getParameter("addressStreet");
+		final String addressComplement = request.getParameter("addressComplement");
+		final String addressNumber = request.getParameter("addressNumber");
+		final String addressZipcode = request.getParameter("addressZipcode");
+		final String addressCity = request.getParameter("addressCity");
+		
+		if (ValidateTools.getInstancia().isNullEmpty(addressStreet) || ValidateTools.getInstancia().isNullEmpty(addressCity) || ValidateTools.getInstancia().isNullEmpty(addressNumber) || !ValidateTools.getInstancia().isCep(addressZipcode)) {
+			resp = PortalTools.getInstance().getRespError("address.invalid");
+		}
+		
+		if (resp.getStatus()) {
+			ClientEcommerce client = repository.findOne(((ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession)).getId());
+			
+			client.setAddressCity(addressCity);
+			client.setAddressComplement(addressComplement);
+			client.setAddressNumber(addressNumber);
+			client.setAddressStreet(addressStreet);
+			client.setAddressZipcode(addressZipcode);
+			
+			repository.save(client);
+			
+			client.setPassword(null);
+			request.getSession().setAttribute(PortalTools.getInstance().idSession, client);
+		}
+		
+		return resp;
 	}
 
 	@Override
 	public GenericResponse updateData(HttpServletRequest request)
 			throws Exception {
 		
-//		GenericResponse resp = new GenericResponse();
-//		
-//		final String name = request.getParameter("name");
-//		final String user = request.getParameter("user");
-//		final String newsletter = request.getParameter("newsletterText");
-//		
-//		if (ValidateTools.getInstancia().isNullEmpty(name) || !ValidateTools.getInstancia().isEmail(user)) {
-//			resp = PortalTools.getInstance().getRespError("data.invalid");
-//		}
-//		
-//		if (resp.getStatus()) {
-//			ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession);
-//			
-//			if (!user.equals(client.getUser())) {
-//				if (repository.findBySiteIdAndUser(client.getSiteId(), user)!=null) {
-//					resp = PortalTools.getInstance().getRespError("email.exists");
-//				}
-//			}
-//			
-//			if (resp.getStatus()) {
-//				client = repository.findOne(client.getId());
-//				
-//				client.setName(name);
-//				client.setUser(user);
-//				client.setNewsletter(ConvertTools.getInstance().convertBoolean(newsletter));
-//				
-//				repository.save(client);
-//				
-//				client.setPassword(null);
-//				request.getSession().setAttribute(PortalTools.getInstance().idSession, client);
-//			}
-//		}
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
 		
-		return null;
+		final String name = request.getParameter("name");
+		final String user = request.getParameter("user");
+		final String newsletter = request.getParameter("newsletterText");
+		
+		if (ValidateTools.getInstancia().isNullEmpty(name) || !ValidateTools.getInstancia().isEmail(user)) {
+			resp = PortalTools.getInstance().getRespError("data.invalid");
+		}
+		
+		if (resp.getStatus()) {
+			ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession);
+			
+			if (!user.equals(client.getUser())) {
+				if (repository.findBySiteAndUser(client.getSite(), user)!=null) {
+					resp = PortalTools.getInstance().getRespError("email.exists");
+				}
+			}
+			
+			if (resp.getStatus()) {
+				client = repository.findOne(client.getId());
+				
+				client.setName(name);
+				client.setUser(user);
+				client.setNewsletter(ConvertTools.getInstance().convertBoolean(newsletter));
+				
+				repository.save(client);
+				
+				client.setPassword(null);
+				request.getSession().setAttribute(PortalTools.getInstance().idSession, client);
+			}
+		}
+		
+		return resp;
 	}
 
 	@Override
 	public HashMap<String, Object> portalSession(HttpServletRequest request, String sid) throws Exception {
-//		HashMap<String, Object> map = new HashMap<String, Object>();
-//		
-//		ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession);
-//		if (client!=null && client.getSiteId()==Integer.parseInt(PortalTools.getInstance().Decode(sid))) {
-//			map.put("client", client);
-//		} else {
-//			map.put("client", null);
-//		}
-//		
-//		map.put("cart", request.getSession().getAttribute(PortalTools.getInstance().idCartSession));
-//		return map;
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		
-		return null;
+		ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession);
+		if (client!=null && client.getSite().getId()==Integer.parseInt(PortalTools.getInstance().Decode(sid))) {
+			map.put("client", client);
+		} else {
+			map.put("client", null);
+		}
+		
+		map.put("cart", request.getSession().getAttribute(PortalTools.getInstance().idCartSession));
+		return map;
 	}
 
 	@Override
 	public void clearSession(HttpServletRequest request) throws Exception {
-//		request.getSession().removeAttribute(PortalTools.getInstance().idCartSession);
-//		request.getSession().removeAttribute(PortalTools.getInstance().idSession);
+		request.getSession().removeAttribute(PortalTools.getInstance().idCartSession);
+		request.getSession().removeAttribute(PortalTools.getInstance().idSession);
 	}
 
 }

@@ -1,12 +1,23 @@
 package net.danielfreire.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class ConvertTools {
 	
@@ -341,5 +352,38 @@ public class ConvertTools {
 	public Double round(Double value, Integer decimais) {
 		Double p = Math.pow(10, decimais);
 		return Math.round(value * p) / p;
+	}
+	
+	public List<String> converterFile(File file) throws IOException{    
+		List<String> list = new ArrayList<String>();    
+		String row = null;    
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));    
+          
+		while ((row = reader.readLine()) != null) {     
+			list.add(row);    
+		}    
+		
+		reader.close();
+          
+		return list;    
+	} 
+	
+	public void replaceFile(Map<String, String> map, File file) throws Exception {
+		List<String> content = ConvertTools.getInstance().converterFile(file);
+		
+		FileWriter fileWriter = new FileWriter(file, false);
+		PrintWriter printWriter = new PrintWriter(fileWriter);
+		
+		Set<String> key = map.keySet();
+		for (String l:content) {
+			String nLine = l;
+			for (String k : key) {
+				nLine = nLine.replace(k, map.get(k));
+			}
+			printWriter.println(nLine);
+		}
+		
+		printWriter.flush();
+		printWriter.close();
 	}
 }

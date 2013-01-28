@@ -270,9 +270,9 @@ function loadDetailProduct(product) {
 		    	var image = images[i].split('-');
 		    	
 		    	if (image[0]=='1') {
-		    		html += '<div class="active item"><div><img src="'+image[1]+'" alt="'+data.introduction+'" /></div></div>';
+		    		html += '<div class="active item"><div><img class="imgDetail" src="'+image[1]+'" alt="'+data.introduction+'" data-zoom-image="'+image[1]+'" /></div></div>';
 		    	} else {
-		    		html += '<div class="item"><div><img src="'+image[1]+'" alt="'+data.introduction+'" /></div></div>';
+		    		html += '<div class="item"><div><img src="'+image[1]+'" alt="'+data.introduction+'" class="imgDetail" data-zoom-image="'+image[1]+'" /></div></div>';
 		    	}
 		    }
 		    html += 				'</div>';
@@ -320,6 +320,7 @@ function loadDetailProduct(product) {
 			$('div#detail').html(html);
 			
 			$("input[name='cepToFrete']").mask("99999-999");
+			$('.imgDetail').elevateZoom();
 		}
 	});
 }
@@ -436,7 +437,7 @@ function loadSession() {
 				});
 			}
 			
-			if (data.generic.cart!=null) {
+			if (data.generic.cart!=null && data.generic.cart.length>0) {
 				$('span#spanQtdCart').text(data.generic.cart.length);
 				$('a#aLinkMyCart').attr('href','/ecommerce/'+getPortalContext()+'/mycart');
 			} else {
@@ -982,7 +983,7 @@ function myCart() {
 	$.getJSON( '/ecommerce-web/mycart?&tk='+new Date().getTime(),  function(data) {
 		if (data.status) {
 
-			if (data.generic.cart!=null) {
+			if (data.generic.cart!=null && data.generic.cart.length>0) {
 				var html = 	'<div class="hero-unit" style="padding: 10px; text-align: left;">';
 				html += 		'<h5><i class="icon-shopping-cart"></i> Produto(s) no meu carrinho</h5>';
 				html += 		'<div style="background-color: white; padding: 10px; text-align: left">';
@@ -990,7 +991,6 @@ function myCart() {
 				html += 				'<thead>';
 				html += 					'<tr>';
 				html += 						'<th colspan="2">Produto</th>';
-				html += 						'<th style="text-align: center; width: 15%">Entrega</th>';
 				html += 						'<th style="text-align: center;">Qtd.</th>';
 				html +=							'<th style="text-align: right; width: 15%">Valor unitário</th>';
 				html += 						'<th style="text-align: right; width: 15%">Valor total</th>';
@@ -1001,15 +1001,18 @@ function myCart() {
 				var vTotal = 0.0;
 				$.each(data.generic.cart, function(key, val) {
 					html += '<tr>';
-					html += 	'<td><img src="'+val.images.split('[LIN]')[0].split('-')[1]+'" width="80" style="width: 80px;" /></td>';
-					html += 	'<td><strong>'+val.name+'</strong> '+val.introduction.toString().substring(0,50)+' [...]</td>';
-					html += 	'<td style="text-align: center;"><small>Digite o CEP abaixo.</small></td>';
+					html += 	'<td style="width: 90px;"><img src="'+val.images.split('[LIN]')[0].split('-')[1]+'" width="80" style="width: 80px;" /></td>';
+					html += 	'<td><strong>'+val.name+'</strong> '+val.introduction.toString().substring(0,80)+' [...]<br><small><a href="#" style="color" onclick="removeItem(\''+val.id+'\');"><i class="icon-remove"></i> Remover</a></small></td>';
 					html += 	'<td style="text-align: center;" id="tdQtdPdt">';
-					html += 		'<select name="qtdSelect'+val.id+'" class="span1" onchange="defineQuantity(\''+val.id+'\');">';
-					for (var e=1; e<=val.quantity; e++) {
-						html += '<option>'+e+'</option>';
+					if (val.quantity>0) {
+						html += 		'<select name="qtdSelect'+val.id+'" class="span1" onchange="defineQuantity(\''+val.id+'\');">';
+						for (var e=1; e<=val.quantity; e++) {
+							html += '<option>'+e+'</option>';
+						}
+						html += 		'</select>';
+					} else {
+						html += 		'<span style="color: darkred">Produto<br>indisponível</span>';
 					}
-					html += 		'</select>';
 					html += 	'</td>';
 					html += 	'<td style="text-align: right;">R$ <span id="spanUnityvalue'+val.id+'">'+convertMoeda(val.unityvalue)+'</span></td>';
 					html += 	'<td style="text-align: right;" id="tdUnityTotalValue">R$ <span id="spanUnityTotalvalue'+val.id+'">'+convertMoeda(val.unityvalue)+'</span></td>';
@@ -1019,11 +1022,11 @@ function myCart() {
 				});
 				
 				html += 					'<tr>';
-				html += 						'<td colspan="5" style="text-align: right;">ENVIO:</td>';
+				html += 						'<td colspan="4" style="text-align: right;">ENVIO:</td>';
 				html += 						'<td style="text-align: right;">R$ <span id="spanFrete">0,00</span></td>';
 				html += 					'</tr>';
 				html += 					'<tr>';
-				html += 						'<td colspan="5" style="text-align: right;">SUBTOTAL:</td>';
+				html += 						'<td colspan="4" style="text-align: right;">SUBTOTAL:</td>';
 				html += 						'<td style="text-align: right;">R$ <span id="spanSubtotal">'+convertMoeda(vTotal)+'</span></td>';
 				html += 					'</tr>';
 				html += 				'</tbody>';
@@ -1177,7 +1180,7 @@ function paymentOrder() {
 		if (data.status) {
 			
 			var form = '<form method="post" action="https://pagseguro.uol.com.br/v2/checkout/payment.html">';
-			form += 		'<input type="hidden" name="receiverEmail" value="daniel@danielfreire.net">';
+			form += 		'<input type="hidden" name="receiverEmail" value="'+data.generic.payment.url+'">';
 			form += 		'<input type="hidden" name="currency" value="BRL">';
 			
 			$.each(data.generic.cart, function(key, val) {
@@ -1291,4 +1294,13 @@ function myData(isOrder) {
 	}
 	
 	$('div#divThisClient').modal('toggle');
+}
+function removeItem(id) {
+	$.post('/ecommerce-web/mycart/removeItem', 'id='+id, function(data){
+		if (data.status) {
+			myCart();
+		} else {
+			alert(data.messageError.generic);
+		}
+	}, "json");
 }

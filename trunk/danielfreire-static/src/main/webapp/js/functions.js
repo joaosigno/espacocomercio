@@ -818,3 +818,70 @@ function modal(conteudo) {
 	$('body').append(html);
 	$('div#myModalGeneric').modal('show');
 }
+
+function normalizeStringToURL(texto) {
+	texto = texto.toLowerCase();
+	
+	texto = texto.replace(".", "-");
+	texto = texto.replace(",", "-");
+	texto = texto.replace(";", "-");
+	texto = texto.replace(":", "-");
+	texto = texto.replace(" ", "-");
+	texto = texto.replace("~", "-");
+	texto = texto.replace("^", "-");
+	texto = texto.replace("]", "-");
+	texto = texto.replace("}", "-");
+	texto = texto.replace("[", "-");
+	texto = texto.replace("{", "-");
+	texto = texto.replace("'", "-");
+	texto = texto.replace("`", "-");
+	texto = texto.replace("=", "-");
+	texto = texto.replace("+", "-");
+	texto = texto.replace("_", "-");
+	texto = texto.replace(")", "-");
+	texto = texto.replace("(", "-");
+	texto = texto.replace("*", "-");
+	texto = texto.replace("&", "-");
+	texto = texto.replace("%", "-");
+	texto = texto.replace("$", "-");
+	texto = texto.replace("#", "-");
+	texto = texto.replace("@", "-");
+	texto = texto.replace("!", "-");
+	texto = texto.replace("'", "-");
+	texto = texto.replace("\"", "-");
+	texto = texto.replace("\\", "-");
+	texto = texto.replace("|", "-");
+	texto = texto.replace("/", "-");
+	texto = texto.replace("<", "-");
+	texto = texto.replace(">", "-");
+	texto = texto.replace("?", "-");
+	
+	texto = texto.replace("ã", "a");
+	texto = texto.replace("á", "a");
+	texto = texto.replace("â", "a");
+	texto = texto.replace("à", "a");
+	
+	texto = texto.replace("ẽ", "e");
+	texto = texto.replace("é", "e");
+	texto = texto.replace("ê", "e");
+	texto = texto.replace("è", "e");
+	
+	texto = texto.replace("ĩ", "i");
+	texto = texto.replace("í", "i");
+	texto = texto.replace("î", "i");
+	texto = texto.replace("ì", "i");
+	
+	texto = texto.replace("õ", "o");
+	texto = texto.replace("ó", "o");
+	texto = texto.replace("ô", "o");
+	texto = texto.replace("ò", "o");
+	
+	texto = texto.replace("ũ", "u");
+	texto = texto.replace("ú", "u");
+	texto = texto.replace("û", "u");
+	texto = texto.replace("ù", "u");
+	
+	texto = texto.replace("ç", "c");
+	
+	return texto;
+}

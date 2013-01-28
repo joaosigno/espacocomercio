@@ -179,6 +179,7 @@ public class OrderBusinessImpl implements OrderBusiness {
 			ret.put("client", client);
 			ret.put("cart", prods);
 			ret.put("order", order.getId());
+			ret.put("payment", order.getPayment());
 			
 			resp.setGeneric(ret);
 		}

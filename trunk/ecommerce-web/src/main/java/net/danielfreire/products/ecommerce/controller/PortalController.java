@@ -187,6 +187,15 @@ public class PortalController {
 		}
 	}
 	
+	@RequestMapping(value="/mycart/removeItem", method = RequestMethod.POST)
+	public @ResponseBody GenericResponse removeItem(HttpServletRequest request) {
+		try {
+			return productBusiness.removeItemCart(request);
+		} catch (Exception e) {
+			return PortalTools.getInstance().getRespError(e);
+		}
+	}
+	
 	@RequestMapping(value="/getFrete", method = RequestMethod.GET)
 	public @ResponseBody GenericResponse getFrete(HttpServletRequest request) {
 		try {

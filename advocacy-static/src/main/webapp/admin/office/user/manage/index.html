@@ -36,7 +36,7 @@
 		<script src="/library/js/admin.js" charset="utf-8"></script>
 
 		<script>
-			loadMenu('/advocacy-web/admin/menu', true);
+			loadMenuAdvocacy();
 			loadFooter();
 			loadGrid('/advocacy-web/admin/office/user/consult', 'grid', 'formEdit', '/advocacy-web/admin/office/user/remove', true);
 			
@@ -111,7 +111,7 @@
 						$('div#modalPermissions').modal('show');
 					}
 				} else {
-					errorForm(data);
+					errorForm(data, '/advocacy');
 				} 
 			}
 			getJson2('preencheCb', '/advocacy-web/admin/office/usersession/list');

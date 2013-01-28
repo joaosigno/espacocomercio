@@ -125,13 +125,12 @@
 			<script src="/library/js/admin.js" charset="utf-8"></script>
 			
 			<script>
-				loadMenu('/advocacy-web/admin/menu', true);
+				loadMenuAdvocacy();
 				loadFooter();
 				
 				function callback(id, data) {
 					if (data.status) {
-						alert("Usuário criado com sucesso.", true);
-						$('button[type="reset"]').click();
+						location.href='../manage';
 					} else {
 						errorForm(data, '/advocacy');
 					}

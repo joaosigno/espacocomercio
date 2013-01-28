@@ -56,7 +56,7 @@
         },
         "Sair": {
         	"type": "link",
-        	"url": "/ecommerce-web/logout"
+        	"url": "/ecommerce-web/admin/logout"
         }
     }
 }

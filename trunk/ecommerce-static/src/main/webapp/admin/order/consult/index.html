@@ -2,7 +2,7 @@
 <html lang="pt">
 	<head>
 		<meta charset="utf-8">
-		<title>Administração SSO - danielfreire.net</title>
+		<title>Administração</title>
 		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
 		<link href="/library/css/admin.css" rel="stylesheet">
@@ -74,7 +74,7 @@
 		<script src="/library/js/jquery.maskedinput-1.3.min.js"></script>
 
 		<script>
-			loadMenu('/ecommerce/admin/menu.json');
+			loadMenuEcommerce();
 			loadFooter();
 			
 			function callback(id, data) {
@@ -93,7 +93,7 @@
 						
 					}
 				} else {
-					errorForm(data);
+					errorForm(data, '/ecommerce');
 				}
 			}
 			

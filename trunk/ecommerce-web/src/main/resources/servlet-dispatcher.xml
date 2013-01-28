@@ -24,6 +24,12 @@
 		</mvc:interceptor>
 		
 		<mvc:interceptor>
+			<mvc:mapping path="/admin/**" />
+			
+			<bean class="net.danielfreire.products.ecommerce.util.PermissionInterceptor" />
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
 			<mvc:mapping path="/orders" />
 			<mvc:mapping path="/orders/" />
 			<mvc:mapping path="/order/products" />

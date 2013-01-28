@@ -24,6 +24,14 @@ public class ClientAdmin extends AbstractPersistable<Integer> {
 	@Column(name="permission_type")
 	private Integer permission;
 	
+	public ClientAdmin(Integer id) {
+		super.setId(id);
+	}
+	
+	public ClientAdmin() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public Site getSite() {
 		return site;
 	}

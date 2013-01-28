@@ -17,7 +17,7 @@ import net.danielfreire.products.ecommerce.model.repository.OrderRepository;
 import net.danielfreire.products.ecommerce.model.repository.PaymentRepository;
 import net.danielfreire.products.ecommerce.model.repository.ProductHasOrderRepository;
 import net.danielfreire.products.ecommerce.model.repository.ProductRepository;
-import net.danielfreire.util.FileUtil;
+import net.danielfreire.products.ecommerce.util.EcommerceUtil;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
 import net.danielfreire.util.GridTitleResponse;
@@ -29,8 +29,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
-
-import com.google.gson.Gson;
 
 @Component("orderBusiness")
 public class OrderBusinessImpl implements OrderBusiness {
@@ -79,84 +77,32 @@ public class OrderBusinessImpl implements OrderBusiness {
 
 	@Override
 	public GridResponse consult(HttpServletRequest request) throws Exception {
-//		String siteId = (String) request.getSession().getAttribute(PortalTools.getInstance().idAdminSession);
-//		String page = request.getParameter("page");
-//		String clientId = request.getParameter("cid");
-//		
-//		ClientEcommerce client = clientRepository.findOne(Integer.parseInt(clientId));
-//		if (client.getSiteId()!=Integer.parseInt(siteId)) {
-//			return new GridResponse();
-//		} else {
-//			int pagination = 0;
-//			
-//			if (ValidateTools.getInstancia().isNumber(page)) {
-//				pagination = Integer.parseInt(page)-1;
-//			} 
-//			
-//			ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
-//			
-//			GridTitleResponse title = new GridTitleResponse();
-//			
-//			title = new GridTitleResponse();
-//			title.setId("payment");
-//			title.setTitle("Forma de pgto");
-//			title.setType("text");
-//			titles.add(title);
-//			
-//			title = new GridTitleResponse();
-//			title.setId("dateCreate");
-//			title.setTitle("Data de criação");
-//			title.setType("text");
-//			titles.add(title);
-//			
-//			title = new GridTitleResponse();
-//			title.setId("datePayment");
-//			title.setTitle("Data de pgto");
-//			title.setType("text");
-//			titles.add(title);
-//			
-//			title = new GridTitleResponse();
-//			title.setId("statusOrder");
-//			title.setTitle("Status");
-//			title.setType("text");
-//			titles.add(title);
-//			
-//			title = new GridTitleResponse();
-//			title.setId("sendCust");
-//			title.setTitle("Custo de envio");
-//			title.setType("text");
-//			titles.add(title);
-//			
-//			title = new GridTitleResponse();
-//			title.setId("discount");
-//			title.setTitle("Desconto");
-//			title.setType("text");
-//			titles.add(title);
-//			
-//			title = new GridTitleResponse();
-//			title.setId("totalValue");
-//			title.setTitle("Valor total");
-//			title.setType("text");
-//			titles.add(title);
-//			
-//			title = new GridTitleResponse();
-//			title.setId("cesta");
-//			title.setTitle("Produtos");
-//			title.setType("text");
-//			titles.add(title);
-//			
-//			Page<Order> pageable = repository.findByClient(client, new PageRequest(pagination, 10));
-//			
-//			GridResponse grid = new GridResponse();
-//			grid.setRows(pageable.getContent());
-//			grid.setTitles(titles);
-//			grid.setPage(pageable.getNumber()+1);
-//			grid.setTotalPages(pageable.getTotalPages());
-//			
-//			return grid;
-		//}
+		String page = request.getParameter("page");
+		String clientId = request.getParameter("cid");
 		
-		return null;
+		ClientEcommerce client = clientRepository.findOne(Integer.parseInt(clientId));
+		if (client.getSite().getId()!=EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId()) {
+			return new GridResponse();
+		} else {
+			int pagination = 0;
+			if (ValidateTools.getInstancia().isNumber(page)) {
+				pagination = Integer.parseInt(page)-1;
+			} 
+			
+			ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
+			titles.add(PortalTools.getInstance().getRowGrid("payment", "Forma de pgto", "text"));
+			titles.add(PortalTools.getInstance().getRowGrid("dateCreate", "Data de criação", "text"));
+			titles.add(PortalTools.getInstance().getRowGrid("datePayment", "Data de pgto", "text"));
+			titles.add(PortalTools.getInstance().getRowGrid("statusOrder", "Status", "text"));
+			titles.add(PortalTools.getInstance().getRowGrid("sendCust", "Custo de envio", "text"));
+			titles.add(PortalTools.getInstance().getRowGrid("discount", "Desconto", "text"));
+			titles.add(PortalTools.getInstance().getRowGrid("totalValue", "Valor total", "text"));
+			titles.add(PortalTools.getInstance().getRowGrid("cesta", "Produtos", "text"));
+			
+			Page<Order> pageable = repository.findByClient(client, new PageRequest(pagination, 10));
+			
+			return PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
+		}
 	}
 
 	@Override
@@ -184,62 +130,60 @@ public class OrderBusinessImpl implements OrderBusiness {
 	@SuppressWarnings("unchecked")
 	@Override
 	public GenericResponse insert(HttpServletRequest request, HashMap<String, Object> map) throws Exception {
-//		GenericResponse resp = new GenericResponse();
-//		
-//		ClientEcommerce client = (ClientEcommerce) map.get("client");
-//		ArrayList<Product> products = (ArrayList<Product>) map.get("cart");
-//		Double send = Double.parseDouble(request.getParameter("send").replace(",", "."));
-//		Double total = Double.parseDouble(request.getParameter("total").replace(",", "."));
-//		
-//		if (client==null || products==null) {
-//			resp = PortalTools.getInstance().getRespError("session.invalid");
-//		}
-//		
-//		if (resp.getStatus()) {
-//			Order order = new Order();
-//			order.setClient(client);
-//			order.setDateCreate(Calendar.getInstance());
-//			order.setDiscount(0.0);
-//			order.setPayment(paymentRepository.findByName("PagSeguro"));
-//			order.setSendCust(send);
-//			order.setStatusOrder(2);
-//			order.setTotalValue(total);
-//			
-//			order = repository.saveAndFlush(order);
-//			
-//			ArrayList<Product> prods = new ArrayList<Product>();
-//			
-//			for (Product p : products) {
-//				Product prod = productRepository.findOne(p.getId());
-//				ProductHasOrder prodorder = new ProductHasOrder();
-//				prodorder.setOrderId(order.getId());
-//				prodorder.setProduct(prod);
-//				prodorder.setQuantity(Integer.parseInt(request.getParameter("qtdSelect"+p.getId())));
-//				prodorder.setUnityvalue(prod.getUnityvalue());
-//				
-//				productHasOrderRepository.save(prodorder);
-//				
-//				prod.setQuantity(prod.getQuantity()-prodorder.getQuantity());
-//				productRepository.save(prod);
-//				prods.add(prod);
-//				
-//				FileUtil.getInstance().createFile(PortalTools.getInstance().getEcommerceProperties("location.json"), "product"+PortalTools.getInstance().Encode(prod.getSiteId().toString())+prod.getKeyUrl()+".json", new Gson().toJson(prod));
-//			}
-//			
-//			request.getSession().removeAttribute(PortalTools.getInstance().idCartSession);
-//			request.getSession().removeAttribute(PortalTools.getInstance().idSession);
-//			
-//			HashMap<String, Object> ret = new HashMap<String, Object>();
-//			ret.put("client", client);
-//			ret.put("cart", prods);
-//			ret.put("order", order.getId());
-//			
-//			resp.setGeneric(ret);
-//		}
-//		
-//		return resp;
+		GenericResponse resp = new GenericResponse();
 		
-		return null;
+		ClientEcommerce client = (ClientEcommerce) map.get("client");
+		ArrayList<Product> products = (ArrayList<Product>) map.get("cart");
+		Double send = Double.parseDouble(request.getParameter("send").replace(",", "."));
+		Double total = Double.parseDouble(request.getParameter("total").replace(",", "."));
+		
+		if (client==null || products==null) {
+			resp = PortalTools.getInstance().getRespError("session.invalid");
+		}
+		
+		if (resp.getStatus()) {
+			Order order = new Order();
+			order.setClient(client);
+			order.setDateCreate(Calendar.getInstance());
+			order.setDiscount(0.0);
+			order.setPayment(paymentRepository.findByName("PagSeguro"));
+			order.setSendCust(send);
+			order.setStatusOrder(2);
+			order.setTotalValue(total);
+			
+			order = repository.saveAndFlush(order);
+			
+			ArrayList<Product> prods = new ArrayList<Product>();
+			
+			for (Product p : products) {
+				Product prod = productRepository.findOne(p.getId());
+				ProductHasOrder prodorder = new ProductHasOrder();
+				prodorder.setOrderId(order.getId());
+				prodorder.setProduct(prod);
+				prodorder.setQuantity(Integer.parseInt(request.getParameter("qtdSelect"+p.getId())));
+				prodorder.setUnityvalue(prod.getUnityvalue());
+				
+				productHasOrderRepository.save(prodorder);
+				
+				prod.setQuantity(prod.getQuantity()-prodorder.getQuantity());
+				productRepository.save(prod);
+				prods.add(prod);
+				
+				EcommerceUtil.getInstance().generateProductCache(prod, prod.getSite());
+			}
+			
+			request.getSession().removeAttribute(PortalTools.getInstance().idCartSession);
+			request.getSession().removeAttribute(PortalTools.getInstance().idSession);
+			
+			HashMap<String, Object> ret = new HashMap<String, Object>();
+			ret.put("client", client);
+			ret.put("cart", prods);
+			ret.put("order", order.getId());
+			
+			resp.setGeneric(ret);
+		}
+		
+		return resp;
 	}
 	
 }

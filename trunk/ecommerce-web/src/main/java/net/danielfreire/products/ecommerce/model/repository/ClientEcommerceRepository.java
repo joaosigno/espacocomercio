@@ -19,4 +19,6 @@ public interface ClientEcommerceRepository extends JpaRepository<ClientEcommerce
 	
 	public List<ClientEcommerce> findByUserAndPassword(String user, String password);
 
+	public ClientEcommerce findBySiteAndUserAndPassword(Site site, String user, String password);
+
 }

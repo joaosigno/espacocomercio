@@ -7,10 +7,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import net.danielfreire.products.ecommerce.model.domain.ProductCategory;
+import net.danielfreire.products.ecommerce.model.domain.Site;
 import net.danielfreire.products.ecommerce.model.repository.ProductCategoryRepository;
 import net.danielfreire.products.ecommerce.util.EcommerceUtil;
 import net.danielfreire.util.ConvertTools;
-import net.danielfreire.util.FileUtil;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
 import net.danielfreire.util.GridTitleResponse;
@@ -21,8 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
-import com.google.gson.Gson;
 
 @Component("productCategoryBusiness")
 public class ProductCategoryBusinessImpl implements ProductCategoryBusiness {
@@ -123,25 +121,26 @@ public class ProductCategoryBusinessImpl implements ProductCategoryBusiness {
 
 	@Override
 	public GenericResponse remove(HttpServletRequest request) throws Exception {
-		final String categoryId = request.getParameter("id");
+		ProductCategory category = categoryRepository.findOne(Integer.parseInt(request.getParameter("id")));
 		
-		categoryRepository.delete(Integer.parseInt(categoryId));
-		
-		generateMenuPortal(request);
+		if (category.getSite().getId() == EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId()) {
+			categoryRepository.delete(category);
+			generateMenuPortal(request);
+		} else {
+			return PortalTools.getInstance().getRespError("permission.invalid");
+		}
 		
 		return new GenericResponse();
 	}
 
 	@Override
 	public List<ProductCategory> listSite(String cid) throws Exception {
-//		return categoryRepository.findBySiteId(Integer.parseInt(PortalTools.getInstance().Decode(cid)));
-		return null;
+		return categoryRepository.findBySite(new Site(Integer.parseInt(PortalTools.getInstance().Decode(cid))));
 	}
 
 	private void generateMenuPortal(HttpServletRequest request) throws Exception {
-		FileUtil.getInstance().createFile(
-				PortalTools.getInstance().getEcommerceProperties("location.json"), 
-				"menu"+PortalTools.getInstance().Encode(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId().toString())+".json", 
-				new Gson().toJson(categoryRepository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite())));
+		EcommerceUtil.getInstance().generateMenuPortal(
+				EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), 
+				categoryRepository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite()));
 	}
 }

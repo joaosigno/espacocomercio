@@ -2,7 +2,7 @@
 <html lang="pt">
 	<head>
 		<meta charset="utf-8">
-		<title>Administração SSO - danielfreire.net</title>
+		<title>Administração</title>
 		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
 		<link href="/library/css/admin.css" rel="stylesheet">
@@ -127,7 +127,7 @@
 						
 					}
 				} else {
-					errorForm(data);
+					errorForm(data, '/ecommerce');
 				}
 			}
 			
@@ -145,7 +145,7 @@
 					preencheInitCategory(data.genericList);
 					//$('textarea[name="description"]').val(data.generic.description);
 				} else {
-					errorForm(data);
+					errorForm(data, '/ecommerce');
 				}
 			}
 			

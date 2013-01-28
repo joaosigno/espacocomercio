@@ -14,46 +14,47 @@
 		<div class="container">
 			<ul class="breadcrumb">
 				<li>Resumo <span class="divider">/</span></li>
-				<li>Pedidos <span class="divider">/</span></li>
-				<li>Forma de Pagamento <span class="divider">/</span></li>
-				<li class="active">Novo</li>
+				<li>E-commerce <span class="divider">/</span></li>
+				<li class="active">Sites</li>
 			</ul>
 			
 			<form class="form-horizontal" style="display: block">
 				<div class="control-group">
-					<label class="control-label">Tipo:</label>
+					<label class="control-label">Nome do site:</label>
 					<div class="controls">
-						<select name="name">
-							<option>PagSeguro</option>
-						</select>
+						<input name="name" type="text" class="span3" placeholder="Nome do site…" maxlength="45" onblur="generateExibicao()" onkeyup="generateExibicao()">
 						<span id="spanError-name" class="help-inline"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">Exibição:</label>
+					<div class="controls">
+						http://www.espacocomercio.com.br/ecommerce/<span id="nameSiteWeb" style="color: darkgreen;"></span>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label">Descrição:</label>
 					<div class="controls">
-						<input name="description" type="text" class="input-block-level" placeholder="Descrição da forma de pagamento…" maxlength="255">
+						<input name="description" type="text" class="input-block-level" placeholder="Descrição do site…" maxlength="255">
 						<span id="spanError-description" class="help-inline"></span>
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label">Token:</label>
+					<label class="control-label">Facebook:</label>
 					<div class="controls">
-						<input name="url" type="text" class="input-block-level" placeholder="Token para uso de meios de pagamentos externos…" maxlength="255">
-						<span id="spanError-url" class="help-inline"></span>
+						<input name="facebook" type="text" class="input-block-level" placeholder="URL da fã page…" maxlength="255">
+						<span id="spanError-facebook" class="help-inline"></span>
 					</div>
 				</div>
 				<div class="control-group">
 					<div class="controls">
-						<button type="button" class="btn btn-primary" onclick="postJson('', '/ecommerce-web/admin/payment/insert', $('form').serialize());">Salvar</button>
-						<button type="reset" class="btn">Limpar</button>
+						<button type="button" class="btn btn-primary" onclick="postJson('update', '/ecommerce-web/admin/site/save', $('form').serialize());">Salvar</button>
 					</div>
 				</div>
 			</form>
 		</div>
  		
  		<div id="footer"></div>
- 	
    
  	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
 		<script src="/library/js/bootstrap.min.js"></script>
@@ -67,11 +68,17 @@
 			
 			function callback(id, data) {
 				if (data.status) {
-					alert("Forma de pagamento criada com sucesso.", true);
-					$('button[type="reset"]').click();
+					if (id=='update') {
+						alert("Site criado com sucesso.", true);
+						$('button[type="reset"]').click();
+					}
 				} else {
 					errorForm(data, '/ecommerce');
 				}
+			}
+			
+			function generateExibicao() {
+				$('span#nameSiteWeb').text(normalizeStringToURL($('input[name=name]').val()));
 			}
 		</script>
  	</body>

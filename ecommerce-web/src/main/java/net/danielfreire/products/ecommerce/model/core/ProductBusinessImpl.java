@@ -337,6 +337,24 @@ public class ProductBusinessImpl implements ProductBusiness {
 		return resp;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public GenericResponse removeItemCart(HttpServletRequest request) throws Exception {
+		Integer id = Integer.parseInt(request.getParameter("id"));
+		
+		ArrayList<Product> newlist = new ArrayList<Product>();
+		ArrayList<Product> list = (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().idCartSession);
+		for (Product p : list) {
+			if (p.getId()!=id) {
+				newlist.add(p);
+			}
+		}
+		
+		request.getSession().setAttribute(PortalTools.getInstance().idCartSession, newlist);
+		
+		return new GenericResponse();
+	}
+	
 	private void generateProductCache(Product p, HttpServletRequest request) throws Exception {
 		EcommerceUtil.getInstance().generateProductCache(p, EcommerceUtil.getInstance().getSessionAdmin(request).getSite());
 	}

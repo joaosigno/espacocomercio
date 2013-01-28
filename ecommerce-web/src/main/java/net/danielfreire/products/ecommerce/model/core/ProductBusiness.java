@@ -28,4 +28,6 @@ public interface ProductBusiness {
 	
 	GenericResponse myCart(HttpServletRequest request) throws Exception;
 	
+	GenericResponse removeItemCart(HttpServletRequest request) throws Exception;
+	
 }

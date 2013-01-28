@@ -46,9 +46,12 @@ function loadFooter() {
 	$('div#footer').html(html);
 }
 
-function loadMenu(urlJson, initData) {
+function loadMenu(urlJson, initData, titleAdminPage, userNameAccess) {
 	if (initData==undefined || initData==null) {
 		initData = false;
+	}
+	if (titleAdminPage==undefined || titleAdminPage==null) {
+		titleAdminPage = '';
 	}
 	$.getJSON( urlJson,  function(data) {
 		var raiz;
@@ -65,7 +68,11 @@ function loadMenu(urlJson, initData) {
 		html += 			'<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">';
 		html += 				'<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
 		html += 			'</a>';
-		html += 			'<a class="brand" href="#">'+raiz.title+'</a>';
+		if (titleAdminPage!='') {
+			html += 			'<a class="brand" href="#">'+titleAdminPage+'</a>';
+		} else {
+			html += 			'<a class="brand" href="#">'+raiz.title+'</a>';
+		}
 		html += 			'<div class="nav-collapse collapse">';
 		html += 				'<ul class="nav">';
 		
@@ -86,6 +93,9 @@ function loadMenu(urlJson, initData) {
 		}
 			
 		html += 				'</ul>';
+		html += 				'<p class="navbar-text pull-right">';
+		html += 					'<i class="icon-user icon-white"></i> <a class="navbar-link" href="#">'+userNameAccess+'</a>';
+		html += 				'</p>';
 		html += 			'</div>';
 		html += 		'</div>';
 		html += 	'</div></div>';
@@ -155,7 +165,9 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 			var pageNow = data.page;
 			var totalPages = data.totalPages;
 		
-			var html = 	'<table class="table table-striped">';
+			var html = 	'<h4><i class="icon-th-list"></i> Lista</h4>';
+			html += 	'<small>A listagem abaixo contém as informações referentes ao assunto escolhido. No lado direito (<i class="icon-align-justify"></i>) de cada linha da listagem heverá as ações que poderam ser tomadas para determinada informação. O ícone <i class="icon-edit"></i> permite que você edite (altere) a informação contida na linha, já o ícone <i class="icon-trash"></i> permite a remoção completa da informação contida na linha.</small>';
+			html += 	'<table class="table table-striped" style="margin-top: 30px;">';
 			html += 		'<thead>';
 			html +=				'<tr>';
 			
@@ -231,6 +243,8 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 						html += '<td style="text-align: center"><a href="#" onclick="viewCart(\''+val.id+'\');"><i class="icon-plus"></i></a></td>';
 					} else if (menu[e]=='permissions') {
 						html += '<td style="text-align: center"><a href="#" onclick="viewPermissions(\''+val.id+'\');"><i class="icon-plus"></i></a></td>';
+					} else if (menu[e]=='permission') {
+						html += '<td id="' + idcomp + menu[e] + '">'+getLblPermissions(val[menu[e]].toString())+'</td>';
 					} else {
 						if(typeof(val[menu[e]]) == "string"){
 							if (val[menu[e]]!=undefined && val[menu[e]]!=null) {
@@ -643,10 +657,28 @@ function alert(msg, success) {
 function loadMenuEcommerce() {
 	$.getJSON('/ecommerce-web/admin/menu', function(data) {
 		if (data.status) {
-			loadMenu('/ecommerce/admin/menu'+data.generic+'.json');
+			loadMenu('/ecommerce/admin/menu'+data.generic[0]+'.json', false, data.generic[1], data.generic[2]);
 		} else {
 			errorForm(data, '/ecommerce')
 		}
 		
 	});
+}
+
+function loadMenuAdvocacy() {
+	loadMenu('/advocacy-web/admin/menu', true, '', '');
+}
+
+function getLblPermissions(id) {
+	if (id==2) {
+		return "1. Administrador da empresa.";
+	}
+	if (id==3) {
+		return "2. Gerente de vendas.";
+	}
+	if (id==4) {
+		return "3. Vendedor.";
+	} else {
+		return "";
+	}
 }

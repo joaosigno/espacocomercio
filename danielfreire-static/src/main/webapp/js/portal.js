@@ -1,5 +1,5 @@
 function loadHeaderGeneric(logoHtml, homeUrl) {
-	$.getJSON( '/ecommerce/json/menu'+getSid()+'.json',  function(data) {
+	$.getJSON( '/ecommerce/'+getPortalContext()+'/data/menu.json',  function(data) {
 		var html = 	'<div class="row">';
 		html += 		'<div class="span6 offset6">';
 		html += 			'<small class="pull-right">';
@@ -66,6 +66,64 @@ function loadHeaderGeneric(logoHtml, homeUrl) {
 		}
 		
 		loadSession();
+	}).error(function() { 
+		var html = 	'<div class="row">';
+		html += 		'<div class="span6 offset6">';
+		html += 			'<small class="pull-right">';
+		html += 				'<a id="aLinkMyCart" href="#" class="left-space"><i class="icon-shopping-cart"></i><span class="muted"> Meu Carrinho (<span id="spanQtdCart"></span>)</span></a>';
+		html += 				'<a id="aLinkMyData" href="#" class="left-space"><i class="icon-align-justify"></i><span class="muted"> Meu Cadastro</span></a>';
+		html += 				'<a id="aLinkMyDataModal" href="#" class="left-space hide"><!-- non value --></a>';
+		html += 				'<a id="aLinkMyEntry" href="#" class="left-space"><i class="icon-user"></i><span class="muted" id="spanEntry"></span></a>';
+		html += 			'</small>';
+		html += 		'</div>';
+		html += 	'</div>';
+		
+		html += 	'<div class="row">';
+		html += 		'<div class="span6"><a href="/ecommerce/'+getPortalContext()+'">';
+		html += 			logoHtml;
+		html += 		'</a></div>';
+		html += 		'<div class="span6">';
+		html += 			'<form class="pull-right" style="padding-top: 45px;">';
+		html += 				'<div class="input-append">';
+		html += 					'<input class="span3" id="appendedInputButton" type="text" placeholder="Pesquisar produtos…">';
+		html += 					'<button class="btn" type="button" onclick="loadProducts(\'\', $(\"#appendedInputButton\").val(), \'\');"><i class="icon-search"></i></button>';
+		html += 				'</div>';
+		html += 			'</form>';
+		html += 		'</div>';
+		html += 	'</div>';
+		
+		html += 	'<div class="row">';
+		html += 		'<div class="span12">';
+		html += 			'<div class="navbar">';
+		html += 				'<div class="navbar-inner">';
+		html += 					'<div class="container">';
+		html += 						'<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">';
+		html += 							'<span class="icon-bar"></span>';
+		html += 							'<span class="icon-bar"></span>';
+		html += 							'<span class="icon-bar"></span>';
+		html += 						'</a>';
+		html += 						'<div class="nav-collapse collapse">';
+		html += 							'<ul class="nav">';
+		html += 								'<li id="home"><a href="'+homeUrl+'">Home</a></li>';
+		html += 							'</ul>';
+		html += 						'</div>';
+		html += 					'</div>';
+		html += 				'</div>';
+		html += 			'</div>';
+		html += 		'</div>';
+		html += 	'</div>';
+		
+		html += 	'<div id="divModalFormCad" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>';
+		
+		$('div#header').html(html);
+		
+		if (getURLParameter('key')!=undefined && getURLParameter('key')!=null && getURLParameter('key')!='' && getURLParameter('key')!='null') {
+			$('li#'+getURLParameter('key')).attr('class', 'active');
+		} else {
+			$('li#home').attr('class', 'active');
+		}
+		
+		loadSession();
 	});
 }
 
@@ -107,6 +165,9 @@ function loadProducts(category, search, page) {
 	}
 	if (search==undefined || search==null) {
 		search = '';
+	}
+	if (page==undefined || page==null) {
+		page = 1;
 	}
 	
 	$.getJSON( '/ecommerce-web/products?sid='+getSid()+'&page='+page+'&search='+search+'&cid='+category+'&tk'+new Date().getTime(),  function(data) {
@@ -189,7 +250,7 @@ function loadProducts(category, search, page) {
 }
 
 function loadDetailProduct(product) {
-	$.getJSON( '/ecommerce/json/product'+getSid()+product+'.json?tk'+new Date().getTime(),  function(data) {
+	$.getJSON( '/ecommerce/'+getPortalContext()+'/data/product'+product+'.json?tk'+new Date().getTime(),  function(data) {
 		if (!data) {
 			location.href='/ecommerce/'+getPortalContext();
 		} else {

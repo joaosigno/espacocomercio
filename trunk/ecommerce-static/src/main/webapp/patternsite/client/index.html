@@ -8,6 +8,12 @@
 		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
 		
 		<link href="../css/style.css" rel="stylesheet">
+		<style type="text/css">
+			div.growlUI { background: url(http://jquery.malsup.com/block/check48.png) no-repeat 10px 10px }
+			div.growlUI h1, div.growlUI h2 {
+			    color: white; padding: 5px 5px 5px 75px; text-align: left; font-size: 16px; line-height: 15px;
+			}
+		</style>
  	</head>
  	<body>
  	
@@ -43,6 +49,10 @@
 			loadHeader();
 			loadFooter();
 			controlPainel();
+			
+			function alert(msg) {
+				$.growlUI('Notificação:', msg); 
+			}
 		</script>
 		
 		<script type="text/javascript">

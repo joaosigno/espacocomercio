@@ -4,7 +4,7 @@ INSERT INTO `ecommerce`.`site`
 `description`)
 VALUES
 (
-'Dress-up',
+'InitSite',
 ''
 );
 

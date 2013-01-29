@@ -22,14 +22,6 @@
 			<arg value="-c" />
 			<arg value="mvn clean install" />
 		</exec>
-		<exec executable="/bin/sh" failonerror="true" dir="sso-static">
-			<arg value="-c" />
-			<arg value="mvn clean install" />
-		</exec>
-		<exec executable="/bin/sh" failonerror="true" dir="sso-web">
-			<arg value="-c" />
-			<arg value="mvn clean install" />
-		</exec>
 	</target>
 	
 	<target name="all" depends="builds">
@@ -53,16 +45,6 @@
 			<arg value="scp -r target/ecommerce-web/* espacoco@174.142.99.141:/home/espacoco/appservers/jboss-5x/server/default/deploy/ecommerce-web.war/" />
 		</exec>
 		<echo message="ecommerce-web - success"/>
-		<exec executable="/bin/sh" failonerror="true" dir="sso-static">
-			<arg value="-c" />
-			<arg value="scp -r target/sso/* espacoco@174.142.99.141:/home/espacoco/www/sso/" />
-		</exec>
-		<echo message="sso-static - success"/>
-		<exec executable="/bin/sh" failonerror="true" dir="sso-web">
-			<arg value="-c" />
-			<arg value="scp -r target/sso-web/* espacoco@174.142.99.141:/home/espacoco/appservers/jboss-5x/server/default/deploy/sso-web.war/" />
-		</exec>
-		<echo message="sso-web - success"/>
 		<exec executable="/bin/sh" failonerror="true" dir="jboss-config">
 			<arg value="-c" />
 			<arg value="scp -r espacocomercio.com.br/* espacoco@174.142.99.141:/home/espacoco/appservers/jboss-5x/server/default/" />

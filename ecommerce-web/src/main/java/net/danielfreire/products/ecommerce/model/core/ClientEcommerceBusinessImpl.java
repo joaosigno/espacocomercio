@@ -190,6 +190,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 		GenericResponse resp = new GenericResponse();
 		
 		final String contextid = request.getParameter("contextid");
+		final String sid = request.getParameter("sid");
 		
 		HashMap<String, Object> map = getClient(request, false);
 		
@@ -201,7 +202,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 			repository.save(client);
 			
 			//Enviar e-mail para ativar cadastro
-			new MailUtil().newUser(client.getUser(), client.getName(), client.getPassword(), contextid);
+			new MailUtil().newUser(client.getUser(), client.getName(), client.getPassword(), contextid, sid);
 		}
 		
 		return resp;

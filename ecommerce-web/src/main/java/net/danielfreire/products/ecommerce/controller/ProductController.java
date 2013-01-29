@@ -115,7 +115,7 @@ public class ProductController {
 			productBusiness.upload(request, response);
 		} catch (Exception e) {
 			try {
-				response.getWriter().print("<script src=\"/library/js/jquery-1.8.3.min.js\"></script><script>$('#alertError', top.document).val('"+PortalTools.getInstance().getRespError(e).getMessageError().toString()+"');$('#alertError', top.document).click()</script>");
+				response.getWriter().print("$('#alertError', top.document).val('"+PortalTools.getInstance().getRespError(e).getMessageError().toString()+"');$('#alertError', top.document).click();");
 			} catch (IOException e1) {
 				PortalTools.getInstance().getRespError(e1);
 			}

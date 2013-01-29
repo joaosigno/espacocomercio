@@ -429,7 +429,7 @@ function getSequenceImages(images, w, h, update) {
 	var position = 1;
 	while (position <= newvalueSplit.length) {
 		for (var a=0; a<newvalueSplit.length; a++) {
-			var nv = newvalueSplit[a].split('-');
+			var nv = newvalueSplit[a].split('[COL]');
 			
 			if (nv[0].toString() == position.toString()) {
 				if (update) {

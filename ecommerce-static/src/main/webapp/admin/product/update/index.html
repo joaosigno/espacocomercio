@@ -87,12 +87,12 @@
  		<div id="footer"></div>
  	
  		<div style="display: none;">
- 			<form action="/ecommerce-web/admin/product/upload" id="form_upload" enctype="multipart/form-data" method="post" target="upload_target">
- 				<input type="file" name="uploadFile" id="uploadFile" onchange="$('form#form_upload').submit()" accept="image/*">
+ 			<form action="/ecommerce-web/admin/product/upload" id="form_upload" enctype="multipart/form-data" method="post">
+ 				<input type="file" name="uploadFile" id="uploadFile" accept="image/*">
  				<input type="hidden" name="positionFile" id="positionFile">
  				<input type="button" id="alertError" onclick="alert(this.value, false)">
  			</form>
- 			<iframe id="upload_target" name="upload_target" src="#"></iframe>
+ 			<div id="upload_target"></div>
  		</div>
    
  	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
@@ -103,6 +103,8 @@
 		<script src="/library/js/jquery.maskmoney.min.js"></script>
 		<script src="/library/js/jquery.maskedinput-1.3.min.js"></script>
 		<script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script>
+		<script src="/library/js/uploadAdmin.js"></script>
+		<script src="/library/js/jquery.form.js"></script>
 
 		<script>
 			loadMenuEcommerce();
@@ -176,6 +178,14 @@
 			}
 			
 			getJson('preencheCbCategory', '/ecommerce-web/admin/product/category/list');
+			
+			$('#uploadFile').live('change', function(){
+				//$('#visualizar').html('<img src="ajax-loader.gif" alt="Enviando..."/> Enviando...');
+				$('#form_upload').ajaxForm({
+					dataType: 'script',
+					target:'#upload_target'
+				}).submit();
+		     });
 		</script>
  	</body>
  </html>

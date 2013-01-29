@@ -119,7 +119,7 @@ public class ProductBusinessImpl implements ProductBusiness {
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		
 		if (!isMultipart) {
-			response.getWriter().print("<html><head><script src=\"/library/js/jquery-1.8.3.min.js\"></script><script>$('#alertError', top.document).val('"+PortalTools.getInstance().getMessage("upload.invalid")+"');$('#alertError', top.document).click()</script></head><body></body></html>");
+			response.getWriter().print("$('#alertError', top.document).val('"+PortalTools.getInstance().getMessage("upload.invalid")+"');$('#alertError', top.document).click()");
 		} else {
 			
 			FileItemFactory factory = new DiskFileItemFactory();
@@ -136,7 +136,7 @@ public class ProductBusinessImpl implements ProductBusiness {
 					String domainName = itemName.substring(IndexOf);
 					
 					if (!domainName.toLowerCase().equals(".jpg") && !domainName.toLowerCase().equals(".png") && !domainName.toLowerCase().equals(".jpeg") ) {
-						response.getWriter().print("<html><head><script src=\"/library/js/jquery-1.8.3.min.js\"></script><script>$('#alertError', top.document).val('"+PortalTools.getInstance().getMessage("file.invalid")+"');$('#alertError', top.document).click()</script></head><body></body></html>");
+						response.getWriter().print("$('#alertError', top.document).val('"+PortalTools.getInstance().getMessage("file.invalid")+"');$('#alertError', top.document).click()");
 					} else {
 						String finalimage = (new Date().getTime())+domainName;
 						
@@ -148,7 +148,7 @@ public class ProductBusinessImpl implements ProductBusiness {
 						
 						String locationUrl = "/ecommerce/"+ConvertTools.getInstance().normalizeString(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getName())+"/upload/"+finalimage;
 						
-						String reponseText = "<html><head><script src=\"/library/js/jquery-1.8.3.min.js\"></script><script src=\"/library/js/uploadAdmin.js\"></script><script>upload('"+locationUrl+"');</script></head><body></body></html>";
+						String reponseText = "uploadSet('"+locationUrl+"');";
 						
 						response.getWriter().print(reponseText);
 					}

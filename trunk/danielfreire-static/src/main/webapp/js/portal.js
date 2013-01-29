@@ -43,7 +43,7 @@ function loadHeaderGeneric(logoHtml, homeUrl) {
 			if (getDomain()=='localhost:8080') {
 				html += '<li id="'+val.keyUrl+'"><a href="/ecommerce/'+getPortalContext()+'/category/?key='+val.keyUrl+'">'+val.name+'</a></li>';
 			} else {
-				html += '<li id="'+val.keyUrl+'"><a href="/ecommerce/'+getPortalContext()+'/category/'+val.keyUrl+'">'+val.name+'</a></li>';
+				html += '<li id="'+val.keyUrl+'"><a href="/ecommerce/'+getPortalContext()+'/department/'+val.keyUrl+'">'+val.name+'</a></li>';
 			}
 		});
 		
@@ -184,7 +184,7 @@ function loadProducts(category, search, page) {
 				coll = val.product;
 			}
 			
-			var img = coll.images.split('[LIN]')[0].split('-')[1];
+			var img = coll.images.split('[LIN]')[0].split('[COL]')[1];
 			
 			if (i==1 || i==4 || i==7) {
 				html+='<div class="row" style="padding-top: 20px;">';
@@ -194,7 +194,7 @@ function loadProducts(category, search, page) {
 			if (getDomain()=='localhost:8080') {
 				linkA += '<a href="/ecommerce/'+getPortalContext()+'/product/?pid='+coll.keyUrl+'">';
 			} else {
-				linkA += '<a href="/ecommerce/'+getPortalContext()+'/product/'+coll.keyUrl+'">';
+				linkA += '<a href="/ecommerce/'+getPortalContext()+'/products/'+coll.keyUrl+'">';
 			}
 			
 			html += '<div class="span3">'+linkA;
@@ -267,7 +267,7 @@ function loadDetailProduct(product) {
 		    html += 				'<div class="carousel-inner">';
 		    var images = data.images.split('[LIN]');
 		    for (var i=0; i<images.length; i++) {
-		    	var image = images[i].split('-');
+		    	var image = images[i].split('[COL]');
 		    	
 		    	if (image[0]=='1') {
 		    		html += '<div class="active item"><div><img class="imgDetail" src="'+image[1]+'" alt="'+data.introduction+'" data-zoom-image="'+image[1]+'" /></div></div>';
@@ -1001,7 +1001,7 @@ function myCart() {
 				var vTotal = 0.0;
 				$.each(data.generic.cart, function(key, val) {
 					html += '<tr>';
-					html += 	'<td style="width: 90px;"><img src="'+val.images.split('[LIN]')[0].split('-')[1]+'" width="80" style="width: 80px;" /></td>';
+					html += 	'<td style="width: 90px;"><img src="'+val.images.split('[LIN]')[0].split('[COL]')[1]+'" width="80" style="width: 80px;" /></td>';
 					html += 	'<td><strong>'+val.name+'</strong> '+val.introduction.toString().substring(0,80)+' [...]<br><small><a href="#" style="color" onclick="removeItem(\''+val.id+'\');"><i class="icon-remove"></i> Remover</a></small></td>';
 					html += 	'<td style="text-align: center;" id="tdQtdPdt">';
 					if (val.quantity>0) {

@@ -27,7 +27,7 @@ public class SessionAdminInterceptor extends HandlerInterceptorAdapter {
 		try {
 			final String uri = request.getRequestURI();
 			
-			if (!uri.contains("/admin/login")) {
+			if (!uri.contains("/admin/login") && !uri.contains("/admin/logout")) {
 				ClientAdmin client = EcommerceUtil.getInstance().getSessionAdmin(request);
 				if (client!=null) {
 					return new GenericResponse();

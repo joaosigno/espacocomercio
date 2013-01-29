@@ -41,10 +41,10 @@ public class MailUtil {
         tr.close();
 	}
 	
-	public void newUser(String to, String name, String pass, String contextId) {
+	public void newUser(String to, String name, String pass, String sidd, String contextId) {
 		try {
-			final Integer sid = Integer.parseInt(PortalTools.getInstance().Decode(PortalTools.getInstance().getEcommerceProperties(contextId+".site.id")));
-			final String key = PortalTools.getInstance().Encode(to + "[SEP]" + sid);
+			final Integer siteId = Integer.parseInt(PortalTools.getInstance().Decode(sidd));
+			final String key = PortalTools.getInstance().Encode(to + "[SEP]" + siteId);
 			final String urlActivation = PortalTools.getInstance().getEcommerceProperties("url.activation.client") + "?key=" + key; 
 			
 			FileReader fileReader = new FileReader(PortalTools.getInstance().getEcommerceProperties("location.email.template") + "/new_client.html");

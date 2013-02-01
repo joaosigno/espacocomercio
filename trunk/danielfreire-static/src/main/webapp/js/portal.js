@@ -270,7 +270,7 @@ function loadDetailProduct(product) {
 		    	var image = images[i].split('[COL]');
 		    	
 		    	if (image[0]=='1') {
-		    		html += '<div class="active item"><div><img class="imgDetail" src="'+image[1]+'" alt="'+data.introduction+'" data-zoom-image="'+image[1]+'" /></div></div>';
+		    		html += '<div class="active item"><div><img class="imgDetail" src="'+image[1]+'" alt="'+data.introduction+'" data-zoom-image="'+image[1].substring(0,image[1].length-4)+"_original"+image[1].substring(image[1].length-4,image[1].length)+'" /></div></div>';
 		    	} else {
 		    		html += '<div class="item"><div><img src="'+image[1]+'" alt="'+data.introduction+'" class="imgDetail" data-zoom-image="'+image[1]+'" /></div></div>';
 		    	}

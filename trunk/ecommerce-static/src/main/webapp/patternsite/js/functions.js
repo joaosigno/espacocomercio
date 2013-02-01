@@ -3,7 +3,7 @@ function loadFooter() {
 }
 
 function loadHeader() {
-	loadHeaderGeneric('<img src="/ecommerce/dress-up/img/dress-up.jpg" alt="${altBanner}" />', '${urlHome}');
+	loadHeaderGeneric('<img src="${logo}" alt="${altBanner}" />', '${urlHome}');
 }
 
 function getSid() {

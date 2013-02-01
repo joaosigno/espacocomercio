@@ -18,6 +18,8 @@ public class Site extends AbstractPersistable<Integer> {
 	private String description;
 	@Column(name="facebook", length=255)
 	private String facebook;
+	@Column(name="logo", length=255)
+	private String logo;
 	
 	public Site() {
 		// TODO Auto-generated constructor stub
@@ -46,6 +48,14 @@ public class Site extends AbstractPersistable<Integer> {
 
 	public void setFacebook(String facebook) {
 		this.facebook = facebook;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 	
 	

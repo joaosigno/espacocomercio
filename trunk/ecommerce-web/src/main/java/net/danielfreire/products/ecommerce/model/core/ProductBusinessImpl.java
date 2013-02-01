@@ -1,5 +1,6 @@
 package net.danielfreire.products.ecommerce.model.core;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -140,12 +142,22 @@ public class ProductBusinessImpl implements ProductBusiness {
 					} else {
 						String finalimage = (new Date().getTime())+domainName;
 						
-						File savedFile = 
-								new File(PortalTools.getInstance().getEcommerceProperties("location.generatesite")+
+						String photoFile = PortalTools.getInstance().getEcommerceProperties("location.generatesite")+
 								"/"+ConvertTools.getInstance().normalizeString(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getName())+
-								"/upload/"+finalimage);
+								"/upload/"+finalimage;
+						
+						File savedFile = new File(photoFile);
 						item.write(savedFile);
 						
+						final String extension = photoFile.substring(photoFile.lastIndexOf(".") + 1);
+						final String newPhtoFile = photoFile.replace(domainName, "") + "_original" + domainName;
+						BufferedImage img = ConvertTools.getInstance().RedimensionImage(photoFile,1000,900);
+					    ImageIO.write(img,extension,new File(newPhtoFile)); 
+						
+						savedFile.delete();
+						img = ConvertTools.getInstance().RedimensionImage(newPhtoFile,190,160);
+					    ImageIO.write(img,extension,new File(photoFile)); 
+					    
 						String locationUrl = "/ecommerce/"+ConvertTools.getInstance().normalizeString(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getName())+"/upload/"+finalimage;
 						
 						String reponseText = "uploadSet('"+locationUrl+"');";

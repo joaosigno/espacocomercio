@@ -48,6 +48,16 @@
 					</div>
 				</div>
 				<div class="control-group">
+					<label class="control-label">Logo-tipo:</label>
+					<div class="controls">
+						<a href="#" onclick="upload();">
+							<img id="iposition" src="/library/img/imgfoto.png" class="img-rounded" width="128" height="131">
+						</a>
+						<input name="logo" type="hidden" class="input-block-level" placeholder="LOGO…" maxlength="255">
+						<span id="spanError-logo" class="help-inline"></span>
+					</div>
+				</div>
+				<div class="control-group">
 					<div class="controls">
 						<button type="button" class="btn btn-primary" onclick="postJson('update', '/ecommerce-web/admin/site/save', $('form').serialize());">Salvar</button>
 					</div>
@@ -56,12 +66,21 @@
 		</div>
  		
  		<div id="footer"></div>
+ 		
+ 		<div style="display: none;">
+ 			<form action="/ecommerce-web/admin/site/upload" id="form_upload" enctype="multipart/form-data" method="post">
+ 				<input type="file" name="uploadFile" id="uploadFile" accept="image/*">
+ 				<input type="button" id="alertError" onclick="alert(this.value, false)">
+ 			</form>
+ 			<div id="upload_target"></div>
+ 		</div>
    
  	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
 		<script src="/library/js/bootstrap.min.js"></script>
 
 		<script src="/library/js/functions.js" charset="utf-8"></script>
 		<script src="/library/js/admin.js" charset="utf-8"></script>
+		<script src="/library/js/jquery.form.js"></script>
 
 		<script>
 			loadMenuEcommerce();
@@ -80,6 +99,23 @@
 			
 			function generateExibicao() {
 				$('span#nameSiteWeb').text(normalizeStringToURL($('input[name=name]').val()));
+			}
+			
+			function upload() {
+				$('input#uploadFile').click();
+			}
+			
+			$('#uploadFile').live('change', function(){
+				//$('#visualizar').html('<img src="ajax-loader.gif" alt="Enviando..."/> Enviando...');
+				$('#form_upload').ajaxForm({
+					dataType: 'script',
+					target:'#upload_target'
+				}).submit();
+		     });
+			
+			function uploadSet(urlImg) {
+				$('#iposition').attr('src', '/ecommerce/temp/'+urlImg);
+				$('input[name=logo]').val(urlImg);
 			}
 		</script>
  	</body>

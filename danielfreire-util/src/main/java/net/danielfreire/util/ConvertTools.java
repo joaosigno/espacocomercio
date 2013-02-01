@@ -1,5 +1,7 @@
 package net.danielfreire.util;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +20,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
 
 public class ConvertTools {
 	
@@ -386,4 +390,14 @@ public class ConvertTools {
 		printWriter.flush();
 		printWriter.close();
 	}
+	
+	public BufferedImage RedimensionImage(String caminho ,int w, int h) throws IOException {  
+		BufferedImage fundo = null, image = null;  
+	    fundo = ImageIO.read(new File(caminho));  
+        image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);  
+        Graphics g = image.getGraphics();  
+        g.drawImage(fundo.getScaledInstance(w,h,10000), 0, 0, null);
+        
+        return image;  
+   }
 }

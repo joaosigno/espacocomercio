@@ -5,39 +5,27 @@
 		<title>Publicidade</title>
 	</head>
 	<body>
-	<div id="pub1" style="display: none;">
-		<!-- LOMADEE - BEGIN -->
-		<script type="text/javascript" language="javascript">
-			lmd_source="25801661";
-			lmd_si="33492606";
-			lmd_pu="22472342";
-			lmd_c="BR";
-			lmd_wi="160";
-			lmd_he="600";
-		</script>
-		<script src="http://image.lomadee.com/js/ad_lomadee.js" type="text/javascript" language="javascript"></script>
-		<!-- LOMADEE - END -->
-	</div>
-	<div id="pub2" style="display: none;">
-		<!-- LOMADEE - BEGIN -->
-		<script type="text/javascript" language="javascript">
-			lmd_source="25801689";
-			lmd_si="33492606";
-			lmd_pu="22472342";
-			lmd_c="BR";
-			lmd_wi="160";
-			lmd_he="600";
-		</script>
-		<script src="http://image.lomadee.com/js/ad_lomadee.js" type="text/javascript" language="javascript"></script>
-		<!-- LOMADEE - END -->
-	</div>
-	
-	<script>
-		if (new Date().getHours() % 2 == 0) {
-			document.getElementById('pub1').style.display="block";
-		} else {
-			document.getElementById('pub2').style.display="block";
+	<script type="text/javascript" language="javascript">
+		function get() {
+			var n = numberAleatorio(1,1);
+			
+			var resp = new Array();
+			
+			if (n==1) {
+				resp[0] = "25824248";
+				resp[1] = "33696382";
+				resp[2] = "22472342";
+			}
 		}
+	
+		var resp = get();
+		lmd_source=resp[0];
+		lmd_si=resp[1];
+		lmd_pu=resp[2];
+		lmd_c="BR";
+		lmd_wi="160";
+		lmd_he="600";
 	</script>
+	<script src="http://image.lomadee.com/js/ad_lomadee.js" type="text/javascript" language="javascript"></script>
 	</body>
 </html>

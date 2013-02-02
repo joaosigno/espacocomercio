@@ -318,11 +318,11 @@ public class ProductBusinessImpl implements ProductBusiness {
 			}
 			
 			if (!exist) {
-				list.add(new Product(productId));
+				list.add(new Product(productId, Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")))));
 			}
 		} else {
 			list = new ArrayList<Product>();
-			list.add(new Product(productId));
+			list.add(new Product(productId, Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")))));
 		}
 		
 		request.getSession().setAttribute(PortalTools.getInstance().idCartSession, list);
@@ -336,9 +336,12 @@ public class ProductBusinessImpl implements ProductBusiness {
 		GenericResponse resp = new GenericResponse();
 		
 		ArrayList<Product> list = new ArrayList<Product>();
-		for (Product p : (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().idCartSession)) {
-			Product product = repository.findOne(p.getId());
-			list.add(product);
+		final ArrayList<Product> listSession = (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().idCartSession);
+		for (Product p : listSession) {
+			if (p.getSite().getId()==Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")))) {
+				Product product = repository.findOne(p.getId());
+				list.add(product);
+			}
 		}
 		
 		HashMap<String, Object> ret = new HashMap<String, Object>();

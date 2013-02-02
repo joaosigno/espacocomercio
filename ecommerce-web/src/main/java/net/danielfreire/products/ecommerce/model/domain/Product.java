@@ -50,6 +50,12 @@ public class Product extends AbstractPersistable<Integer> {
 		super.setId(id);
 	}
 	
+	public Product(Integer id, Integer sid) {
+		super();
+		super.setId(id);
+		setSite(new Site(sid));
+	}
+	
 	public String getName() {
 		return name;
 	}

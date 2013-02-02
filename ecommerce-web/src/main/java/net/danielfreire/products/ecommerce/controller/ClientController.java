@@ -1,6 +1,9 @@
 package net.danielfreire.products.ecommerce.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.danielfreire.products.ecommerce.model.core.ClientEcommerceBusiness;
 import net.danielfreire.util.GenericResponse;
@@ -45,6 +48,20 @@ public class ClientController {
 			return business.list(request);
 		} catch (Exception e) {
 			return PortalTools.getInstance().getRespError(e);
+		}
+	}
+	
+	@RequestMapping(value="/active", method = RequestMethod.GET)
+	public void active(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			business.active(request, response);
+		} catch (Exception e) {
+			PortalTools.getInstance().getRespError(e);
+			try {
+				response.getWriter().print("<html><head><title>Sistema indisponivel</title></head><body><script>alert('Sistema indisponível no momento, tente em alguns minutos.');</script></body></html>");
+			} catch (IOException e1) {
+				PortalTools.getInstance().getRespError(e);
+			}
 		}
 	}
 

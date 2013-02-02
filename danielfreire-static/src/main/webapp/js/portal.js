@@ -965,7 +965,7 @@ function addCart(productId, toView) {
 		toView = false;
 	}
 	
-	$.post('/ecommerce-web/addCart', {'pid' : productId}, function(data){
+	$.post('/ecommerce-web/addCart', {'pid' : productId, 'sid' : getSid()}, function(data){
 		if (data.status) {
 			loadHeader();
 			if (!toView) {
@@ -980,7 +980,7 @@ function addCart(productId, toView) {
 }
 
 function myCart() {
-	$.getJSON( '/ecommerce-web/mycart?&tk='+new Date().getTime(),  function(data) {
+	$.getJSON( '/ecommerce-web/mycart?sid='+getSid()+'&tk='+new Date().getTime(),  function(data) {
 		if (data.status) {
 
 			if (data.generic.cart!=null && data.generic.cart.length>0) {

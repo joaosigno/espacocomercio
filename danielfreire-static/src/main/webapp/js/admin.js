@@ -655,7 +655,7 @@ function alert(msg, success) {
 }
 
 function loadMenuEcommerce() {
-	$.getJSON('/ecommerce-web/admin/menu', function(data) {
+	$.getJSON('/ecommerce-web/admin/menu?tk='+new Date().getTime(), function(data) {
 		if (data.status) {
 			loadMenu('/ecommerce/admin/menu'+data.generic[0]+'.json', false, data.generic[1], data.generic[2]);
 		} else {

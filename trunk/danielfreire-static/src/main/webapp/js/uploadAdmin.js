@@ -1,13 +1,13 @@
 function uploadSet(urlImg) {
-	var position = $('#positionFile', top.document).val();
+	var position = $('#positionFile').val();
 	
-	$('#iposition'+position, top.document).attr('src', urlImg); 
-	$('#resetUpload', top.document).click();
+	$('#iposition'+position).attr('src', urlImg); 
+	$('#resetUpload').click();
 	
 	var division = '[LIN]';
 	var divisionCol = '[COL]';
 	
-	var images = $('#imagesForm', top.document).val();
+	var images = $('#imagesForm').val();
 	var image = new Array();
 	
 	if (images!=undefined && images!=null && images!='') {
@@ -53,6 +53,6 @@ function uploadSet(urlImg) {
 		}
 	}
 	
-	$('#imagesForm', top.document).val(finalValue);
+	$('#imagesForm').val(finalValue);
 	
 }

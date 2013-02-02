@@ -1,0 +1,36 @@
+<project name="jboss-config" default="deploy" basedir="../jboss-config">
+
+	<property name="server" location="/home/danielfreire/Developer/server/jboss-5.1.0.GA/server/default"/>
+	
+	<target name="espacocomercio.com.br">
+		<copy todir="${server}/lib">
+			<fileset dir="espacocomercio.com.br/lib">
+				<include name="**"/>
+			</fileset>
+		</copy>
+        <copy todir="${server}/conf">
+			<fileset dir="espacocomercio.com.br/conf">
+				<include name="**"/>
+			</fileset>
+		</copy>
+		<copy todir="${server}/deploy">
+			<fileset dir="espacocomercio.com.br/deploy">
+				<include name="**"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="deploy" depends="espacocomercio.com.br">
+        <copy todir="${server}/conf" overwrite="true">
+			<fileset dir="devLinux1/conf">
+				<include name="**"/>
+			</fileset>
+		</copy>
+		<copy todir="${server}/deploy" overwrite="true">
+			<fileset dir="devLinux1/deploy">
+				<include name="**"/>
+			</fileset>
+		</copy>
+	</target>
+	
+</project>

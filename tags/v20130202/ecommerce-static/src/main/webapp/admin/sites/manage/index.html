@@ -1,0 +1,122 @@
+<!DOCTYPE html>	
+<html lang="pt">
+	<head>
+		<meta charset="utf-8">
+		<title>Administração</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="/library/css/admin.css" rel="stylesheet">
+ 	</head>
+ 	<body>
+ 	
+		<div id="menu"></div>
+ 		
+		<div class="container">
+			<ul class="breadcrumb">
+				<li>Resumo <span class="divider">/</span></li>
+				<li>E-commerce <span class="divider">/</span></li>
+				<li class="active">Sites</li>
+			</ul>
+			
+			<form class="form-horizontal" style="display: block">
+				<div class="control-group">
+					<label class="control-label">Nome do site:</label>
+					<div class="controls">
+						<input name="name" type="text" class="span3" placeholder="Nome do site…" maxlength="45" onblur="generateExibicao()" onkeyup="generateExibicao()">
+						<span id="spanError-name" class="help-inline"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">Exibição:</label>
+					<div class="controls">
+						http://www.espacocomercio.com.br/ecommerce/<span id="nameSiteWeb" style="color: darkgreen;"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">Descrição:</label>
+					<div class="controls">
+						<input name="description" type="text" class="input-block-level" placeholder="Descrição do site…" maxlength="255">
+						<span id="spanError-description" class="help-inline"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">Facebook:</label>
+					<div class="controls">
+						<input name="facebook" type="text" class="input-block-level" placeholder="URL da fã page…" maxlength="255">
+						<span id="spanError-facebook" class="help-inline"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">Logo-tipo:</label>
+					<div class="controls">
+						<a href="#" onclick="upload();">
+							<img id="iposition" src="/library/img/imgfoto.png" class="img-rounded" width="128" height="131">
+						</a>
+						<input name="logo" type="hidden" class="input-block-level" placeholder="LOGO…" maxlength="255">
+						<span id="spanError-logo" class="help-inline"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="button" class="btn btn-primary" onclick="postJson('update', '/ecommerce-web/admin/site/save', $('form').serialize());">Salvar</button>
+					</div>
+				</div>
+			</form>
+		</div>
+ 		
+ 		<div id="footer"></div>
+ 		
+ 		<div style="display: none;">
+ 			<form action="/ecommerce-web/admin/site/upload" id="form_upload" enctype="multipart/form-data" method="post">
+ 				<input type="file" name="uploadFile" id="uploadFile" accept="image/*">
+ 				<input type="button" id="alertError" onclick="alert(this.value, false)">
+ 			</form>
+ 			<div id="upload_target"></div>
+ 		</div>
+   
+ 	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
+		<script src="/library/js/bootstrap.min.js"></script>
+
+		<script src="/library/js/functions.js" charset="utf-8"></script>
+		<script src="/library/js/admin.js" charset="utf-8"></script>
+		<script src="/library/js/jquery.form.js"></script>
+
+		<script>
+			loadMenuEcommerce();
+			loadFooter();
+			
+			function callback(id, data) {
+				if (data.status) {
+					if (id=='update') {
+						alert("Site criado com sucesso.", true);
+						$('button[type="reset"]').click();
+					}
+				} else {
+					errorForm(data, '/ecommerce');
+				}
+			}
+			
+			function generateExibicao() {
+				$('span#nameSiteWeb').text(normalizeStringToURL($('input[name=name]').val()));
+			}
+			
+			function upload() {
+				$('input#uploadFile').click();
+			}
+			
+			$('#uploadFile').live('change', function(){
+				//$('#visualizar').html('<img src="ajax-loader.gif" alt="Enviando..."/> Enviando...');
+				$('#form_upload').ajaxForm({
+					dataType: 'script',
+					target:'#upload_target'
+				}).submit();
+		     });
+			
+			function uploadSet(urlImg) {
+				$('#iposition').attr('src', '/ecommerce/temp/'+urlImg);
+				$('input[name=logo]').val(urlImg);
+			}
+		</script>
+ 	</body>
+ </html>

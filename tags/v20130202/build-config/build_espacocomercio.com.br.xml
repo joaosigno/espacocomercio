@@ -1,0 +1,55 @@
+<project name="espacocomercio.com.br" default="all" basedir="../">
+
+	<property name="server" location="174.142.99.141"/>
+	<property name="usr" location="espacoco"/>
+	<property name="jboss_home" location="/home/espacoco/appservers/jboss-5x/server/default"/>
+	<property name="apache_home" location="/home/espacoco/www"/>
+	
+	<target name="builds">
+		<exec executable="/bin/sh" failonerror="true" dir="danielfreire-util">
+			<arg value="-c" />
+			<arg value="mvn clean install" />
+		</exec>
+		<exec executable="/bin/sh" failonerror="true" dir="danielfreire-static">
+			<arg value="-c" />
+			<arg value="mvn clean install" />
+		</exec>
+		<exec executable="/bin/sh" failonerror="true" dir="ecommerce-static">
+			<arg value="-c" />
+			<arg value="mvn clean install" />
+		</exec>
+		<exec executable="/bin/sh" failonerror="true" dir="ecommerce-web">
+			<arg value="-c" />
+			<arg value="mvn clean install" />
+		</exec>
+	</target>
+	
+	<target name="all" depends="builds">
+		<exec executable="/bin/sh" failonerror="true" dir="danielfreire-util">
+			<arg value="-c" />
+			<arg value="scp -r ./target/danielfreire-util.jar espacoco@174.142.99.141:/home/espacoco/appservers/jboss-5x/server/default/lib" />
+		</exec>
+		<echo message="danielfreire-util - success"/>
+		<exec executable="/bin/sh" failonerror="true" dir="danielfreire-static">
+			<arg value="-c" />
+			<arg value="scp -r ./target/library/* espacoco@174.142.99.141:/home/espacoco/www/library/" />
+		</exec>
+		<echo message="danielfreire-static - success"/>
+		<exec executable="/bin/sh" failonerror="true" dir="ecommerce-static">
+			<arg value="-c" />
+			<arg value="scp -r ./target/ecommerce/* espacoco@174.142.99.141:/home/espacoco/www/ecommerce/" />
+		</exec>
+		<echo message="ecommerce-static - success"/>
+		<exec executable="/bin/sh" failonerror="true" dir="ecommerce-web">
+			<arg value="-c" />
+			<arg value="scp -r target/ecommerce-web/* espacoco@174.142.99.141:/home/espacoco/appservers/jboss-5x/server/default/deploy/ecommerce-web.war/" />
+		</exec>
+		<echo message="ecommerce-web - success"/>
+		<exec executable="/bin/sh" failonerror="true" dir="jboss-config">
+			<arg value="-c" />
+			<arg value="scp -r espacocomercio.com.br/* espacoco@174.142.99.141:/home/espacoco/appservers/jboss-5x/server/default/" />
+		</exec>
+		<echo message="jboss-config - success"/>
+	</target>
+	
+</project>

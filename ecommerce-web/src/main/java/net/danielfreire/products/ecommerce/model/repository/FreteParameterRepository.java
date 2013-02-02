@@ -1,5 +1,7 @@
 package net.danielfreire.products.ecommerce.model.repository;
 
+import java.util.List;
+
 import net.danielfreire.products.ecommerce.model.domain.FreteParameter;
 import net.danielfreire.products.ecommerce.model.domain.Site;
 
@@ -12,5 +14,7 @@ public interface FreteParameterRepository extends JpaRepository<FreteParameter, 
 	public Page<FreteParameter> findBySite(Site site, Pageable p);
 	
 	public FreteParameter findBySiteAndState(Site site, String state);
+	
+	public List<FreteParameter> findBySite(Site site);
 
 }

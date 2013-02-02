@@ -205,4 +205,13 @@ public class PortalController {
 		}
 	}
 	
+	@RequestMapping(value="/delivery", method = RequestMethod.GET)
+	public @ResponseBody GenericResponse delivery(HttpServletRequest request) {
+		try {
+			return freteParameterBusiness.delivery(request);
+		} catch (Exception e) {
+			return PortalTools.getInstance().getRespError(e);
+		}
+	}
+	
 }

@@ -152,4 +152,14 @@ public class FreteParameterBusinessImpl implements FreteParameterBusiness {
 		return resp;
 	}
 
+	@Override
+	public GenericResponse delivery(HttpServletRequest request)
+			throws Exception {
+		
+		GenericResponse resp = new GenericResponse();
+		resp.setGeneric(repository.findBySite(new Site(Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid"))))));
+		
+		return resp;
+	}
+
 }

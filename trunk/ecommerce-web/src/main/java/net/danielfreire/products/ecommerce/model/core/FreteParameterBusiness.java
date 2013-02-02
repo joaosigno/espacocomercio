@@ -13,4 +13,6 @@ public interface FreteParameterBusiness {
 	
 	GenericResponse getFrete(HttpServletRequest request) throws Exception;
 
+	GenericResponse delivery(HttpServletRequest request) throws Exception;
+
 }

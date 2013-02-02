@@ -153,6 +153,7 @@
 			}
 			
 			function upload(position) {
+				$('img#iposition'+position).attr('src', '/library/img/imgfotoLoading.png');
 				$('input#positionFile').val(position);
 				$('input#uploadFile').click();
 			}

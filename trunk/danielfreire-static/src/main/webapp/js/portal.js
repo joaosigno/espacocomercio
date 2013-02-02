@@ -15,17 +15,19 @@ function loadHeaderGeneric(logoHtml, homeUrl) {
 		html += 		'<div class="span6"><a href="/ecommerce/'+getPortalContext()+'">';
 		html += 			logoHtml;
 		html += 		'</a></div>';
-		html += 		'<div class="span6">';
-		html += 			'<form class="pull-right" style="padding-top: 45px;">';
-		html += 				'<div class="input-append">';
-		html += 					'<input class="span3" id="appendedInputButton" type="text" placeholder="Pesquisar produtos…">';
-		html += 					'<button class="btn" type="button" onclick="loadProducts(\'\', $(\'#appendedInputButton\').val(), \'\');"><i class="icon-search"></i></button>';
-		html += 				'</div>';
-		html += 			'</form>';
+		html += 		'<div class="span6 hidden-phone">';
+	html += 				'<div class="input-append pull-right" style="padding-top: 45px;">';
+	html += 					'<input class="span3" id="appendedInputButton" type="text" placeholder="Pesquisar produtos…">';
+	html += 					'<button class="btn" type="button" onclick="loadProducts(\'\', $(\'#appendedInputButton\').val(), \'\');" data-loading-text="Processando..."><i class="icon-search"></i></button>';
+	html += 				'</div>';
 		html += 		'</div>';
 		html += 	'</div>';
 		
-		html += 	'<div class="row">';
+		if (location.href.toString().indexOf('/ecommerce/'+getPortalContext()+'/category/') == -1 && location.href.toString().indexOf('/ecommerce/'+getPortalContext()+'/product/')==-1 && location.href.toString().indexOf('/ecommerce/'+getPortalContext()+'/mycart/') == -1) {
+			html += 	'<div class="row">';
+		} else {
+			html += 	'<div class="row hidden-phone">';
+		}
 		html += 		'<div class="span12">';
 		html += 			'<div class="navbar">';
 		html += 				'<div class="navbar-inner">';
@@ -82,7 +84,7 @@ function loadHeaderGeneric(logoHtml, homeUrl) {
 		html += 		'<div class="span6"><a href="/ecommerce/'+getPortalContext()+'">';
 		html += 			logoHtml;
 		html += 		'</a></div>';
-		html += 		'<div class="span6">';
+		html += 		'<div class="span6 hidden-phone">';
 		html += 			'<form class="pull-right" style="padding-top: 45px;">';
 		html += 				'<div class="input-append">';
 		html += 					'<input class="span3" id="appendedInputButton" type="text" placeholder="Pesquisar produtos…">';
@@ -92,7 +94,11 @@ function loadHeaderGeneric(logoHtml, homeUrl) {
 		html += 		'</div>';
 		html += 	'</div>';
 		
-		html += 	'<div class="row">';
+		if (location.href.toString().indexOf('/ecommerce/'+getPortalContext()+'/category/') == -1 && location.href.toString().indexOf('/ecommerce/'+getPortalContext()+'/product/')==-1 && location.href.toString().indexOf('/ecommerce/'+getPortalContext()+'/mycart/') == -1) {
+			html += 	'<div class="row">';
+		} else {
+			html += 	'<div class="row hidden-phone">';
+		}
 		html += 		'<div class="span12">';
 		html += 			'<div class="navbar">';
 		html += 				'<div class="navbar-inner">';
@@ -136,17 +142,16 @@ function loadFooterGeneric(urlQuemSomos, urlPolitica, urlIndique, urlCadastro, u
 	html += 			'<div class="span3 muted" style="padding-top: 20px;">';
 	html += 				'<small><strong>Institucional:</strong></small>';
 	html += 				'<ul class="unstyled">';
-	html += 					'<li><a href="'+urlQuemSomos+'" class="muted"><small>Quem somos</small></a></li>';
-	html += 					'<li><a href="'+urlPolitica+'" class="muted"><small>Política de privacidade e segurança</small></a></li>';
+	html += 					'<li><a href="#" onclick="whoWeAre();" class="muted"><small>Quem somos</small></a></li>';
+	html += 					'<li><a href="#" onclick="privacyPolicy();" class="muted"><small>Política de privacidade e segurança</small></a></li>';
 	html += 					'<li><a href="'+urlIndique+'" class="muted"><small>Indique</small></a></li>';
 	html += 				'</ul>';
 	html += 			'</div>';
 	html += 			'<div class="span3 muted" style="padding-top: 20px;">';
 	html += 				'<small><strong>Atendimento:</strong></small>';
 	html += 				'<ul class="unstyled">';
-	html += 					'<li><a href="'+urlCadastro+'" class="muted"><small>Cadastro</small></a></li>';
-	html += 					'<li><a href="'+urlComocomprar+'" class="muted"><small>Como comprar</small></a></li>';
-	html += 					'<li><a href="'+urlEntrega+'" class="muted"><small>Entrega</small></a></li>';
+	html += 					'<li><a href="#" onclick="$(\'#aLinkMyData\').click()" class="muted"><small>Cadastro</small></a></li>';
+	html += 					'<li><a href="#" onclick="delivery();" class="muted"><small>Entrega</small></a></li>';
 	html += 					'<li><a href="'+urlFaleconosco+'" class="muted"><small>Fale conosco</small></a></li>';
 	html += 				'</ul>';
 	html += 			'</div>';
@@ -157,6 +162,61 @@ function loadFooterGeneric(urlQuemSomos, urlPolitica, urlIndique, urlCadastro, u
 	html += 	'</div>';
 	
 	$('div#footer').html(html);
+}
+
+function privacyPolicy() {
+	if ($('div#divPrivacyPolicy').size()==0) {
+		$('body').append('<div class="modal hide fade" id="divPrivacyPolicy"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3>Política de privacidade</h3></div><div class="modal-body"></div><div class="modal-footer"><a href="#" class="btn btn-primary" data-dismiss="modal">Ok</a></div></div>');
+		
+		var html = '<p>O <strong>Espaçocomercio.com.br</strong> tem o compromisso com a privacidade e a segurança de seus clientes durante todo o processo de navegação e compra pelo site. Os dados cadastrais dos clientes não são vendidos, trocados ou divulgados para terceiros, exceto quando essas informações são necessárias para o processo de entrega, para cobrança, ou para participação em promoções solicitadas pelos clientes. Seus dados pessoais são peça fundamental para que seu pedido chegue em segurança, na sua casa, de acordo com nosso prazo de entrega.</p>';
+		html += '<p>O <em>'+getPortalContext()+'</em> (Site afiliado ao espacocomercio.com.br) utiliza cookies e informações de sua navegação (sessão do browser) com o objetivo de traçar um perfil do público que visita o site e aperfeiçoar sempre nossos serviços, produtos, conteúdos e garantir as melhores ofertas e promoções para você. Durante todo este processo mantemos suas informações em sigilo absoluto. Vale lembrar que seus dados são registrados pelo <em>'+getPortalContext()+'</em> de forma automatizada, dispensando manipulação humana.</p>';
+		html += '<p>Para que estes dados permaneçam intactos, nós desaconselhamos expressamente a divulgação de sua senha a terceiros, mesmo a amigos e parentes.</p>';
+		
+		$('div#divPrivacyPolicy').find('.modal-body').html(html);
+	}
+	
+	$('div#divPrivacyPolicy').modal('show');
+}
+
+function whoWeAre() {
+	if ($('div#divWhoWeAre').size()==0) {
+		$('body').append('<div class="modal hide fade" id="divWhoWeAre"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3>Quem somos</h3></div><div class="modal-body"></div><div class="modal-footer"><a href="#" class="btn btn-primary" data-dismiss="modal">Ok</a></div></div>');
+		
+		var html = '<p>O espacocomercio.com.br é uma empresa do grupo <a href="http://danielfreire.net"><em>Daniel Freire</em></a> focada no desenvolvimento de soluções para e-commerce, tendo como diferencial a facilidade de uso de seus produtos.</p>';
+		html += '<p>O <em>'+getPortalContext()+'</em> (Site afiliado ao espacocomercio.com.br) é um site exclusivo para vendas on-line.</p>';
+		
+		$('div#divWhoWeAre').find('.modal-body').html(html);
+	}
+	
+	$('div#divWhoWeAre').modal('show');
+}
+
+function delivery() {
+	t = true;
+	if ($('div#divDelivery').size()==0) {
+		t = false;
+		
+		$.getJSON( '/ecommerce-web/delivery?sid='+getSid()+'&tk'+new Date().getTime(), function(data) {
+			$('body').append('<div class="modal hide fade" id="divDelivery"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3>Entrega de produtos</h3></div><div class="modal-body"></div><div class="modal-footer"><a href="#" class="btn btn-primary" data-dismiss="modal">Ok</a></div></div>');
+			
+			var html = '<p>Veja abaixo a lista dos estados aptos a receber os produtos deste site e seus respectivos valores:</p>';
+			
+			html += '    <dl class="dl-horizontal">';
+			$.each(data.generic, function(key, val) {
+				html += '    	<dt>'+val.state+'</dt>';
+				html += '    	<dd>R$ '+convertMoeda(val.value)+' - Prazo: '+val.quantityDay+' dia(s)</dd>';
+			});
+			html += '    </dl>';
+			
+			$('div#divDelivery').find('.modal-body').html(html);
+			
+			$('div#divDelivery').modal('show');
+		});
+	}
+	
+	if (t) {
+		$('div#divDelivery').modal('show');
+	}
 }
 
 function loadProducts(category, search, page) {
@@ -205,9 +265,9 @@ function loadProducts(category, search, page) {
 			html += '<small>&nbsp;&nbsp;'+coll.introduction+'</small>';
 			html += '</p>';
 			if (coll.quantity > 0) {
-				html += '<h4><span class="text-warning pull-right">R$ '+convertMoeda(coll.unityvalue)+'</span></h4>';
+				html += '<h4><span class="text-warning">R$ '+convertMoeda(coll.unityvalue)+'</span></h4>';
 			} else {
-				html += '<h4><span class="text-warning pull-right">Produto indisponível</span></h4>';
+				html += '<h4><span class="text-warning">Produto indisponível</span></h4>';
 			}
 			html += '</a></div>';
 			
@@ -281,7 +341,7 @@ function loadDetailProduct(product) {
 		    html += 			'</div>';
 			html += 		'</div>';
 			html += 		'<div class="span6" style="text-align: left;">';
-			html +=				'<table class="table table-bordered"><tr><td>';
+			html +=				'<table class="table table-bordered hidden-phone"><tr><td>';
 			html +=						'<h3>Por: R$ '+convertMoeda(data.unityvalue)+'</h3>';
 			html +=						'<h4 style="color: #C09853;">18x de R$ '+convertMoeda((data.unityvalue/18))+' sem juros</h4>';
 			html += 				'</td><td style="border-left: 0px; text-align:right" width="35%">';
@@ -301,6 +361,32 @@ function loadDetailProduct(product) {
 				html += 	'<div id="divQuantityDay" style="text-align: left"></div>';
 				html +=	'</td></tr></table>';
 			}
+			
+			//Apenas Mobile
+			html +=				'<table class="table table-bordered visible-phone"><tr><td>';
+			html +=						'<h3>Por: R$ '+convertMoeda(data.unityvalue)+'</h3>';
+			html +=						'<h4 style="color: #C09853;">18x de R$ '+convertMoeda((data.unityvalue/18))+' sem juros</h4>';
+			html += 				'</td></tr><tr><td style="text-align:right">';
+			if (data.quantity>0) {
+				html +=	'<button class="btn btn-large btn-danger btn-block" type="button" onclick="addCart(\''+data.id+'\', true)"><i class="icon-play icon-white"></i> comprar</button>';
+				html +=	'<button class="btn btn-large btn-block" type="button" onclick="addCart(\''+data.id+'\', false)"><i class="icon-shopping-cart"></i> adicionar ao carrinho</button>';
+			}
+			if (data.quantity<=0) {
+				html +=	'</td></tr><tr style="background-color: #D3D3D3; color:red"><td><strong>Produto indisponível</strong></td></tr></table>';
+			} else {
+				html +=	'</td></tr><tr style="background-color: #D3D3D3"><td>';
+				html += 	'<div style="color: white; text-align: left">';
+				html += 		'<label><strong>Consulte o prazo de entrega do pedido: </strong></label>';
+				html += 	'</div>';
+				html += 	'<div class="input-append" style="color: white; text-align: left">';
+				html += 		'<input type="text" name="cepToFrete" placeholder="CEP" class="span2">';
+				html += 		'<button id="btnFreteCalc" class="btn" type="button" onclick="calcFrete();" data-loading-text="Processando...">Calcular</button>';
+				html += 	'</div>';
+				html += 	'<div id="divQuantityDay" style="text-align: left"></div>';
+				html +=	'</td></tr></table>';
+			}
+			//Apenas Mobile
+			
 			html += 		'</div>';
 			html += 	'</div>';
 			

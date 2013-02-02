@@ -32,5 +32,5 @@ function submit() {
 	if ($('select') != undefined) {
 		$('input[name=s]').val($('select').val());
 	}
-	postJson(0, "/ecommerce-web/admin/login", $('form').serialize());
+	postJson(0, "/ecommerce-web/admin/login", $('form').serialize()+"&tk="+new Date().getTime());
 }

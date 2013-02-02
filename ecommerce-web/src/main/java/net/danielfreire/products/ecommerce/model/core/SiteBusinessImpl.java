@@ -179,8 +179,11 @@ public class SiteBusinessImpl implements SiteBusiness {
 		Map<String, String> mapHome = new HashMap<String, String>();
 		mapHome.put("${title}", site.getName());
 		if (!ValidateTools.getInstancia().isNullEmpty(site.getFacebook())) {
-			mapHome.put("${facebook-like}", "<div class=\"fb-like\" data-href=\""+site.getFacebook()+"\" data-send=\"true\" data-layout=\"button_count\" data-show-faces=\"true\"></div>");
+			mapHome.put("${facebook-like}", "<div class=\"fb-like\" data-href=\""+site.getFacebook()+"\" data-send=\"true\" data-layout=\"button_count\" data-show-faces=\"true\"></div><br><br>");
 			mapHome.put("${facebook-conf}", "<div id=\"fb-root\"></div><script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = \"//connect.facebook.net/en_US/all.js#xfbml=1\"; fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>");
+		} else {
+			mapHome.put("${facebook-like}", "");
+			mapHome.put("${facebook-conf}", "");
 		}
 		ConvertTools.getInstance().replaceFile(mapHome, new File(dirTo+"/index.html"));
 		

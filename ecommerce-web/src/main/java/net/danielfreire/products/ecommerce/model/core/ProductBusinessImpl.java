@@ -277,7 +277,7 @@ public class ProductBusinessImpl implements ProductBusiness {
 		} else if (!ValidateTools.getInstancia().isNullEmpty(categoryId)) {
 			pageable = chpRepository.findByCategory(categoryRepository.findByKeyUrlAndSite(categoryId, new Site(Integer.parseInt(siteId))), new PageRequest(pagination, 9, Direction.DESC, "product.datecreate"));
 		} else if (!ValidateTools.getInstancia().isNullEmpty(search)) {
-			
+			pageable = repository.findBySiteAndDescriptionLike(new Site(Integer.parseInt(siteId)), "%"+search+"%", new PageRequest(pagination, 9, Direction.DESC, "datecreate"));
 		}
 		
 		GridResponse grid = new GridResponse();

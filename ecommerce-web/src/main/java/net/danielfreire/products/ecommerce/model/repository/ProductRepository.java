@@ -13,4 +13,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	
 	public Product findByKeyUrlAndSite(String keyUrl, Site site);
 	
+	public Page<Product> findBySiteAndDescriptionLike(Site site, String description, Pageable p);
 }

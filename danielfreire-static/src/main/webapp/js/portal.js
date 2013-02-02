@@ -19,7 +19,7 @@ function loadHeaderGeneric(logoHtml, homeUrl) {
 		html += 			'<form class="pull-right" style="padding-top: 45px;">';
 		html += 				'<div class="input-append">';
 		html += 					'<input class="span3" id="appendedInputButton" type="text" placeholder="Pesquisar produtos…">';
-		html += 					'<button class="btn" type="button" onclick="loadProducts(\'\', $(\"#appendedInputButton\").val(), \'\');"><i class="icon-search"></i></button>';
+		html += 					'<button class="btn" type="button" onclick="loadProducts(\'\', $(\'#appendedInputButton\').val(), \'\');"><i class="icon-search"></i></button>';
 		html += 				'</div>';
 		html += 			'</form>';
 		html += 		'</div>';

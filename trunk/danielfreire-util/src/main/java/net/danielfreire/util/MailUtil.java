@@ -8,6 +8,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -18,13 +19,23 @@ import org.apache.log4j.Logger;
 public class MailUtil {
 
 	private void sendMail(final String subject, final String to, final String text, final String contextId) throws Exception {
-		final String username = PortalTools.getInstance().getEcommerceProperties(contextId+".mail.smtp.user");
-		final String password = PortalTools.getInstance().getEcommerceProperties(contextId+".mail.smtp.password");
-		final String smtp = PortalTools.getInstance().getEcommerceProperties(contextId+".mail.smtp.host");
-		final String from = PortalTools.getInstance().getEcommerceProperties(contextId+".mail.smtp.from");
+		final String username = PortalTools.getInstance().getEcommerceProperties("mail.smtp.user");
+		final String password = PortalTools.getInstance().getEcommerceProperties("mail.smtp.password");
+		final String from = contextId + PortalTools.getInstance().getEcommerceProperties("mail.smtp.from");
 		
 		Properties propriedades = System.getProperties();
-        Session session = Session.getDefaultInstance(propriedades, null);
+		propriedades.put("mail.smtp.auth", PortalTools.getInstance().getEcommerceProperties("mail.smtp.auth"));
+		propriedades.put("mail.smtp.starttls.enable", PortalTools.getInstance().getEcommerceProperties("mail.smtp.starttls.enable"));
+		propriedades.put("mail.smtp.host", PortalTools.getInstance().getEcommerceProperties("mail.smtp.host"));
+		propriedades.put("mail.smtp.port", PortalTools.getInstance().getEcommerceProperties("mail.smtp.port"));
+		
+		Session session = Session.getInstance(propriedades,
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+		});
+		
         MimeMessage msgEmail = new MimeMessage(session);
 
         msgEmail.setFrom(new InternetAddress(from));
@@ -34,14 +45,10 @@ public class MailUtil {
         msgEmail.setSubject(subject);
         msgEmail.setContent(text,"text/html");
 
-        Transport tr = session.getTransport("smtp");
-        tr.connect(smtp, username, password);
-        msgEmail.saveChanges();
-        tr.sendMessage(msgEmail, msgEmail.getAllRecipients());
-        tr.close();
+        Transport.send(msgEmail);
 	}
 	
-	public void newUser(String to, String name, String pass, String sidd, String contextId) {
+	public void newUser(String to, String name, String pass, String sidd, String contextId, String logo, String siteName) {
 		try {
 			final Integer siteId = Integer.parseInt(PortalTools.getInstance().Decode(sidd));
 			final String key = PortalTools.getInstance().Encode(to + "[SEP]" + siteId);
@@ -58,12 +65,12 @@ public class MailUtil {
 			reader.close();
 			
 			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties(contextId+".logo.url"));
+			params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties("url.domain") + logo);
 			params.put("[client.name]", name);
 			params.put("[client.user]", to);
 			params.put("[client.pass]", pass);
-			params.put("[site.name]", PortalTools.getInstance().getEcommerceProperties(contextId+".name"));
-			params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties(contextId+".url"));
+			params.put("[site.name]", siteName);
+			params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties("url.ecommerce")+"/"+contextId);
 			params.put("[activation.location]", urlActivation);
 			
 			Set<String> keys = params.keySet();  
@@ -76,13 +83,13 @@ public class MailUtil {
 	        html = html.replaceAll("  ", "");
 	        html = ConvertTools.getInstance().normalizeEspecialChar(html);
 			
-			sendMail(PortalTools.getInstance().getEcommerceProperties(contextId+".name")+" - Cadastro", to, html, contextId);
+			sendMail(siteName+" - Cadastro", to, html, contextId);
 		} catch (Exception e) {
 			Logger.getLogger(getClass()).error(e);
 		}
 	}
 	
-	public void newPassword(String to, String name, String pass, String contextId) {
+	public void newPassword(String to, String name, String pass, String contextId, String logo, String siteName) {
 		try {
 			FileReader fileReader = new FileReader(PortalTools.getInstance().getEcommerceProperties("location.email.template") + "/new_password.html");
 			BufferedReader reader = new BufferedReader(fileReader);
@@ -95,12 +102,12 @@ public class MailUtil {
 			reader.close();
 			
 			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties(contextId+".logo.url"));
+			params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties("url.domain") + logo);
 			params.put("[client.name]", name);
 			params.put("[client.user]", to);
 			params.put("[client.pass]", pass);
-			params.put("[site.name]", PortalTools.getInstance().getEcommerceProperties(contextId+".name"));
-			params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties(contextId+".url"));
+			params.put("[site.name]", siteName);
+			params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties("url.ecommerce")+"/"+contextId);
 			
 			Set<String> keys = params.keySet();  
 	        for (String chave : keys)  
@@ -112,15 +119,14 @@ public class MailUtil {
 	        html = html.replaceAll("  ", "");
 	        html = ConvertTools.getInstance().normalizeEspecialChar(html);
 			
-			sendMail(PortalTools.getInstance().getEcommerceProperties(contextId+".name")+" - Nova senha", to, html, contextId);
+			sendMail(siteName+" - Nova senha", to, html, contextId);
 		} catch (Exception e) {
 			Logger.getLogger(getClass()).error(e);
 		}
 	}
 	
-	public void activationClient(String to, String name, String contextId) {
+	public void activationClient(String to, String name, String contextId, Integer sid, String logo, String siteName) {
 		try {
-			final Integer sid = Integer.parseInt(PortalTools.getInstance().Decode(PortalTools.getInstance().getEcommerceProperties(contextId+".site.id")));
 			final String key = PortalTools.getInstance().Encode(to + "[SEP]" + sid);
 			final String urlActivation = PortalTools.getInstance().getEcommerceProperties("url.activation.client") + "?key=" + key; 
 			
@@ -135,11 +141,11 @@ public class MailUtil {
 			reader.close();
 			
 			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties(contextId+".logo.url"));
+			params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties("url.domain") + logo);
 			params.put("[client.name]", name);
 			params.put("[client.user]", to);
-			params.put("[site.name]", PortalTools.getInstance().getEcommerceProperties(contextId+".name"));
-			params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties(contextId+".url"));
+			params.put("[site.name]", siteName);
+			params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties("url.ecommerce")+"/"+contextId);
 			params.put("[activation.location]", urlActivation);
 			
 			Set<String> keys = params.keySet();  
@@ -152,7 +158,7 @@ public class MailUtil {
 	        html = html.replaceAll("  ", "");
 	        html = ConvertTools.getInstance().normalizeEspecialChar(html);
 			
-			sendMail(PortalTools.getInstance().getEcommerceProperties(contextId+".name")+" - Ativar cadastro", to, html, contextId);
+			sendMail(siteName+" - Ativar cadastro", to, html, contextId);
 		} catch (Exception e) {
 			Logger.getLogger(getClass()).error(e);
 		}

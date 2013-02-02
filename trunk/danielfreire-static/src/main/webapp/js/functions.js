@@ -885,3 +885,10 @@ function normalizeStringToURL(texto) {
 	
 	return texto;
 }
+
+function numberAleatorio(min,max){
+    numPossibilidades = max - min;
+    aleat = Math.random() * numPossibilidades;
+    aleat = Math.floor(aleat);
+    return parseInt(min) + aleat;
+} 

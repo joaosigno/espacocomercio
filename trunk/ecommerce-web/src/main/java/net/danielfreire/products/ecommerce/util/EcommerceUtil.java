@@ -25,6 +25,7 @@ public class EcommerceUtil {
 	
 	public void sessionAdminUser(HttpServletRequest request, ClientAdmin clientAdmin) {
 		clientAdmin.setPassword("***");
+		request.getSession().removeAttribute(PortalTools.getInstance().idAdminSession);
 		request.getSession().setAttribute(PortalTools.getInstance().idAdminSession, clientAdmin);
 	}
 	

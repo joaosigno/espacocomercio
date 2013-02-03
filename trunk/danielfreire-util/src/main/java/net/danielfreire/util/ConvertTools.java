@@ -15,6 +15,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +23,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
+
+import org.apache.log4j.Logger;
 
 public class ConvertTools {
 	
@@ -36,6 +39,17 @@ public class ConvertTools {
     }
 	
 	public final String LABEL_SEPARATOR_STRING = "---";
+	
+	public Calendar convertDate(String value, String pattern) {
+		try {
+			Calendar now = Calendar.getInstance();
+			now.setTime(new SimpleDateFormat(pattern).parse(value));
+			return now;
+		} catch (Exception e) {
+			Logger.getLogger(ConvertTools.class).error(e);
+			return null;
+		}
+	}
 	
 	/**   
      *  This method print CPF on mask (###.###.###-##)
@@ -86,7 +100,7 @@ public class ConvertTools {
 			
 			return map.get(paramName);
 		} catch (Exception e) {
-			//Logger.getLogger(ConvertTools.class).error(e);
+			Logger.getLogger(ConvertTools.class).error(e);
 		}
 		
 		return null;

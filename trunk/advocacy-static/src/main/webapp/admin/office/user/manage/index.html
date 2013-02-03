@@ -57,50 +57,50 @@
 			    		html += 	'<div class="modal-body">';
 			    		html += 		'<strong>Gerenciamento das configurações do sistema:</strong>&nbsp;';
 			    		if (data.generic.manageOffice) {
-			    			html += 'Permissão completa<br>';
+			    			html += '<span class="text-success">Permissão completa</span><br>';
 						} else {
-							html += 'Sem permissão<br>';
+							html += '<span class="text-error">Sem permissão</span><br>';
 						}
 		    			html += 		'<strong>Gerenciamento dos usuários do sistema:</strong>&nbsp;';
 		    			if (data.generic.manageUser) {
-		    				html += 'Permissão completa<br>';
+		    				html += '<span class="text-success">Permissão completa</span><br>';
 						} else {
-							html += 'Sem permissão<br>';
+							html += '<span class="text-error">Sem permissão</span><br>';
 						}
 	    				html += 		'<strong>Gerenciamento das finanças do escritório:</strong>&nbsp;';
 	    				if (data.generic.manageFinance) {
-	    					html += 'Permissão completa<br>';
+	    					html += '<span class="text-success">Permissão completa</span><br>';
 						} else {
-							html += 'Sem permissão<br>';
+							html += '<span class="text-error">Sem permissão</span><br>';
 						}
     					html += 		'<strong>Gerenciamento dos contratos do escritório:</strong>&nbsp;';
     					if (data.generic.manageContract) {
-    						html += 'Permissão completa<br>';
+    						html += '<span class="text-success">Permissão completa</span><br>';
 						} else {
 							if (data.generic.viewContract) {
-								html += 'Permissão para consultar<br>';
+								html += '<span class="text-warning">Permissão para consultar</span><br>';
 							} else {
-								html += 'Sem permissão<br>';
+								html += '<span class="text-error">Sem permissão</span><br>';
 							}
 						}
 						html += 		'<strong>Gerenciamento das clientes do escritório:</strong>&nbsp;';
 						if (data.generic.manageClient) {
-							html += 'Permissão completa<br>';
+							html += '<span class="text-success">Permissão completa</span><br>';
 						} else {
 							if (data.generic.viewClient) {
-								html += 'Permissão para consultar<br>';
+								html += '<span class="text-warning">Permissão para consultar</span><br>';
 							} else {
-								html += 'Sem permissão<br>';
+								html += '<span class="text-error">Sem permissão</span><br>';
 							}
 						}
 						html += 		'<strong>Gerenciamento dos advogados do escritório:</strong>&nbsp;';
 						if (data.generic.manageLawyer) {
-							html += 'Permissão completa';
+							html += '<span class="text-success">Permissão completa</span>';
 						} else {
 							if (data.generic.manageLawyer) {
-								html += 'Permissão para consultar';
+								html += '<span class="text-warning">Permissão para consultar</span>';
 							} else {
-								html += 'Sem permissão';
+								html += '<span class="text-error">Sem permissão</span>';
 							}
 						}
 						html += 	'</div>';

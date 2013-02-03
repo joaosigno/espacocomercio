@@ -81,15 +81,17 @@ function loadMenu(urlJson, initData, titleAdminPage, userNameAccess) {
 				html += generateItemMenu(key, val);
 			});
 		} else {
-			var i = 1;
-			$.each(raiz.menus, function(key, val) {
+			for (var i = 1; i<=10; i++) {
 				$.each(raiz.menus, function(key2, val2) {
 					if (val2.position == i) {
 						html += generateItemMenu(key2, val2);
 					}
 				});
-				i++;
-			});
+			}
+		}
+		
+		if (userNameAccess=='' && raiz.username!=undefined && raiz.username!=null && raiz.username!='') {
+			userNameAccess = raiz.username;
 		}
 			
 		html += 				'</ul>';
@@ -666,7 +668,7 @@ function loadMenuEcommerce() {
 }
 
 function loadMenuAdvocacy() {
-	loadMenu('/advocacy-web/admin/menu', true, '', '');
+	loadMenu('/advocacy-web/admin/menu?tk='+new Date().getTime(), true, '', '');
 }
 
 function getLblPermissions(id) {

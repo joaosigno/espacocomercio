@@ -1,6 +1,6 @@
 $("#btnLogin").click(function(){
 	$(this).button('loading');
-	postJson(0, "/advocacy-web/login", $('form').serialize());
+	postJson(0, "/advocacy-web/login", $('form').serialize()+"&tk="+new Date().getTime());
 });
 
 function callback(id, data) {

@@ -2,9 +2,17 @@ package net.danielfreire.products.advocacy.model.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.danielfreire.products.advocacy.model.core.menu.MenuClient;
+import net.danielfreire.products.advocacy.model.core.menu.MenuContract;
+import net.danielfreire.products.advocacy.model.core.menu.MenuFinance;
+import net.danielfreire.products.advocacy.model.core.menu.MenuHome;
+import net.danielfreire.products.advocacy.model.core.menu.MenuLawyer;
+import net.danielfreire.products.advocacy.model.core.menu.MenuOffice;
+import net.danielfreire.products.advocacy.model.core.menu.MenuOut;
 import net.danielfreire.products.advocacy.model.domain.AdvocacyOffice;
 import net.danielfreire.products.advocacy.model.domain.AdvocacyUser;
 import net.danielfreire.products.advocacy.model.repository.AdvocacyUserRepository;
@@ -69,6 +77,7 @@ public class AdvocacyUserBusinessImpl implements AdvocacyUserBusiness {
 		HashMap<String, Object> menu = new HashMap<String, Object>();
 			
 		menu.put("title", user.getAdvocacyOffice().getName());
+		menu.put("username", user.getUsername());
 		menu.put("position", true);
 		menu.put("menus", generateMenu(user));
 		
@@ -118,83 +127,20 @@ public class AdvocacyUserBusinessImpl implements AdvocacyUserBusiness {
 		return PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
 	}
 	
-	private HashMap<String, Object> generateMenu(AdvocacyUser user) {
-		Integer position = 1;
+	private Map<String, Object> generateMenu(AdvocacyUser user) {
+		Map<String, Object> menu = new HashMap<String, Object>();
 		
-		HashMap<String, Object> menus = new HashMap<String, Object>();
+		menu.putAll(new MenuHome().get(1, user));
+		menu.putAll(new MenuOffice().get(2, user));
+		menu.putAll(new MenuFinance().get(3, user));
+		menu.putAll(new MenuContract().get(4, user));
+		menu.putAll(new MenuClient().get(5, user));
+		menu.putAll(new MenuLawyer().get(6, user));
+		menu.putAll(new MenuOut().get(7, user));
 		
-		menus.put("Home", generateSubmenu(position, "link", "/advocacy/admin", null));
-		position++;
-		
-		if (user.getManageOffice()) {
-			HashMap<String, Object> submenuOptions = new HashMap<String, Object>();
-			if (user.getId()==0) {
-				submenuOptions.put("Novo", "/advocacy/admin/office/new");
-				submenuOptions.put("Consultar", "/advocacy/admin/office/consult");
-			} else {
-				submenuOptions.put("Configurações", "/advocacy/admin/office/config");
-			}
-			if (user.getManageUser()) {
-				submenuOptions.put("Usuários", "/advocacy/admin/office/user/manage");
-			}
-			menus.put("Escritório", generateSubmenu(position, "dropdown", "#", submenuOptions));
-			position++;
-		}
-		
-		if (user.getManageFinance()) {
-			HashMap<String, Object> submenuOptions = new HashMap<String, Object>();
-			submenuOptions.put("Categorias", "/advocacy/admin/finance/category");
-			submenuOptions.put("Contas a pagar", "/advocacy/admin/finance/expenses");
-			submenuOptions.put("Contas a receber", "/advocacy/admin/finance/revenue");
-			menus.put("Finanças", generateSubmenu(position, "dropdown", "#", submenuOptions));
-			position++;
-		}
-		
-		if (user.getViewContract()) {
-			HashMap<String, Object> submenuOptions = new HashMap<String, Object>();
-			if (user.getManageContract()) {
-				submenuOptions.put("Novo", "/advocacy/admin/contract/new");
-			}
-			submenuOptions.put("Consultar", "/advocacy/admin/contract/consult");
-			menus.put("Contratos", generateSubmenu(position, "dropdown", "#", submenuOptions));
-			position++;
-		}
-		
-		if (user.getViewClient()) {
-			HashMap<String, Object> submenuOptions = new HashMap<String, Object>();
-			if (user.getManageClient()) {
-				submenuOptions.put("Novo", "/advocacy/admin/client/new");
-			}
-			submenuOptions.put("Consultar", "/advocacy/admin/client/consult");
-			menus.put("Clientes", generateSubmenu(position, "dropdown", "#", submenuOptions));
-			position++;
-		}
-		
-		if (user.getViewLawyer()) {
-			HashMap<String, Object> submenuOptions = new HashMap<String, Object>();
-			if (user.getManageLawyer()) {
-				submenuOptions.put("Novo", "/advocacy/admin/lawyer/new");
-			}
-			submenuOptions.put("Consultar", "/advocacy/admin/lawyer/consult");
-			menus.put("Advogados", generateSubmenu(position, "dropdown", "#", submenuOptions));
-			position++;
-		}
-		
-		menus.put("Sair", generateSubmenu(position, "link", "/advocacy-web/logout", null));
-		
-		return menus;
+		return menu;
 	}
 
-	private HashMap<String, Object> generateSubmenu(Integer position, String type, String url, HashMap<String, Object> options) {
-		HashMap<String, Object> submenu = new HashMap<String, Object>();
-		submenu.put("position", position.toString());
-		submenu.put("type", type);
-		submenu.put("url", url);
-		submenu.put("options", options);
-		
-		return submenu;
-	}
-	
 	private AdvocacyUser getUser(HttpServletRequest request) {
 		final String id = request.getParameter("id");
 		final String username = request.getParameter("username");

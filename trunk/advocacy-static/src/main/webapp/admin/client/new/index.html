@@ -1,0 +1,71 @@
+<!DOCTYPE html>	
+ <html lang="pt">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Advocacy - Escritório</title>
+		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="/library/css/admin.css" rel="stylesheet">
+ 	</head>
+ 	<body>
+ 	
+		<div id="menu"></div>
+ 		
+		<div class="container">
+			<ul class="breadcrumb">
+			    <li><a href="#">Escritórios</a> <span class="divider">/</span></li>
+			    <li><a href="#">Clientes</a> <span class="divider">/</span></li>
+			    <li class="active">Novo</li>
+		    </ul>
+		    
+		    <form class="form-horizontal" style="display: block">
+				<div class="control-group">
+					<label class="control-label">Nome:</label>
+					<div class="controls">
+						<input name="name" type="text" class="input-block-level" placeholder="Nome do cliente…" maxlength="255">
+						<span id="spanError-name" class="help-inline"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">E-mail:</label>
+					<div class="controls">
+						<input name="email" type="text" class="input-block-level" placeholder="E-mail do cliente…" maxlength="255">
+						<span id="spanError-email" class="help-inline"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">Registros:</label>
+					<div class="controls input-prepend" style="display: block">
+						<span class="add-on">RG:</span><input name="rg" type="text" class="span3" maxlength="100">
+						&nbsp;&nbsp;&nbsp;<span class="add-on">CPF:</span><input name="cpf" type="text" class="span3" maxlength="20">
+						&nbsp;&nbsp;&nbsp;<span class="add-on">Data de Nasc:</span><input name="born" type="text" class="span2" maxlength="20">
+						<span id="spanError-rg" class="help-inline"></span>
+						<span id="spanError-cpf" class="help-inline"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="button" class="btn btn-primary" onclick="postJson('', '/advocacy-web/admin/office/manage', $('form').serialize());">Salvar</button>
+						<button type="reset" class="btn">Limpar</button>
+					</div>
+				</div>
+				
+			</form>
+		    
+		</div>
+ 		
+ 		<div id="footer"></div>
+ 		
+ 	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
+		<script src="/library/js/bootstrap.min.js"></script>
+
+		<script src="/library/js/functions.js" charset="utf-8"></script>
+		<script src="/library/js/admin.js" charset="utf-8"></script>
+
+		<script>
+			loadMenuAdvocacy();
+			loadFooter();
+		</script>
+ 	</body>
+ </html>

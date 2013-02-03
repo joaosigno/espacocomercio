@@ -36,6 +36,8 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 					permissionValid = false;
 				} else if (!user.getManageFinance() && uri.contains("/advocacy-web/admin/finance/")) {
 					permissionValid = false;
+				} else if (!user.getManageClient() && uri.contains("/advocacy-web/admin/client/")) {
+					permissionValid = false;
 				}
 				
 				if (!permissionValid) {

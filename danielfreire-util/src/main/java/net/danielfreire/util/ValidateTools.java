@@ -28,6 +28,7 @@ public class ValidateTools {
      *  @param java.lang.String
      */
 	public boolean isCep(String cep) {
+		cep = cep.replace(".", "").replace("-", "");
         boolean isCepIdValid = false;
         if (cep != null && cep.length() == 8) {
             String expression = "[0-9]+";

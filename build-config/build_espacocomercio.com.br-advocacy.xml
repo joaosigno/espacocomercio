@@ -1,4 +1,4 @@
-<project name="espacocomercio/ecommerce-all" default="all" basedir="../">
+<project name="espacocomercio/advocacy-all" default="all" basedir="../">
 
 	<property name="server" location="174.142.99.141"/>
 	<property name="usr" location="espacoco"/>
@@ -14,11 +14,11 @@
 			<arg value="-c" />
 			<arg value="mvn clean install" />
 		</exec>
-		<exec executable="/bin/sh" failonerror="true" dir="ecommerce-static">
+		<exec executable="/bin/sh" failonerror="true" dir="advocacy-static">
 			<arg value="-c" />
 			<arg value="mvn clean install" />
 		</exec>
-		<exec executable="/bin/sh" failonerror="true" dir="ecommerce-web">
+		<exec executable="/bin/sh" failonerror="true" dir="advocacy-web">
 			<arg value="-c" />
 			<arg value="mvn clean install" />
 		</exec>
@@ -35,16 +35,16 @@
 			<arg value="scp -r ./target/library/* espacoco@174.142.99.141:/home/espacoco/www/library/" />
 		</exec>
 		<echo message="danielfreire-static - success"/>
-		<exec executable="/bin/sh" failonerror="true" dir="ecommerce-static">
+		<exec executable="/bin/sh" failonerror="true" dir="advocacy-static">
 			<arg value="-c" />
-			<arg value="scp -r ./target/ecommerce/* espacoco@174.142.99.141:/home/espacoco/www/ecommerce/" />
+			<arg value="scp -r ./target/advocacy/* espacoco@174.142.99.141:/home/espacoco/www/advocacy/" />
 		</exec>
-		<echo message="ecommerce-static - success"/>
-		<exec executable="/bin/sh" failonerror="true" dir="ecommerce-web">
+		<echo message="advocacy-static - success"/>
+		<exec executable="/bin/sh" failonerror="true" dir="advocacy-web">
 			<arg value="-c" />
-			<arg value="scp -r target/ecommerce-web/* espacoco@174.142.99.141:/home/espacoco/appservers/jboss-5x/server/default/deploy/ecommerce-web.war/" />
+			<arg value="scp -r target/advocacy-web/* espacoco@174.142.99.141:/home/espacoco/appservers/jboss-5x/server/default/deploy/advocacy-web.war/" />
 		</exec>
-		<echo message="ecommerce-web - success"/>
+		<echo message="advocacy-web - success"/>
 		<exec executable="/bin/sh" failonerror="true" dir="jboss-config">
 			<arg value="-c" />
 			<arg value="scp -r espacocomercio.com.br/* espacoco@174.142.99.141:/home/espacoco/appservers/jboss-5x/server/default/" />

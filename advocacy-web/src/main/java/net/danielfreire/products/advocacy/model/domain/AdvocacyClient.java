@@ -126,4 +126,7 @@ public class AdvocacyClient extends AbstractPersistable<Integer> {
 		this.born = born;
 	}
 
+	public void setId(Integer id) {
+		super.setId(id);
+	}
 }

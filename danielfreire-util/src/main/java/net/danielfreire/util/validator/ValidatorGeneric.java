@@ -11,7 +11,7 @@ public class ValidatorGeneric extends Validator {
 
 	@Override
 	protected String validatorError() {
-		return "name.invalid";
+		return "generic.invalid";
 	}
 
 	

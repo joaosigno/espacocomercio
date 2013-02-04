@@ -2,7 +2,7 @@ package net.danielfreire.products.advocacy.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.danielfreire.products.advocacy.model.core.AdvocacyClientBusiness;
+import net.danielfreire.products.advocacy.model.core.AdvocacyLawyerBusiness;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
 import net.danielfreire.util.PortalTools;
@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class AdvocayClientController {
+public class AdvocayLawyerController {
 	
 	@Autowired
-	private AdvocacyClientBusiness business;
+	private AdvocacyLawyerBusiness business;
 	
-	@RequestMapping(value="/admin/client/save", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/lawyer/save", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse save(HttpServletRequest request) {
 		try {
 			return business.save(request);
@@ -28,7 +28,7 @@ public class AdvocayClientController {
 		}
 	}
 	
-	@RequestMapping(value="/admin/client/consult", method = RequestMethod.GET)
+	@RequestMapping(value="/admin/lawyer/consult", method = RequestMethod.GET)
 	public @ResponseBody GridResponse consult(HttpServletRequest request) {
 		try {
 			return business.consult(request);
@@ -38,7 +38,7 @@ public class AdvocayClientController {
 		}
 	}
 	
-	@RequestMapping(value="/admin/client/load", method = RequestMethod.GET)
+	@RequestMapping(value="/admin/lawyer/load", method = RequestMethod.GET)
 	public @ResponseBody GenericResponse load(HttpServletRequest request) {
 		try {
 			return business.load(request);
@@ -47,7 +47,7 @@ public class AdvocayClientController {
 		}
 	}
 	
-	@RequestMapping(value="/admin/client/remove", method = RequestMethod.POST)
+	@RequestMapping(value="/admin/lawyer/remove", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse remove(HttpServletRequest request) {
 		try {
 			return business.remove(request);

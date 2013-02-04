@@ -38,7 +38,7 @@ public class SessionAdminInterceptor extends HandlerInterceptorAdapter {
 				return new GenericResponse();
 			}
 		} catch (Exception e) {
-			return PortalTools.getInstance().getRespError("session.invalid");
+			return PortalTools.getInstance().getRespError(e);
 		}
 	}
 

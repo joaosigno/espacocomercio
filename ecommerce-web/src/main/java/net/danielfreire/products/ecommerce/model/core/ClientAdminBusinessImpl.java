@@ -46,7 +46,7 @@ public class ClientAdminBusinessImpl implements ClientAdminBusiness {
 				if (listClient.size()>1) {
 					if (ValidateTools.getInstancia().isNumber(site)) {
 						for (ClientAdmin client : listClient) {
-							if (client.getId()==Integer.parseInt(site)) {
+							if (client.getSite().getId()==Integer.parseInt(site)) {
 								EcommerceUtil.getInstance().sessionAdminUser(request, client);
 							}
 						}

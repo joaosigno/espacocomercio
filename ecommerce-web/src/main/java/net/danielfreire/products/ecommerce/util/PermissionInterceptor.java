@@ -45,7 +45,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 			
 			return resp;
 		} catch (Exception e) {
-			return PortalTools.getInstance().getRespError("session.invalid");
+			return PortalTools.getInstance().getRespError(e);
 		}
 	}
 	

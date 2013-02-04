@@ -1,14 +1,14 @@
 package net.danielfreire.products.advocacy.model.repository;
 
-import net.danielfreire.products.advocacy.model.domain.AdvocacyClient;
+import net.danielfreire.products.advocacy.model.domain.AdvocacyLawyer;
 import net.danielfreire.products.advocacy.model.domain.AdvocacyOffice;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AdvocacyClientRepository extends JpaRepository<AdvocacyClient, Integer> {
+public interface AdvocacyLawyerRepository extends JpaRepository<AdvocacyLawyer, Integer> {
 	
-	Page<AdvocacyClient> findByAdvocacyOffice(AdvocacyOffice advocacyOffice, Pageable pageable);
+	Page<AdvocacyLawyer> findByAdvocacyOffice(AdvocacyOffice advocacyOffice, Pageable pageable);
 
 }

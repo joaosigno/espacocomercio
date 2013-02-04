@@ -1,4 +1,4 @@
-<project name="espacocomercio/ecommerce-static" default="all" basedir="../">
+<project name="espacocomercio/advocacy-static" default="all" basedir="../">
 
 	<property name="server" location="174.142.99.141"/>
 	<property name="usr" location="espacoco"/>
@@ -9,7 +9,7 @@
 			<arg value="-c" />
 			<arg value="mvn clean install" />
 		</exec>
-		<exec executable="/bin/sh" failonerror="true" dir="ecommerce-static">
+		<exec executable="/bin/sh" failonerror="true" dir="advocacy-static">
 			<arg value="-c" />
 			<arg value="mvn clean install" />
 		</exec>
@@ -21,11 +21,11 @@
 			<arg value="scp -r ./target/library/* espacoco@174.142.99.141:/home/espacoco/www/library/" />
 		</exec>
 		<echo message="danielfreire-static - success"/>
-		<exec executable="/bin/sh" failonerror="true" dir="ecommerce-static">
+		<exec executable="/bin/sh" failonerror="true" dir="advocacy-static">
 			<arg value="-c" />
-			<arg value="scp -r ./target/ecommerce/* espacoco@174.142.99.141:/home/espacoco/www/ecommerce/" />
+			<arg value="scp -r ./target/advocacy/* espacoco@174.142.99.141:/home/espacoco/www/advocacy/" />
 		</exec>
-		<echo message="ecommerce-static - success"/>
+		<echo message="advocacy-static - success"/>
 	</target>
 	
 </project>

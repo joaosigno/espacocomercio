@@ -16,7 +16,7 @@
 			<ul class="breadcrumb">
 			    <li><a href="#">Escritórios</a> <span class="divider">/</span></li>
 			    <li><a href="#">Clientes</a> <span class="divider">/</span></li>
-			    <li class="active">Novo</li>
+			    <li class="active">Alterar</li>
 		    </ul>
 		    
 		    <form class="form-horizontal" style="display: block">
@@ -112,8 +112,8 @@
 				</div>
 				<div class="control-group">
 					<div class="controls">
+						<input name="id" type="hidden">
 						<button type="button" class="btn btn-primary" onclick="postJson('', '/advocacy-web/admin/client/save', $('form').serialize());">Salvar</button>
-						<button type="reset" class="btn">Limpar</button>
 					</div>
 				</div>
 				
@@ -136,12 +136,45 @@
 			
 			function callback(id, data) {
 				if (data.status) {
-					alert("Cliente criado com sucesso.", true);
-					$('button[type="reset"]').click();
+					if (id=='load') {
+						$('input[name=id]').val(data.generic.id);
+						$('input[name=name]').val(data.generic.name);
+						$('input[name=email]').val(data.generic.email);
+						$('input[name=rg]').val(data.generic.rg);
+						$('input[name=cpf]').val(data.generic.cpf);
+						$('input[name=phone]').val(data.generic.phone);
+						$('input[name=cellphone]').val(data.generic.cellphone);
+						$('input[name=addressStreet]').val(data.generic.addressStreet);
+						$('input[name=addressCity]').val(data.generic.addressCity);
+						$('input[name=addressZipcode]').val(data.generic.addressZipcode);
+						$('input[name=addressNumber]').val(data.generic.addressNumber);
+						$('input[name=addressComplement]').val(data.generic.addressComplement);
+						
+						var dat = new Date();
+						dat.setTime(data.generic.born);
+						var dtAll = '';
+						if (dat.getDate().toString().length==1) {
+							dtAll += '0'+dat.getDate()+'/';
+						} else {
+							dtAll += dat.getDate()+'/';
+						}
+						if ((dat.getMonth()+1).toString().length==1) {
+							dtAll += '0'+(dat.getMonth()+1).toString()+'/';
+						} else {
+							dtAll += (dat.getMonth()+1).toString()+'/';
+						}
+						dtAll+=dat.getFullYear();
+						$('input[name=born]').val(dtAll);
+					} else {
+						alert("Cliente atualizado com sucesso.", true);
+						location.href='/advocacy/admin/client/consult';
+					}
 				} else {
 					errorForm(data, '/advocacy');
 				}
 			}
+			
+			getJson('load', '/advocacy-web/admin/client/load?id='+getURLParameter('pid'));
 			
 			$("input[name='cpf']").mask("999.999.999-99");
 			$("input[name='phone']").mask("(99) 9999-9999");

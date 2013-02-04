@@ -213,7 +213,7 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 						} else {
 							html += '<td id="' + idcomp + menu[e] + '">R$ 0,00</td>';
 						}
-					} else if (menu[e]=='dateCreate' || menu[e]=='datePayment' || menu[e]=='dateExpiration') {
+					} else if (menu[e]=='dateCreate' || menu[e]=='datePayment' || menu[e]=='dateExpiration' || menu[e]=='born') {
 						if (val[menu[e]]!=null && val[menu[e]]!=undefined && val[menu[e]]!='') {
 							var dat = new Date();
 							dat.setTime(val[menu[e]].toString());
@@ -247,6 +247,8 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 						html += '<td style="text-align: center"><a href="#" onclick="viewPermissions(\''+val.id+'\');"><i class="icon-plus"></i></a></td>';
 					} else if (menu[e]=='permission') {
 						html += '<td id="' + idcomp + menu[e] + '">'+getLblPermissions(val[menu[e]].toString())+'</td>';
+					} else if (menu[e]=='address') { 
+						html += '<td style="text-align: center"><a href="#" onclick="viewAddress(\''+val.addressStreet+'\', \''+val.addressCity+'\', \''+val.addressZipcode+'\', \''+val.addressNumber+'\', \''+val.addressComplement+'\');"><i class="icon-plus"></i></a></td>';
 					} else {
 						if(typeof(val[menu[e]]) == "string"){
 							if (val[menu[e]]!=undefined && val[menu[e]]!=null) {

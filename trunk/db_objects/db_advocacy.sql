@@ -142,6 +142,31 @@ CREATE  TABLE IF NOT EXISTS `advocacy`.`advocacy_client` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `advocacy`.`advocacy_lawyer`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `advocacy`.`advocacy_lawyer` ;
+
+CREATE  TABLE IF NOT EXISTS `advocacy`.`advocacy_lawyer` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(255) NOT NULL ,
+  `email` VARCHAR(255) NOT NULL ,
+  `naturalidade` VARCHAR(100) NOT NULL ,
+  `estadocivil` VARCHAR(20) NOT NULL ,
+  `profissao` VARCHAR(100) NOT NULL ,
+  `cpf` VARCHAR(20) NOT NULL ,
+  `cellphone` VARCHAR(20) NOT NULL ,
+  `advocacy_office_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_advocacy_lawyer_advocacy_office1` (`advocacy_office_id` ASC) ,
+  CONSTRAINT `fk_advocacy_lawyer_advocacy_office1`
+    FOREIGN KEY (`advocacy_office_id` )
+    REFERENCES `advocacy`.`advocacy_office` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

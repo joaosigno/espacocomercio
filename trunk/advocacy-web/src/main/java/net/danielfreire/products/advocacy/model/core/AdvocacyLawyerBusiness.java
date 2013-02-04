@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
 
-public interface AdvocacyClientBusiness {
-	
+public interface AdvocacyLawyerBusiness {
+
 	GenericResponse save(HttpServletRequest request) throws Exception;
 
 	GridResponse consult(HttpServletRequest request) throws Exception;
@@ -14,5 +14,4 @@ public interface AdvocacyClientBusiness {
 	GenericResponse load(HttpServletRequest request) throws Exception;
 
 	GenericResponse remove(HttpServletRequest request) throws Exception;
-
 }

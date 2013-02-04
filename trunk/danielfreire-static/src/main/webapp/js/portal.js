@@ -1,7 +1,7 @@
 function loadHeaderGeneric(logoHtml, homeUrl) {
 	$.getJSON( '/ecommerce/'+getPortalContext()+'/data/menu.json',  function(data) {
 		var html = 	'<div class="row">';
-		html += 		'<div class="span6 offset6">';
+		html += 		'<div class="span5 offset6">';
 		html += 			'<small class="pull-right">';
 		html += 				'<a id="aLinkMyCart" href="#" class="left-space"><i class="icon-shopping-cart"></i><span class="muted"> Meu Carrinho (<span id="spanQtdCart"></span>)</span></a>';
 		html += 				'<a id="aLinkMyData" href="#" class="left-space"><i class="icon-align-justify"></i><span class="muted"> Meu Cadastro</span></a>';
@@ -12,7 +12,7 @@ function loadHeaderGeneric(logoHtml, homeUrl) {
 		html += 	'</div>';
 		
 		html += 	'<div class="row">';
-		html += 		'<div class="span6"><a href="/ecommerce/'+getPortalContext()+'">';
+		html += 		'<div class="span5"><a href="/ecommerce/'+getPortalContext()+'">';
 		html += 			logoHtml;
 		html += 		'</a></div>';
 		html += 		'<div class="span6 hidden-phone">';
@@ -28,7 +28,7 @@ function loadHeaderGeneric(logoHtml, homeUrl) {
 		} else {
 			html += 	'<div class="row hidden-phone">';
 		}
-		html += 		'<div class="span12">';
+		html += 		'<div class="span11">';
 		html += 			'<div class="navbar">';
 		html += 				'<div class="navbar-inner">';
 		html += 					'<div class="container">';
@@ -70,7 +70,7 @@ function loadHeaderGeneric(logoHtml, homeUrl) {
 		loadSession();
 	}).error(function() { 
 		var html = 	'<div class="row">';
-		html += 		'<div class="span6 offset6">';
+		html += 		'<div class="span5 offset6">';
 		html += 			'<small class="pull-right">';
 		html += 				'<a id="aLinkMyCart" href="#" class="left-space"><i class="icon-shopping-cart"></i><span class="muted"> Meu Carrinho (<span id="spanQtdCart"></span>)</span></a>';
 		html += 				'<a id="aLinkMyData" href="#" class="left-space"><i class="icon-align-justify"></i><span class="muted"> Meu Cadastro</span></a>';
@@ -81,7 +81,7 @@ function loadHeaderGeneric(logoHtml, homeUrl) {
 		html += 	'</div>';
 		
 		html += 	'<div class="row">';
-		html += 		'<div class="span6"><a href="/ecommerce/'+getPortalContext()+'">';
+		html += 		'<div class="span5"><a href="/ecommerce/'+getPortalContext()+'">';
 		html += 			logoHtml;
 		html += 		'</a></div>';
 		html += 		'<div class="span6 hidden-phone">';
@@ -99,7 +99,7 @@ function loadHeaderGeneric(logoHtml, homeUrl) {
 		} else {
 			html += 	'<div class="row hidden-phone">';
 		}
-		html += 		'<div class="span12">';
+		html += 		'<div class="span11">';
 		html += 			'<div class="navbar">';
 		html += 				'<div class="navbar-inner">';
 		html += 					'<div class="container">';
@@ -147,7 +147,7 @@ function loadFooterGeneric(urlQuemSomos, urlPolitica, urlIndique, urlCadastro, u
 	html += 					'<li><a href="'+urlIndique+'" class="muted"><small>Indique</small></a></li>';
 	html += 				'</ul>';
 	html += 			'</div>';
-	html += 			'<div class="span3 muted" style="padding-top: 20px;">';
+	html += 			'<div class="span2 muted" style="padding-top: 20px;">';
 	html += 				'<small><strong>Atendimento:</strong></small>';
 	html += 				'<ul class="unstyled">';
 	html += 					'<li><a href="#" onclick="$(\'#aLinkMyData\').click()" class="muted"><small>Cadastro</small></a></li>';
@@ -1078,8 +1078,8 @@ function myCart() {
 				html += 					'<tr>';
 				html += 						'<th colspan="2">Produto</th>';
 				html += 						'<th style="text-align: center;">Qtd.</th>';
-				html +=							'<th style="text-align: right; width: 15%">Valor unitário</th>';
-				html += 						'<th style="text-align: right; width: 15%">Valor total</th>';
+				html +=							'<th style="text-align: right; width: 15%">Valor<span class="hidden-phone"> unitário</span></th>';
+				html += 						'<th style="text-align: right; width: 15%"><span class="hidden-phone">Valor </span>total</th>';
 				html += 					'</tr>';
 				html += 				'</thead>';
 				html += 				'<tbody>';
@@ -1088,7 +1088,7 @@ function myCart() {
 				$.each(data.generic.cart, function(key, val) {
 					html += '<tr>';
 					html += 	'<td style="width: 90px;"><img src="'+val.images.split('[LIN]')[0].split('[COL]')[1]+'" width="80" style="width: 80px;" /></td>';
-					html += 	'<td><strong>'+val.name+'</strong> '+val.introduction.toString().substring(0,80)+' [...]<br><small><a href="#" style="color" onclick="removeItem(\''+val.id+'\');"><i class="icon-remove"></i> Remover</a></small></td>';
+					html += 	'<td><span class="hidden-phone"><strong>'+val.name+'</strong> '+val.introduction.toString().substring(0,80)+' [...]<br></span><small><a href="#" style="color" onclick="removeItem(\''+val.id+'\');"><i class="icon-remove"></i><span class="hidden-phone"> Remover</span></a></small></td>';
 					html += 	'<td style="text-align: center;" id="tdQtdPdt">';
 					if (val.quantity>0) {
 						html += 		'<select name="qtdSelect'+val.id+'" class="span1" onchange="defineQuantity(\''+val.id+'\');">';
@@ -1118,14 +1118,14 @@ function myCart() {
 				html += 				'</tbody>';
 				html += 			'</table></form>';
 				html += 			'<div class="input-append form-inline">';
-				html += 				'<label>Digite o seu CEP para calcularmos o frete e o prazo de entrega do seu pedido:&nbsp;</label>';
+				html += 				'<label><span class="hidden-phone">Digite o seu CEP para calcularmos o frete e o prazo de entrega do seu pedido</span><span class="visible-phone">Envio</span>:&nbsp;</label>';
 				html += 				'<input type="text" name="cepToFrete" placeholder="CEP" class="span2">';
 				html += 				'<button id="btnFreteCalc" class="btn" type="button" onclick="defineFrete();" data-loading-text="Processando...">Calcular</button>';
 				html += 			'</div>';
 				html += 		'</div>';
 				
 				html += 		'<div class="row" style="padding-top: 10px;">';
-				html += 			'<div class="span5 muted" style="text-align: left; width: 445px;">';
+				html += 			'<div class="span5 muted hidden-phone" style="text-align: left; width: 445px;">';
 				html += 				'<h6 style="margin-bottom: 0px;padding-bottom: 0px;"><i class="icon-exclamation-sign"></i> Informações importantes</h6>';
 				html += 				'<p style="font-size: 11px;">O prazo começa a contar a partir da aprovação do pedido e confirmação do pagamento.</p>';
 				html += 			'</div>';

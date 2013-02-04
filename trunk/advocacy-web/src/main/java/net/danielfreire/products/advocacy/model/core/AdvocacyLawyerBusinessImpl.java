@@ -5,19 +5,16 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.danielfreire.products.advocacy.model.domain.AdvocacyClient;
-import net.danielfreire.products.advocacy.model.repository.AdvocacyClientRepository;
+import net.danielfreire.products.advocacy.model.domain.AdvocacyLawyer;
+import net.danielfreire.products.advocacy.model.repository.AdvocacyLawyerRepository;
 import net.danielfreire.products.advocacy.util.AdvocacyUtil;
-import net.danielfreire.util.ConvertTools;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
 import net.danielfreire.util.GridTitleResponse;
 import net.danielfreire.util.PortalTools;
 import net.danielfreire.util.ValidateTools;
 import net.danielfreire.util.validator.Validator;
-import net.danielfreire.util.validator.ValidatorCep;
 import net.danielfreire.util.validator.ValidatorCpf;
-import net.danielfreire.util.validator.ValidatorDate;
 import net.danielfreire.util.validator.ValidatorGeneric;
 import net.danielfreire.util.validator.ValidatorMail;
 
@@ -26,27 +23,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-@Component("advocacyClientBusiness")
-public class AdvocacyClientBusinessImpl implements AdvocacyClientBusiness {
+@Component("advocacyLawyerBusiness")
+public class AdvocacyLawyerBusinessImpl implements AdvocacyLawyerBusiness {
 	
 	@Autowired
-	private AdvocacyClientRepository repository;
+	private AdvocacyLawyerRepository repository;
 
 	@Override
 	public GenericResponse save(HttpServletRequest request) throws Exception {
 		final String id = request.getParameter("id");
 		final String name = request.getParameter("name");
 		final String email = request.getParameter("email");
-		final String rg = request.getParameter("rg");
 		final String cpf = request.getParameter("cpf");
-		final String born = request.getParameter("born");
-		final String phone = request.getParameter("phone");
 		final String cellphone = request.getParameter("cellphone");
-		final String addressStreet = request.getParameter("addressStreet");
-		final String addressCity = request.getParameter("addressCity");
-		final String addressZipcode = request.getParameter("addressZipcode");
-		final String addressNumber = request.getParameter("addressNumber");
-		final String addressComplement = request.getParameter("addressComplement");
+		final String naturalidade = request.getParameter("naturalidade");
+		final String estadocivil = request.getParameter("estadocivil");
+		final String profissao = request.getParameter("profissao");
 		
 		HashMap<String, String> error = new HashMap<String, String>();
 		
@@ -54,37 +46,30 @@ public class AdvocacyClientBusinessImpl implements AdvocacyClientBusiness {
 		error.putAll(validator.isValid("name", name));
 		error.putAll(new ValidatorMail().isValid("email", email));
 		error.putAll(new ValidatorCpf().isValid("cpf", cpf));
-		error.putAll(new ValidatorDate().isValid("born", born));
 		error.putAll(validator.isValid("cellphone", cellphone));
-		error.putAll(validator.isValid("addressStreet", addressStreet));
-		error.putAll(validator.isValid("addressCity", addressCity));
-		error.putAll(validator.isValid("addressNumber", addressNumber));
-		error.putAll(new ValidatorCep().isValid("addressZipcode", addressZipcode));
+		error.putAll(validator.isValid("naturalidade", naturalidade));
+		error.putAll(validator.isValid("estadocivil", estadocivil));
+		error.putAll(validator.isValid("profissao", profissao));
 		
 		if (error.size()>0) {
 			return PortalTools.getInstance().getRespError(error);
 		} else {
-			AdvocacyClient client = new AdvocacyClient();
+			AdvocacyLawyer lawyer = new AdvocacyLawyer();
 			
 			if (ValidateTools.getInstancia().isNumber(id)) {
-				client.setId(Integer.parseInt(id));
+				lawyer.setId(Integer.parseInt(id));
 			}
 			
-			client.setAddressCity(addressCity);
-			client.setAddressComplement(addressComplement);
-			client.setAddressNumber(addressNumber);
-			client.setAddressStreet(addressStreet);
-			client.setAddressZipcode(addressZipcode);
-			client.setBorn(ConvertTools.getInstance().convertDate(born, "dd/MM/yyyy"));
-			client.setCellphone(cellphone);
-			client.setCpf(cpf);
-			client.setEmail(email);
-			client.setName(name);
-			client.setPhone(phone);
-			client.setRg(rg);
-			client.setAdvocacyOffice(AdvocacyUtil.getInstancia().getSessionUser(request).getAdvocacyOffice());
+			lawyer.setCellphone(cellphone);
+			lawyer.setCpf(cpf);
+			lawyer.setEmail(email);
+			lawyer.setName(name);
+			lawyer.setEstadocivil(estadocivil);
+			lawyer.setNaturalidade(naturalidade);
+			lawyer.setProfissao(profissao);
+			lawyer.setAdvocacyOffice(AdvocacyUtil.getInstancia().getSessionUser(request).getAdvocacyOffice());
 			
-			repository.save(client);
+			repository.save(lawyer);
 			
 			return new GenericResponse();
 		}
@@ -103,14 +88,13 @@ public class AdvocacyClientBusinessImpl implements AdvocacyClientBusiness {
 		ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
 		titles.add(PortalTools.getInstance().getRowGrid("name", "Nome", "text"));
 		titles.add(PortalTools.getInstance().getRowGrid("email", "E-mail", "text"));
-		titles.add(PortalTools.getInstance().getRowGrid("rg", "RG", "text"));
 		titles.add(PortalTools.getInstance().getRowGrid("cpf", "CPF", "text"));
-		titles.add(PortalTools.getInstance().getRowGrid("born", "Data de Nasc.", "text"));
-		titles.add(PortalTools.getInstance().getRowGrid("phone", "Telefone", "text"));
 		titles.add(PortalTools.getInstance().getRowGrid("cellphone", "Celular", "text"));
-		titles.add(PortalTools.getInstance().getRowGrid("address", "Endereço", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("naturalidade", "naturalidadeidade", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("estadocivil", "Estado Civil", "text"));
+		titles.add(PortalTools.getInstance().getRowGrid("profissao", "Profissão", "text"));
 		
-		Page<AdvocacyClient> pageable = repository.findByAdvocacyOffice(AdvocacyUtil.getInstancia().getSessionUser(request).getAdvocacyOffice(), new PageRequest(pagination, 10));
+		Page<AdvocacyLawyer> pageable = repository.findByAdvocacyOffice(AdvocacyUtil.getInstancia().getSessionUser(request).getAdvocacyOffice(), new PageRequest(pagination, 10));
 		
 		return PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
 	}
@@ -119,7 +103,7 @@ public class AdvocacyClientBusinessImpl implements AdvocacyClientBusiness {
 	public GenericResponse load(HttpServletRequest request) throws Exception {
 		Integer id = Integer.parseInt(request.getParameter("id"));
 		
-		AdvocacyClient client = repository.findOne(id);
+		AdvocacyLawyer client = repository.findOne(id);
 		
 		GenericResponse resp = new GenericResponse();
 		if (AdvocacyUtil.getInstancia().getSessionUser(request).getAdvocacyOffice().getId()==client.getAdvocacyOffice().getId()) {
@@ -135,7 +119,7 @@ public class AdvocacyClientBusinessImpl implements AdvocacyClientBusiness {
 	public GenericResponse remove(HttpServletRequest request) throws Exception {
 		Integer id = Integer.parseInt(request.getParameter("id"));
 		
-		AdvocacyClient client = repository.findOne(id);
+		AdvocacyLawyer client = repository.findOne(id);
 		
 		GenericResponse resp = new GenericResponse();
 		if (AdvocacyUtil.getInstancia().getSessionUser(request).getAdvocacyOffice().getId()==client.getAdvocacyOffice().getId()) {

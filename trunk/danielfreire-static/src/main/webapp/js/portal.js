@@ -1,5 +1,5 @@
 function loadHeaderGeneric(logoHtml, homeUrl) {
-	$.getJSON( '/ecommerce/'+getPortalContext()+'/data/menu.json',  function(data) {
+	$.getJSON( '/ecommerce/'+getPortalContext()+'/data/menu.json?tk='+new Date().getTime(),  function(data) {
 		var html = 	'<div class="row">';
 		html += 		'<div class="span5 offset6">';
 		html += 			'<small class="pull-right">';

@@ -332,7 +332,7 @@ function loadDetailProduct(product) {
 		    	if (image[0]=='1') {
 		    		html += '<div class="active item"><div><img class="imgDetail" src="'+image[1]+'" alt="'+data.introduction+'" data-zoom-image="'+image[1].substring(0,image[1].length-4)+"_original"+image[1].substring(image[1].length-4,image[1].length)+'" /></div></div>';
 		    	} else {
-		    		html += '<div class="item"><div><img src="'+image[1]+'" alt="'+data.introduction+'" class="imgDetail" data-zoom-image="'+image[1]+'" /></div></div>';
+		    		html += '<div class="item"><div><img src="'+image[1]+'" alt="'+data.introduction+'" class="imgDetail" data-zoom-image="'+image[1].substring(0,image[1].length-4)+"_original"+image[1].substring(image[1].length-4,image[1].length)+'" /></div></div>';
 		    	}
 		    }
 		    html += 				'</div>';
@@ -659,7 +659,7 @@ function controlPainel(id) {
 				if (data.genericList.length>0) {
 					$.each(data.genericList, function(key, val) {
 						html += 			'<li>';
-						html += 				'<a href=""><small>Pedido: 98739</small></a>';
+						html += 				'<a href=""><small>Pedido: 100'+val.id+'</small></a>';
 						html += 				'<table class="table table-bordered" style="font-size: 14px;">';
 						html += 					'<tr>';
 						html += 						'<th>Data:</th>';

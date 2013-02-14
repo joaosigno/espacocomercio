@@ -22,7 +22,7 @@ function callback(id, data) {
 	}
 }
 
-$('.form-signin-heading').html('<img alt="" src="img/iconeSeguro.jpg"> '+document.domain);
+$('.form-signin-heading').html('<img alt="" src="img/iconeSeguro.jpg"> EspaçoComércio');
 
 if (getURLParameter("error")!=null && getURLParameter("error")!=undefined && getURLParameter("error")!='' && getURLParameter("error")!='null') {
 	$("#box-alert").html(getErrorMsg(getURLParameter("error")));

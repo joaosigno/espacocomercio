@@ -146,7 +146,7 @@ public class OrderBusinessImpl implements OrderBusiness {
 			order.setClient(client);
 			order.setDateCreate(Calendar.getInstance());
 			order.setDiscount(0.0);
-			order.setPayment(paymentRepository.findByName("PagSeguro"));
+			order.setPayment(paymentRepository.findByNameAndSite("PagSeguro", client.getSite()));
 			order.setSendCust(send);
 			order.setStatusOrder(2);
 			order.setTotalValue(total);

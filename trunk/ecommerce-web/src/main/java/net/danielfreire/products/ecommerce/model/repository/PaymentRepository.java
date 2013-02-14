@@ -15,6 +15,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 	
 	public List<Payment> findBySite(Site site);
 	
-	public Payment findByName(String name);
+	public Payment findByNameAndSite(String name, Site site);
 
 }

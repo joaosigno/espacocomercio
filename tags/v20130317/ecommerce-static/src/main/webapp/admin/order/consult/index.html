@@ -1,0 +1,157 @@
+<!DOCTYPE html>	
+<html lang="pt">
+	<head>
+		<meta charset="utf-8">
+		<title>Administração</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="/library/css/admin.css" rel="stylesheet">
+ 	</head>
+ 	<body>
+ 	
+		<div id="menu"></div>
+ 		
+		<div class="container">
+			<ul class="breadcrumb">
+				<li>Resumo <span class="divider">/</span></li>
+				<li>Pedidos <span class="divider">/</span></li>
+				<li class="active">Consultar</li>
+			</ul>
+			
+			<form class="form-horizontal" style="display: block" action="." method="get">
+				<div class="input-prepend input-append">
+					<span class="add-on">Selecione o cliente:</span>
+					<select name="cid" class="span3" id="appendedInputButton"></select>
+					<button class="btn" type="submit">Consultar</button>
+				</div>
+			</form>
+    
+    		<div id="grid"></div>
+		</div>
+ 		
+ 		<div id="footer"></div>
+ 	
+ 		<div style="display: none;">
+ 			<form id="formEdit" action="/ecommerce-web/admin/order/update">
+ 				<input name="id" type="hidden">
+ 				<input name="discount" type="text">
+ 				<input name="sendCust" type="text">
+ 				<select name="statusOrder"></select>
+ 				<select name="payment"></select>
+ 			</form>
+ 		</div>
+ 		
+ 		<div id="modalProducts" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Produtos</h3>
+			</div>
+			<div class="modal-body">
+				<table class="table table-striped" id="tbProductCesta">
+				  <thead>
+				    <tr>
+				      <th>Produto</th>
+				      <th>Quantidade</th>
+				      <th>Valor Unitário</th>
+				    </tr>
+				  </thead>
+				  <tbody></tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				Frete: <span id="freteValueSpan"></span><br>
+				Desconto: <span id="descValueSpan"></span><br>
+				Valor Total: <span id="totalValueSpan"></span>
+			</div>
+		</div>
+   
+ 	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
+		<script src="/library/js/bootstrap.min.js"></script>
+
+		<script src="/library/js/functions.js" charset="utf-8"></script>
+		<script src="/library/js/admin.js" charset="utf-8"></script>
+		<script src="/library/js/jquery.maskmoney.min.js"></script>
+		<script src="/library/js/jquery.maskedinput-1.3.min.js"></script>
+
+		<script>
+			loadMenuEcommerce();
+			loadFooter();
+			
+			function callback(id, data) {
+				if (data.status) {
+					if (id=='editForm') {
+						
+						alert("Produto alterado com sucesso.", true);
+					
+					} else if (id=='preencheCb') {
+						
+						var opt = '';
+						$.each(data.genericList, function(key, val) {
+							opt += '<option value="'+val.id+'">'+val.name+' - '+val.user+'</option>';
+						});
+						$('select#appendedInputButton').html(opt);
+						
+					}
+				} else {
+					errorForm(data, '/ecommerce');
+				}
+			}
+			
+			function preencheCbSatus() {
+				var opts = '';
+				for (var i=1; i<=getQtdOrderStatus(); i++) {
+					opts += '<option value="'+i+'">'+getLblOrderStatus(i)+'</option>';
+				}
+				
+				$('select[name="statusOrder"]').html(opts);
+			}
+			preencheCbSatus();
+			
+			function preencheCbPayment() {
+				$.getJSON( '/ecommerce-web/admin/payment/list',  function(data) {
+					var opts = '';
+					$.each(data.genericList, function(key, val) {
+						opts += '<option value="'+val.id+'">'+val.id+' - '+val.name+'</option>';
+					});
+					$('select[name="payment"]').html(opts);
+				});
+			}
+			preencheCbPayment();
+			
+			var cid = getURLParameter('cid');
+			if (cid!=undefined && cid!=null && cid!='' && cid!='null') {
+				loadGrid('/ecommerce-web/admin/order/consult?cid='+cid, 'grid', 'formEdit', '');
+			}
+			
+			getJson('preencheCb', '/ecommerce-web/admin/client/list');
+			
+			function viewCart(orderId) {
+				$.getJSON( '/ecommerce-web/admin/order/product/list?oid='+orderId,  function(data) {
+					
+					var htmlTb = '';
+					$.each(data.genericList, function(key, val) {
+						var tr = '<tr>';
+						tr += '<td>'+val.product.name+'</td>';
+						tr += '<td>'+val.quantity+'</td>';
+						var v = val.unityvalue.toString();
+						if (v.indexOf('.')==-1) {
+							tr += '<td>R$ '+v+',00</td>';
+						} else {
+							tr += '<td>R$ '+v.replace('.', ',')+'</td>';
+						}
+						tr += '</tr>';
+						htmlTb += tr;
+					});
+					
+					$('table#tbProductCesta').find('tbody').html(htmlTb);
+					
+					$('span#freteValueSpan').text($('td#grid'+orderId+'sendCust').text());
+					$('span#descValueSpan').text($('td#grid'+orderId+'discount').text());
+					$('span#totalValueSpan').text($('td#grid'+orderId+'totalValue').text());
+					$('#modalProducts').modal('show');
+				});
+			}
+		</script>
+ 	</body>
+ </html>

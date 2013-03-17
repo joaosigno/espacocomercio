@@ -1,0 +1,31 @@
+<project name="financefamily-static" default="deploy" basedir="../financefamily-static">
+
+	<property name="server" location="/usr/local/developer/server/apache2/htdocs/finance"/>
+	
+	<target name="clean">
+		<exec executable="/bin/sh" failonerror="true" dir=".">
+			<arg value="-c" />
+			<arg value="mvn clean" />
+		</exec>
+	</target>
+	
+	<target name="package" depends="clean">
+		<exec executable="/bin/sh" failonerror="true" dir=".">
+			<arg value="-c" />
+			<arg value="mvn install" />
+		</exec>
+	</target>
+	
+	<target name="deploy" depends="package">
+        <copy todir="${server}">
+			<fileset dir="target/finance">
+				<include name="**"/>
+			</fileset>
+		</copy>
+		<exec executable="/bin/sh" failonerror="true" dir=".">
+			<arg value="-c" />
+			<arg value="mvn clean" />
+		</exec>
+	</target>
+	
+</project>

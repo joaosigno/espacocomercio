@@ -1,0 +1,68 @@
+ <!DOCTYPE html>	
+    <html lang="pt">
+    	<head>
+    		<meta charset="utf-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    		<title>Advocacy - Escritório</title>
+    		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		    <link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+		    <link href="/library/css/admin.css" rel="stylesheet">
+    	</head>
+    	<body>
+    	
+    		<div id="menu"></div>
+    		
+    		<div id="content" class="container">
+   			    <ul class="breadcrumb">
+				    <li><a href="#">Escritórios</a> <span class="divider">/</span></li>
+				    <li class="active">Novo</li>
+			    </ul>
+    		
+				<form class="form-horizontal" style="display: block">
+					<div class="control-group">
+						<label class="control-label">Nome:</label>
+						<div class="controls">
+							<input name="name" type="text" class="input-block-level" placeholder="Nome do escritório…" maxlength="100">
+							<span id="spanError-name" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Sub-título:</label>
+						<div class="controls">
+							<input name="subtitle" type="text" class="input-block-level" placeholder="Sub-titulo do escritório…" maxlength="150">
+							<span id="spanError-subtitle" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<button type="button" class="btn btn-primary" onclick="postJson('', '/advocacy-web/admin/office/manage', $('form').serialize());">Salvar</button>
+							<button type="reset" class="btn">Limpar</button>
+						</div>
+					</div>
+					
+				</form>
+    		</div>
+    		
+    		<div id="footer"></div>
+		    
+    	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
+			<script src="/library/js/bootstrap.min.js"></script>
+			
+			<script src="/library/js/functions.js" charset="utf-8"></script>
+			<script src="/library/js/admin.js" charset="utf-8"></script>
+			
+			<script>
+				loadMenuAdvocacy();
+				loadFooter();
+				
+				function callback(id, data) {
+					if (data.status) {
+						alert("Escritório criado com sucesso.", true);
+						$('button[type="reset"]').click();
+					} else {
+						errorForm(data, '/advocacy');
+					}
+				}
+			</script>
+    	</body>
+    </html>

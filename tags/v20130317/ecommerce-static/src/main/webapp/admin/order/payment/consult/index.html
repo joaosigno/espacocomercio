@@ -1,0 +1,51 @@
+<!DOCTYPE html>	
+<html lang="pt">
+	<head>
+		<meta charset="utf-8">
+		<title>Administração</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="/library/css/admin.css" rel="stylesheet">
+ 	</head>
+ 	<body>
+ 	
+		<div id="menu"></div>
+ 		
+		<div class="container">
+			<ul class="breadcrumb">
+				<li>Resumo <span class="divider">/</span></li>
+				<li>Pedidos <span class="divider">/</span></li>
+				<li>Forma de pagamento <span class="divider">/</span></li>
+				<li class="active">Consultar</li>
+			</ul>
+    
+    		<div id="grid"></div>
+		</div>
+ 		
+ 		<div id="footer"></div>
+ 	
+ 		<div style="display: none;">
+ 			<form id="formEdit" action="/ecommerce-web/admin/payment/insert">
+ 				<input name="id" type="hidden">
+ 				<select name="name">
+					<option>PagSeguro</option>
+				</select>
+ 				<input name="description" type="text">
+ 				<input name="url" type="text">
+ 			</form>
+ 		</div>
+   
+ 	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
+		<script src="/library/js/bootstrap.min.js"></script>
+
+		<script src="/library/js/functions.js" charset="utf-8"></script>
+		<script src="/library/js/admin.js" charset="utf-8"></script>
+
+		<script>
+			loadMenuEcommerce();
+			loadFooter();
+			loadGrid('/ecommerce-web/admin/payment/consult', 'grid', 'formEdit', '/ecommerce-web/admin/payment/remove');
+		</script>
+ 	</body>
+ </html>

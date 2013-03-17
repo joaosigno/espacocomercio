@@ -1,0 +1,39 @@
+<!DOCTYPE html>	
+ <html lang="pt">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Advocacy - Escritório</title>
+		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="/library/css/admin.css" rel="stylesheet">
+ 	</head>
+ 	<body>
+ 	
+		<div id="menu"></div>
+ 		
+		<div class="container">
+			<ul class="breadcrumb">
+			    <li><a href="#">Escritórios</a> <span class="divider">/</span></li>
+			    <li><a href="#">Advogado</a> <span class="divider">/</span></li>
+			    <li class="active">Consultar</li>
+		    </ul>
+    
+    		<div id="grid"></div>
+		</div>
+ 		
+ 		<div id="footer"></div>
+ 	
+ 	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
+		<script src="/library/js/bootstrap.min.js"></script>
+
+		<script src="/library/js/functions.js" charset="utf-8"></script>
+		<script src="/library/js/admin.js" charset="utf-8"></script>
+
+		<script>
+			loadMenuAdvocacy();
+			loadFooter();
+			loadGrid('/advocacy-web/admin/lawyer/consult', 'grid', '', '/advocacy-web/admin/lawyer/remove', true);
+		</script>
+ 	</body>
+ </html>

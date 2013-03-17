@@ -1,0 +1,164 @@
+ <!DOCTYPE html>	
+    <html lang="pt">
+    	<head>
+    		<meta charset="utf-8">
+    		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    		<title>Advocacy - Escritório</title>
+    		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		    <link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+		    <link href="/library/css/admin.css" rel="stylesheet">
+    	</head>
+    	<body>
+    	
+    		<div id="menu"></div>
+    		
+    		<div id="content" class="container">
+   			    <ul class="breadcrumb">
+				    <li><a href="#">Escritórios</a> <span class="divider">/</span></li>
+			    	<li><a href="#">Usuários</a> <span class="divider">/</span></li>
+				    <li class="active">Novo</li>
+			    </ul>
+    		
+				<form class="form-horizontal" style="display: block">
+					<div class="control-group">
+						<label class="control-label">Usuário: <span class="help-block">Digite um e-mail válido para acesso ao sistema.</span></label>
+						<div class="controls">
+							<input name="username" type="text" class="input-block-level" placeholder="Digite um e-mail válido…" maxlength="100">
+							<span id="spanError-username" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Senha: <span class="help-block">A senha deverá conter letras e números.</span></label>
+						<div class="controls">
+							<input name="userpassword" type="password" class="span3" placeholder="Senha…" maxlength="10">
+							<input name="userpasswordConfirm" type="password" class="span3" placeholder="Confirmar…" maxlength="10">
+							<span id="spanError-userpassword" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Escritório:</label>
+						<div class="controls">
+							<select name="office"></select>
+						</div>
+					</div>
+					<div class="control-group">
+						<h4><i class="icon-lock"></i> Permissões do usuário</h4>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Gerenciar configurações do sistema</label>
+						<div class="controls">
+							<select name="manageOffice">
+								<option value="0">Sem permissão</option>	
+								<option value="1">Permissão completa</option>
+							</select>
+							<span id="spanError-manageOffice" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Gerenciar usuários do sistema</label>
+						<div class="controls">
+							<select name="manageUser">
+								<option value="0">Sem permissão</option>
+								<option value="1">Permissão completa</option>
+							</select>
+							<span id="spanError-manageUser" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Gerenciar finanças do escritório</label>
+						<div class="controls">
+							<select name="manageFinance">
+								<option value="0">Sem permissão</option>
+								<option value="1">Permissão completa</option>
+							</select>
+							<span id="spanError-manageFinance" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Gerenciar clientes do escritório</label>
+						<div class="controls">
+							<select name="manageClient">
+								<option value="0">Sem permissão</option>
+								<option value="2">Permissão para consultar</option>
+								<option value="1">Permissão completa</option>
+							</select>
+							<span id="spanError-manageClient" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Gerenciar contratos do escritório</label>
+						<div class="controls">
+							<select name="manageContract">
+								<option value="0">Sem permissão</option>
+								<option value="2">Permissão para consultar</option>
+								<option value="1">Permissão completa</option>
+							</select>
+							<span id="spanError-manageContract" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Gerenciar advogados do escritório</label>
+						<div class="controls">
+							<select name="manageLawyer">
+								<option value="0">Sem permissão</option>
+								<option value="2">Permissão para consultar</option>
+								<option value="1">Permissão completa</option>
+							</select>
+							<span id="spanError-manageLawyer" class="help-inline"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<button type="button" class="btn btn-primary" onclick="submitForm()">Salvar</button>
+							<button type="reset" class="btn">Limpar</button>
+						</div>
+					</div>
+					
+				</form>
+    		</div>
+    		
+    		<div id="footer"></div>
+		    
+    	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
+			<script src="/library/js/bootstrap.min.js"></script>
+			
+			<script src="/library/js/functions.js" charset="utf-8"></script>
+			<script src="/library/js/admin.js" charset="utf-8"></script>
+			
+			<script>
+				loadMenuAdvocacy();
+				loadFooter();
+				
+				function callback(id, data) {
+					if (data.status) {
+						location.href='../manage';
+					} else {
+						errorForm(data, '/advocacy');
+					}
+				}
+				
+				function callback2(id, data) {
+					if (data.status) {
+						var html = '';
+						$.each(data.generic, function(key, val) {
+							html += '<option value="'+val.id+'">'+val.name+'</option>';
+						});
+						$('select[name="office"]').html(html);
+					} else {
+						errorForm(data, '/advocacy');
+					} 
+				}
+				
+				getJson2('', '/advocacy-web/admin/office/usersession/list');
+				
+				function submitForm() {
+					if ($('input[name="userpassword"]').val()==$('input[name="userpasswordConfirm"]').val()) {
+						postJson('', '/advocacy-web/admin/office/user/manage', $('form').serialize());
+					} else {
+						$('[name="userpassword"]').parent().parent().attr('class', $('[name="userpassword"]').parent().parent().attr('class')+" error");
+						$('#spanError-userpassword').text('As senhas digitadas estão diferentes.');
+					}
+				}
+			</script>
+    	</body>
+    </html>

@@ -1,35 +1,497 @@
-    <!DOCTYPE html>
-    <html lang="pt">
-    	<head>
-    		<meta charset="utf-8">
-    		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    		<title>Ecommerce - danielfreire.net</title>
-    		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    		<link href="css/ecommerce.css" rel="stylesheet" media="screen">
-		    <link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
-    	</head>
-    	<body>
+<!--     <!DOCTYPE html> -->
+<!--     <html lang="pt"> -->
+<!--     	<head> -->
+<!--     		<meta charset="utf-8"> -->
+<!--     		<meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<!--     		<title>Ecommerce - danielfreire.net</title> -->
+<!--     		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen"> -->
+<!--     		<link href="css/ecommerce.css" rel="stylesheet" media="screen"> -->
+<!-- 		    <link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet"> -->
+<!--     	</head> -->
+<!--     	<body> -->
     	
-			<div class="container">
+<!-- 			<div class="container"> -->
 			
-				<div class="box-login">
+<!-- 				<div class="box-login"> -->
 				
-					<form class="form-signin">
-						<h2 class="form-signin-heading"><!-- titulo do formulário de acesso --></h2>
-						<input type="text" name="u" class="input-block-level" placeholder="Usuário">
-						<input type="password" name="p" class="input-block-level" placeholder="Senha">
-						<button id="btnLogin" type="button" class="btn btn-large btn-primary" data-loading-text="Processando...">Acessar</button>
-						<div id="box-alert"><!-- alert --></div>
-						<input type="hidden" name="s">
-					</form>
+<!-- 					<form class="form-signin"> -->
+<!-- 						<h2 class="form-signin-heading">titulo do formulário de acesso</h2> -->
+<!-- 						<input type="text" name="u" class="input-block-level" placeholder="Usuário"> -->
+<!-- 						<input type="password" name="p" class="input-block-level" placeholder="Senha"> -->
+<!-- 						<button id="btnLogin" type="button" class="btn btn-large btn-primary" data-loading-text="Processando...">Acessar</button> -->
+<!-- 						<div id="box-alert">alert</div> -->
+<!-- 						<input type="hidden" name="s"> -->
+<!-- 					</form> -->
+					
+<!-- 				</div> -->
+			
+<!-- 				<div> -->
 				
-				</div>
+				
+					
+<!-- 				</div> -->
 		
-		    </div> 
+<!-- 		    </div>  -->
     	
-    	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
-			<script src="/library/js/bootstrap.min.js"></script>
-			<script src="/library/js/functions.js" charset="utf-8"></script>
-			<script src="js/ecommerce.js"></script>
-    	</body>
-    </html>
+<!--     	 	<script src="/library/js/jquery-1.8.3.min.js"></script> -->
+<!-- 			<script src="/library/js/bootstrap.min.js"></script> -->
+<!-- 			<script src="/library/js/functions.js" charset="utf-8"></script> -->
+<!-- 			<script src="js/ecommerce.js"></script> -->
+<!--     	</body> -->
+<!--     </html> -->
+    
+    
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>EspaçoComércio - E-commerce</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/library/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <style>
+
+    /* GLOBAL STYLES
+    -------------------------------------------------- */
+    /* Padding below the footer and lighter body text */
+
+    body {
+      padding-bottom: 40px;
+      color: #5a5a5a;
+    }
+
+
+
+    /* CUSTOMIZE THE NAVBAR
+    -------------------------------------------------- */
+
+    /* Special class on .container surrounding .navbar, used for positioning it into place. */
+    .navbar-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      margin-top: 20px;
+      margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
+    }
+    .navbar-wrapper .navbar {
+
+    }
+
+    /* Remove border and change up box shadow for more contrast */
+    .navbar .navbar-inner {
+      border: 0;
+      -webkit-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+         -moz-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+              box-shadow: 0 2px 10px rgba(0,0,0,.25);
+    }
+
+    /* Downsize the brand/project name a bit */
+    .navbar .brand {
+      padding: 14px 20px 16px; /* Increase vertical padding to match navbar links */
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 0 -1px 0 rgba(0,0,0,.5);
+    }
+
+    /* Navbar links: increase padding for taller navbar */
+    .navbar .nav > li > a {
+      padding: 15px 20px;
+    }
+
+    /* Offset the responsive button for proper vertical alignment */
+    .navbar .btn-navbar {
+      margin-top: 10px;
+    }
+
+
+
+    /* CUSTOMIZE THE CAROUSEL
+    -------------------------------------------------- */
+
+    /* Carousel base class */
+    .carousel {
+      margin-bottom: 60px;
+    }
+
+    .carousel .container {
+      position: relative;
+      z-index: 9;
+    }
+
+    .carousel-control {
+      height: 80px;
+      margin-top: 0;
+      font-size: 120px;
+      text-shadow: 0 1px 1px rgba(0,0,0,.4);
+      background-color: transparent;
+      border: 0;
+      z-index: 10;
+    }
+
+    .carousel .item {
+      height: 500px;
+    }
+    .carousel img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      height: 500px;
+    }
+
+    .carousel-caption {
+      background-color: transparent;
+      position: static;
+      max-width: 550px;
+      padding: 0 20px;
+      margin-top: 200px;
+    }
+    .carousel-caption h1,
+    .carousel-caption .lead {
+      margin: 0;
+      line-height: 1.25;
+      color: #fff;
+      text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    }
+    .carousel-caption .btn {
+      margin-top: 10px;
+    }
+
+
+
+    /* MARKETING CONTENT
+    -------------------------------------------------- */
+
+    /* Center align the text within the three columns below the carousel */
+    .marketing .span4 {
+      text-align: center;
+    }
+    .marketing h2 {
+      font-weight: normal;
+    }
+    .marketing .span4 p {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+
+    /* Featurettes
+    ------------------------- */
+
+    .featurette-divider {
+      margin: 80px 0; /* Space out the Bootstrap <hr> more */
+    }
+    .featurette {
+      padding-top: 120px; /* Vertically center images part 1: add padding above and below text. */
+      overflow: hidden; /* Vertically center images part 2: clear their floats. */
+    }
+    .featurette-image {
+      margin-top: -120px; /* Vertically center images part 3: negative margin up the image the same amount of the padding to center it. */
+    }
+
+    /* Give some space on the sides of the floated elements so text doesn't run right into it. */
+    .featurette-image.pull-left {
+      margin-right: 40px;
+    }
+    .featurette-image.pull-right {
+      margin-left: 40px;
+    }
+
+    /* Thin out the marketing headings */
+    .featurette-heading {
+      font-size: 50px;
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+
+
+
+    /* RESPONSIVE CSS
+    -------------------------------------------------- */
+
+    @media (max-width: 979px) {
+
+      .container.navbar-wrapper {
+        margin-bottom: 0;
+        width: auto;
+      }
+      .navbar-inner {
+        border-radius: 0;
+        margin: -20px 0;
+      }
+
+      .carousel .item {
+        height: 500px;
+      }
+      .carousel img {
+        width: auto;
+        height: 500px;
+      }
+
+      .featurette {
+        height: auto;
+        padding: 0;
+      }
+      .featurette-image.pull-left,
+      .featurette-image.pull-right {
+        display: block;
+        float: none;
+        max-width: 40%;
+        margin: 0 auto 20px;
+      }
+    }
+
+
+    @media (max-width: 767px) {
+
+      .navbar-inner {
+        margin: -20px;
+      }
+
+      .carousel {
+        margin-left: -20px;
+        margin-right: -20px;
+      }
+      .carousel .container {
+
+      }
+      .carousel .item {
+        height: 300px;
+      }
+      .carousel img {
+        height: 300px;
+      }
+      .carousel-caption {
+        width: 65%;
+        padding: 0 70px;
+        margin-top: 100px;
+      }
+      .carousel-caption h1 {
+        font-size: 30px;
+      }
+      .carousel-caption .lead,
+      .carousel-caption .btn {
+        font-size: 18px;
+      }
+
+      .marketing .span4 + .span4 {
+        margin-top: 40px;
+      }
+
+      .featurette-heading {
+        font-size: 30px;
+      }
+      .featurette .lead {
+        font-size: 18px;
+        line-height: 1.5;
+      }
+
+    }
+    </style>
+
+    <!--[if lt IE 9]>
+      <script src="/library/js/html5shiv.min.js"></script>
+    <![endif]-->
+
+	<link rel="shortcut icon" href="/library/ico/favicon.png">
+  </head>
+
+  <body>
+
+    <!-- NAVBAR
+    ================================================== -->
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <div class="navbar navbar-inverse">
+          <div class="navbar-inner">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="#">EspacoComercio.com.br</a>
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#contact">Contato</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorial <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#divTour">1. Tour</a></li>
+                    <li><a href="#divUser">2. Usuários</a></li>
+                    <li><a href="#divCategory">3. Categorias (Menu)</a></li>
+                    <li><a href="#divProduct">4. Produtos</a></li>
+                    <li><a href="#divPayment">5. Formas de pagamento</a></li>
+                    <li><a href="#divFrete">6. Frete</a></li>
+                    <li><a href="#divClient">7. Clientes</a></li>
+                    <li><a href="#divOrder">8. Pedidos</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="myCarousel" class="carousel slide">
+      <div class="carousel-inner">
+        <div class="item active">
+          <img src="img/fundo_cinza.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption pull-left" style="width: 70%">
+              <h1>Espaço Comércio</h1>
+              <p class="lead"></p>
+              <a class="btn btn-large btn-primary" href="#">Assine já</a>
+            </div>
+            <div class="box-login carousel-caption pull-right" style="width: 30%">
+				<form class="form-signin">
+					<h4 class="form-signin-heading"><i class="icon-lock icon-white"></i> Area administrativa</h4>
+					<input type="text" name="u" class="input-block-level" placeholder="Usuário">
+					<input type="password" name="p" class="input-block-level" placeholder="Senha">
+					<button id="btnLogin" type="button" class="btn btn-large btn-primary pull-right" data-loading-text="Processando...">Acessar</button>
+					<div id="box-alert"></div>
+					<input type="hidden" name="s">
+				</form>
+			</div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="img/fundo_cinza.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Dress Up</h1>
+              <p class="lead">http://www.espacocomercio.com.br/ecommerce/dress-up</p>
+              <a class="btn btn-large btn-primary" href="http://www.espacocomercio.com.br/ecommerce/dress-up" target="_blank">Conhecer</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="img/fundo_cinza.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Midula's Art</h1>
+              <p class="lead">http://www.espacocomercio.com.br/ecommerce/midulas-art</p>
+              <a class="btn btn-large btn-primary" href="http://www.espacocomercio.com.br/ecommerce/midulas-art" target="_blank">Conhecer</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div>
+
+    <div class="container marketing">
+
+      <div class="row">
+        <div class="span4">
+          <img class="img-circle" src="img/dress-up.jpg" width="220" height="120" style="width: 220px; height: 120px;">
+          <h2>Dress Up</h2>
+          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+          <p><a class="btn" href="http://www.espacocomercio.com.br/ecommerce/dress-up" target="_blank">Conhecer &raquo;</a></p>
+        </div><!-- /.span4 -->
+        <div class="span4">
+          <img class="img-circle" src="img/midulas-art.png" width="220" height="120" style="width: 220px; height: 120px;">
+          <h2>Midula's Art</h2>
+          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn" href="http://www.espacocomercio.com.br/ecommerce/midulas-art" target="_blank">Conhecer &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+      <div class="featurette" id="divTour">
+        <iframe class="featurette-image pull-right" width="420" height="315" src="http://www.youtube.com/embed/mHYA3PuEuTM" frameborder="0" allowfullscreen></iframe>
+        <h2 class="featurette-heading">Tour básico. <span class="muted">Administração do seu e-commerce.</span></h2>
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <p class="pull-right"><a href="#">Voltar</a></p>
+      </div>
+
+      <hr class="featurette-divider">
+      <div class="featurette" id="divUser">
+        <iframe class="featurette-image pull-left" width="420" height="315" src="http://www.youtube.com/embed/tZ3FgY0Rpdw" frameborder="0" allowfullscreen></iframe>
+        <h2 class="featurette-heading">Usuários. <span class="muted">Gerencimento dos usuários do sistema.</span></h2>
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <p class="pull-right"><a href="#">Voltar</a></p>
+      </div>
+
+      <hr class="featurette-divider">
+      <div class="featurette" id="divCategory">
+        <iframe class="featurette-image pull-right" width="420" height="315" src="http://www.youtube.com/embed/WxVKezyeDnY" frameborder="0" allowfullscreen></iframe>
+        <h2 class="featurette-heading">Categorias. <span class="muted">Gerenciamento dos menus da sua loja virtual.</span></h2>
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <p class="pull-right"><a href="#">Voltar</a></p>
+      </div>
+
+      <hr class="featurette-divider">
+      <div class="featurette" id="divProduct">
+        <iframe class="featurette-image pull-left" width="420" height="315" src="http://www.youtube.com/embed/CVyb3ZZY8nE" frameborder="0" allowfullscreen></iframe>
+        <h2 class="featurette-heading">Produtos. <span class="muted">Gerencimento dos produtos comercializados na sua loja virtual.</span></h2>
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <p class="pull-right"><a href="#">Voltar</a></p>
+      </div>
+
+      <hr class="featurette-divider">
+      <div class="featurette" id="divPayment">
+        <iframe class="featurette-image pull-right" width="420" height="315" src="http://www.youtube.com/embed/uiM98m8njYQ" frameborder="0" allowfullscreen></iframe>
+        <h2 class="featurette-heading">Formas de pagamento. <span class="muted">Gerenciamento das formas de pagamento da sua loja virtual.</span></h2>
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <p class="pull-right"><a href="#">Voltar</a></p>
+      </div>
+
+      <hr class="featurette-divider">
+      <div class="featurette" id="divFrete">
+        <iframe class="featurette-image pull-left" width="420" height="315" src="http://www.youtube.com/embed/o5VErjTas7A" frameborder="0" allowfullscreen></iframe>
+        <h2 class="featurette-heading">Frete. <span class="muted">Gerencimento do frete praticado na sua loja virtual.</span></h2>
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <p class="pull-right"><a href="#">Voltar</a></p>
+      </div>
+
+      <hr class="featurette-divider">
+      <div class="featurette" id="divClient">
+        <iframe class="featurette-image pull-right" width="420" height="315" src="http://www.youtube.com/embed/inPugkX8seI" frameborder="0" allowfullscreen></iframe>
+        <h2 class="featurette-heading">Clientes. <span class="muted">Gerenciamento dos clientes da sua loja virtual.</span></h2>
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <p class="pull-right"><a href="#">Voltar</a></p>
+      </div>
+
+      <hr class="featurette-divider">
+      <div class="featurette" id="divOrder">
+        <iframe class="featurette-image pull-left" width="420" height="315" src="http://www.youtube.com/embed/5DCR8f4zGcE" frameborder="0" allowfullscreen></iframe>
+        <h2 class="featurette-heading">Pedidos. <span class="muted">Gerencimento dos pedidos realizados na sua loja virtual.</span></h2>
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        <p class="pull-right"><a href="#">Voltar</a></p>
+      </div>
+
+      <hr class="featurette-divider">
+      
+      <footer>
+        <p>&copy; 2013 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+      </footer>
+
+    </div>
+
+    <script src="/library/js/jquery-1.8.3.min.js"></script>
+    <script src="/library/js/bootstrap.min.js"></script>
+    <script>
+      !function ($) {
+        $(function(){
+          $('#myCarousel').carousel({interval: false})
+        })
+      }(window.jQuery)
+    </script>
+    <script src="/library/js/holder.js"></script>
+    
+    <script src="/library/js/functions.js" charset="utf-8"></script>
+    <script src="js/ecommerce.js"></script>
+  </body>
+</html>

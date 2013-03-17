@@ -1,6 +1,6 @@
 <project name="ecommerce-static" default="deploy" basedir="../ecommerce-static">
 
-	<property name="server" location="/home/danielfreire/Developer/server/jboss-5.1.0.GA/server/default/deploy/ecommerce.war"/>
+	<property name="server" location="/usr/local/developer/server/apache2/htdocs/ecommerce"/>
 	
 	<target name="clean">
 		<exec executable="/bin/sh" failonerror="true" dir=".">

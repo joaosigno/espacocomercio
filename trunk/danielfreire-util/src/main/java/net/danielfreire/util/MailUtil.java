@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 
 public class MailUtil {
 
-	private void sendMail(final String subject, final String to, final String text, final String contextId) throws Exception {
+	public void sendMail(final String subject, final String to, final String text, final String contextId) throws Exception {
 		final String username = PortalTools.getInstance().getEcommerceProperties("mail.smtp.user");
 		final String password = PortalTools.getInstance().getEcommerceProperties("mail.smtp.password");
 		final String from = contextId + PortalTools.getInstance().getEcommerceProperties("mail.smtp.from");

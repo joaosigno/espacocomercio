@@ -10,6 +10,7 @@ import net.danielfreire.products.ecommerce.model.core.ProductHasOrderBusiness;
 import net.danielfreire.products.ecommerce.util.HeaderResponse;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
+import net.danielfreire.util.MailUtil;
 import net.danielfreire.util.PortalTools;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -209,6 +210,22 @@ public class PortalController {
 	public @ResponseBody GenericResponse delivery(HttpServletRequest request) {
 		try {
 			return freteParameterBusiness.delivery(request);
+		} catch (Exception e) {
+			return PortalTools.getInstance().getRespError(e);
+		}
+	}
+	
+	@RequestMapping(value="/portal/contact", method = RequestMethod.GET)
+	public @ResponseBody GenericResponse contact(HttpServletRequest request) {
+		try {
+			String nome = request.getParameter("nome");
+			String email = request.getParameter("email");
+			String fone = request.getParameter("fone");
+			String desc = request.getParameter("desc");
+			
+			new MailUtil().sendMail("Espaço Comércio - Contato", "daniel@danielfreire.net", "nome:"+nome+" email:"+email+" fone:"+fone+" desc:"+desc, "comercial");
+			
+			return new GenericResponse();
 		} catch (Exception e) {
 			return PortalTools.getInstance().getRespError(e);
 		}

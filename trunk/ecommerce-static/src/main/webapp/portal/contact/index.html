@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+	<title>Espaço Comércio</title>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="An web app server showcase theme for Twitter Bootstrap Development.">
+	<meta name="author" content="Houndstooth">
+		
+	<!-- Le styles -->
+	<link href="../css/style.css" rel="stylesheet" type="text/css">
+	<link href="../css/core.min.css" rel="stylesheet">
+	
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	
+	<link rel="shortcut icon" href="/library/ico/favicon.png">
+</head>
+
+<body>
+		
+	<section class="introduction" role="main">
+		<div class="hero-unit">
+			
+			<div class="navbar" id="menuDiv"></div>
+			
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<header>
+							<hgroup>
+								<h1>Espaço Comércio</h1>
+								<h2>Entre em <strong>contato</strong> e tire todas as suas dúvidas sobre o Espaço Comércio.</h2>
+							</hgroup>
+						</header>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container features">	
+			<div class="row">
+				<div class="span12">
+					<div class="span7">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>
+										<form class="form-horizontal" style="margin: 12px 0;">
+										  <p style="text-align: center;">Preencha seus dados e entraremos em contato com você o mais breve possível.</p>
+										  <div class="control-group">
+										    <label class="control-label" for="inputNome">Nome *</label>
+										    <div class="controls">
+										      <input class="input-xlarge" type="text" id="inputNome" placeholder="Nome" name="nome">
+										    </div>
+										  </div>
+										  <div class="control-group">
+										    <label class="control-label" for="inputEmail">Email *</label>
+										    <div class="controls">
+										      <input class="input-xlarge" type="text" id="inputEmail" placeholder="Email" name="email">
+										    </div>
+										  </div>
+										  <div class="control-group">
+										    <label class="control-label" for="inputFone">Telefone *</label>
+										    <div class="controls">
+										      <input class="input-xlarge" type="text" id="inputFone" placeholder="Telefone" name="fone">
+										    </div>
+										  </div>
+										  <div class="control-group" id="groupDescricao">
+										    <label class="control-label" for="inputDescricao">Descrição *</label>
+										    <div class="controls">
+										      <textarea class="input-xlarge" rows="3" name="desc" id="inputDescricao"></textarea>
+										    </div>
+										  </div>
+										  <div class="control-group">
+										    <div class="controls">
+										      <button id="btnContact" type="button" class="btn" data-loading-text="Processando...">Enviar</button>
+										    </div>
+										    <div id="box-alert"></div>
+										  </div>
+										</form>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="span4">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td style="text-align: left">
+										<strong>Suporte:</strong> suporte@espacocomercio.com.br
+										<strong>Comercial:</strong> comercial@espacocomercio.com.br
+										<strong>Telefone:</strong> +55 11 9-6368-9210
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="span4">
+					<div class="footer-col-1"></div>
+				</div>
+				<div class="span4">
+					<div class="footer-col-2" id="infoDiv"></div>
+				</div>
+				<div class="span4">
+					<div class="footer-col-3" id="socialDiv"></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="colophon">
+			<div class="container">
+				<div class="row">
+					<p class="pull-left">© 2013. Todos os direitos reservados.</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+		
+		
+	<!-- javascript -->
+	<script src="../js/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="../js/jquery.min.js"><\/script>')</script>
+	
+	<script src="../js/ga.js"></script>
+	<script src="../js/modernizr-2.6.1.min.js"></script>
+	
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/jquery.placeholder.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script src="/library/js/functions.js" charset="utf-8"></script>
+	<script src="../js/ecommerce.js"></script>
+	
+	<script>
+		loadMenu('contact');
+		loadSocial();
+		loadInfo();
+		
+		if (getURLParameter("type")!=null && getURLParameter("type")!='' && getURLParameter("type")!='null') {
+			$('textarea#inputDescricao').val('Desejo contratar o plano: '+getURLParameter("type"));
+			$('div#groupDescricao').hide();
+		}
+		
+		$('button#btnContact').on('click', function(event) {
+			if (!validateEmail($('#inputEmail').val())) {
+				alert('Preencha o campo e-mail corretamente.');
+			} else if ($('#inputNome').val()=='') {
+				alert('Preencha o campo nome corretamente.');
+			} else  {
+				$.getJSON('/ecommerce-web/portal/contact', $('form').serialize(), function(data) {
+					  if (data.status) {
+						  alert('Sua solicitação foi enviada com sucesso. Aguarde e entraremos em contato com você.');
+					  } else {
+						  alert('No momento nossos sistemas estão indisponíveis, aguarde um momento e tente novamente.');
+					  }
+				});
+			}
+		});
+		
+		function validateEmail(email) { 
+		    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		    return re.test(email);
+		} 
+	</script>
+	
+</body>
+</html>

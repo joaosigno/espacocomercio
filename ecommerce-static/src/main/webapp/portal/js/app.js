@@ -19,3 +19,16 @@ jQuery(document).ready(function($) {
 	
 });
 
+function loadMenu(page) {
+	$('div#menuDiv').load('/ecommerce/portal/includes/menu.html', function() {
+		$('li#'+page).attr('class', 'active');
+	});
+}
+
+function loadSocial() {
+	$('div#socialDiv').load('/ecommerce/portal/includes/social.html');
+}
+
+function loadInfo() {
+	$('div#infoDiv').load('/ecommerce/portal/includes/info.html');
+}

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html class="js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+	<title>Espaço Comércio</title>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="An web app server showcase theme for Twitter Bootstrap Development.">
+	<meta name="author" content="Houndstooth">
+		
+	<!-- Le styles -->
+	<link href="../css/style.css" rel="stylesheet" type="text/css">
+	<link href="../css/core.min.css" rel="stylesheet">
+	
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	
+	<link rel="shortcut icon" href="/library/ico/favicon.png">
+</head>
+
+<body>
+		
+	<section class="introduction" role="main">
+		<div class="hero-unit">
+			
+			<div class="navbar" id="menuDiv"></div>
+			
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<header>
+							<hgroup>
+								<h1>Espaço Comércio</h1>
+								<h2><strong>Acesso Restrito</strong> a gestores das lojas virtuais.</h2>
+							</hgroup>
+						</header>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container features">	
+			<div class="row">
+				<div class="span12">
+					<div class="span5">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>
+										<form class="form-horizontal" style="margin: 12px 0;">
+										  <div class="control-group">
+										    <label class="control-label" for="inputEmail">Usuário</label>
+										    <div class="controls">
+										      <input type="text" id="inputEmail" placeholder="Usuário" name="u">
+										    </div>
+										  </div>
+										  <div class="control-group">
+										    <label class="control-label" for="inputPassword">Senha</label>
+										    <div class="controls">
+										      <input type="password" id="inputPassword" placeholder="Senha" name="p">
+										    </div>
+										  </div>
+										  <div class="control-group">
+										    <div class="controls">
+										      <label class="checkbox">
+										        <input type="checkbox"> Manter conectado
+										      </label>
+										      <input type="hidden" name="s">
+										      
+										      <button id="btnLogin" type="button" class="btn" data-loading-text="Processando...">Acessar</button>
+										    </div>
+										    <div id="box-alert"></div>
+										  </div>
+										</form>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="span6">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td style="text-align: center">
+										<h2>Plataforma de loja virtual multicanal que se adapta ao perfil da sua empresa. Esteja preparado para receber seu cliente de qualquer canal: <strong>televendas, redes sociais, mobile, entre outros</strong>.</h2>
+										<a href="/ecommerce/portal/products" class="btn btn-large btn-primary">Conheça nossas soluções</a>
+										<a href="/ecommerce/portal/services" class="btn btn-large btn-info">Conheça nossos serviços</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="span4">
+					<div class="footer-col-1"></div>
+				</div>
+				<div class="span4">
+					<div class="footer-col-2" id="infoDiv"></div>
+				</div>
+				<div class="span4">
+					<div class="footer-col-3" id="socialDiv"></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="colophon">
+			<div class="container">
+				<div class="row">
+					<p class="pull-left">© 2013. Todos os direitos reservados.</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+		
+		
+	<!-- javascript -->
+	<script src="../js/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="../js/jquery.min.js"><\/script>')</script>
+	
+	<script src="../js/ga.js"></script>
+	<script src="../js/modernizr-2.6.1.min.js"></script>
+	
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/jquery.placeholder.min.js"></script>
+	<script src="../js/app.js"></script>
+	<script src="/library/js/functions.js" charset="utf-8"></script>
+	<script src="../js/ecommerce.js"></script>
+	
+	<script>
+		loadMenu('login');
+		loadSocial();
+		loadInfo();
+	</script>
+	
+</body>
+</html>

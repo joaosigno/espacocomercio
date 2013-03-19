@@ -1,0 +1,55 @@
+<!DOCTYPE html>	
+ <html lang="pt">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Advocacy - Escritório</title>
+		<link href="/library/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/library/css/bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="/library/css/admin.css" rel="stylesheet">
+ 	</head>
+ 	<body>
+ 	
+		<div id="menu"></div>
+ 		
+		<div class="container">
+			<ul class="breadcrumb">
+			    <li><a href="#">Escritórios</a> <span class="divider">/</span></li>
+			    <li><a href="#">Clientes</a> <span class="divider">/</span></li>
+			    <li class="active">Consultar</li>
+		    </ul>
+    
+    		<div id="grid"></div>
+		</div>
+ 		
+ 		<div id="footer"></div>
+ 	
+ 	 	<script src="/library/js/jquery-1.8.3.min.js"></script>
+		<script src="/library/js/bootstrap.min.js"></script>
+
+		<script src="/library/js/functions.js" charset="utf-8"></script>
+		<script src="/library/js/admin.js" charset="utf-8"></script>
+
+		<script>
+			loadMenuAdvocacy();
+			loadFooter();
+			loadGrid('/advocacy-web/admin/client/consult', 'grid', '', '/advocacy-web/admin/client/remove', true);
+			
+			function viewAddress(street, city, zipcode, number, complement) {
+				if ($('div#divAdressModal').size()==0) {
+					$('body').append('<div class="modal hide fade" id="divAdressModal"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h3>Dados de endereço</h3></div><div class="modal-body"></div><div class="modal-footer"><a href="#" class="btn btn-primary" data-dismiss="modal">Ok</a></div></div>');
+				}
+				
+				var html = '<p><strong>Endereço</strong>: '+street+'</p>';
+				html += '<p><strong>Número:</strong> '+number+'</p>';
+				html += '<p><strong>Cidade:</strong> '+city+'</p>';
+				html += '<p><strong>CEP:</strong> '+zipcode+'</p>';
+				html += '<p><strong>Complemento:</strong> '+complement+'</p>';
+				
+				$('div#divAdressModal').find('.modal-body').html(html);
+				
+				$('div#divAdressModal').modal('show');
+			}
+		</script>
+ 	</body>
+ </html>

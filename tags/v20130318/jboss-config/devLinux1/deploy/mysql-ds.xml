@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+	<local-tx-datasource>
+		<jndi-name>jndi/EcommerceDS</jndi-name>
+		<connection-url>jdbc:mysql://localhost:3306/ecommerce</connection-url>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+
+		<!-- The login and password -->
+		<user-name>root</user-name>
+		<password>21177001</password>
+
+		<!--pooling parameters-->
+		<min-pool-size>1</min-pool-size>
+		<max-pool-size>100</max-pool-size>
+		<blocking-timeout-millis>5000</blocking-timeout-millis>
+		<idle-timeout-minutes>15</idle-timeout-minutes>
+
+		<set-tx-query-timeout/>
+		<query-timeout>300</query-timeout> <!-- maximum of 5 minutes for queries -->
+	</local-tx-datasource>
+	
+	<local-tx-datasource>
+		<jndi-name>jndi/PortaisDS</jndi-name>
+		<connection-url>jdbc:mysql://localhost:3306/portais</connection-url>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+
+		<!-- The login and password -->
+		<user-name>root</user-name>
+		<password>21177001</password>
+
+		<!--pooling parameters-->
+		<min-pool-size>1</min-pool-size>
+		<max-pool-size>100</max-pool-size>
+		<blocking-timeout-millis>5000</blocking-timeout-millis>
+		<idle-timeout-minutes>15</idle-timeout-minutes>
+
+		<set-tx-query-timeout/>
+		<query-timeout>300</query-timeout> <!-- maximum of 5 minutes for queries -->
+	</local-tx-datasource>
+	
+	<local-tx-datasource>
+		<jndi-name>jndi/AdvocacyDS</jndi-name>
+		<connection-url>jdbc:mysql://localhost:3306/advocacy</connection-url>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+
+		<!-- The login and password -->
+		<user-name>root</user-name>
+		<password>21177001</password>
+
+		<!--pooling parameters-->
+		<min-pool-size>1</min-pool-size>
+		<max-pool-size>100</max-pool-size>
+		<blocking-timeout-millis>5000</blocking-timeout-millis>
+		<idle-timeout-minutes>15</idle-timeout-minutes>
+
+		<set-tx-query-timeout/>
+		<query-timeout>300</query-timeout> <!-- maximum of 5 minutes for queries -->
+	</local-tx-datasource>
+</datasources>
+ 

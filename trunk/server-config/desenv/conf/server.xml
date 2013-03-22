@@ -60,6 +60,28 @@
     	url="jdbc:mysql://localhost:3306/ecommerce" 
     	username="root" 
     	validationQuery="select 1"/>
+    	
+    <Resource 
+    	auth="Container" 
+    	driverClassName="com.mysql.jdbc.Driver" 
+    	factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory" 
+    	logAbandoned="true" 
+    	maxActive="20" 
+    	maxIdle="10" 
+    	maxWait="10000" 
+    	minIdle="5" 
+    	name="jdbc/FinanceDB" 
+    	numTestsPerEvictionRun="10" 
+    	password="21177001" 
+    	removeAbandoned="true" 
+    	removeAbandonedTimeout="120" 
+    	testOnBorrow="true" 
+    	testWhileIdle="true" 
+    	timeBetweenEvictionRunsMillis="300000" 
+    	type="javax.sql.DataSource" 
+    	url="jdbc:mysql://localhost:3306/financefamily" 
+    	username="root" 
+    	validationQuery="select 1"/>
     
     <Resource name="UserDatabase" auth="Container"
               type="org.apache.catalina.UserDatabase"

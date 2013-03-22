@@ -32,5 +32,7 @@
     <Valve className="org.apache.catalina.valves.CometConnectionManagerValve" />
     -->
     <ResourceLink name="jdbc/EcommerceDB" global="jdbc/EcommerceDB" type="javax.sql.DataSource"/>
+    
+    <ResourceLink name="jdbc/FinanceDB" global="jdbc/FinanceDB" type="javax.sql.DataSource"/>
 
 </Context>

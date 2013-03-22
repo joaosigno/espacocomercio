@@ -57,7 +57,7 @@
     	testWhileIdle="true" 
     	timeBetweenEvictionRunsMillis="300000" 
     	type="javax.sql.DataSource" 
-    	url="jdbc:mysql://174.142.99.141:3306/espacoco_ecommerce" 
+    	url="jdbc:mysql://174.142.99.141:3306/espacoco_ecommerce?autoReconnect=true" 
     	username="espacoco_appEcom" 
     	validationQuery="select 1"/>
     
@@ -79,7 +79,7 @@
     	testWhileIdle="true" 
     	timeBetweenEvictionRunsMillis="300000" 
     	type="javax.sql.DataSource" 
-    	url="jdbc:mysql://174.142.99.141:3306/espacoco_financefamily" 
+    	url="jdbc:mysql://174.142.99.141:3306/espacoco_financefamily?autoReconnect=true" 
     	username="espacoco_finance" 
     	validationQuery="select 1"/>
     

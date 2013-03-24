@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.danielfreire.products</groupId>
+	<groupId>br.com.espacocomercio</groupId>
 	<artifactId>ecommerce-web</artifactId>
 	<version>1.0.0.1</version>
 	<packaging>war</packaging>
@@ -110,8 +110,8 @@
 			<version>2.2.2</version>
 		</dependency>
 		<dependency>
-			<groupId>net.danielfreire.util</groupId>
-			<artifactId>danielfreire-util</artifactId>
+			<groupId>library</groupId>
+			<artifactId>library-util</artifactId>
 			<version>1.0.0.0</version>
 		</dependency>
 		<dependency>

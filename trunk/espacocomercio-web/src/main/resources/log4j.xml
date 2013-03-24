@@ -17,7 +17,7 @@
          <level value="ERROR" />
     </logger>
     
-    <logger name="net.danielfreire">
+    <logger name="br.com.espacocomercio">
         <level value="INFO" />
     </logger>
 

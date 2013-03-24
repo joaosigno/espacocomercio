@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.danielfreire.products</groupId>
+	<groupId>br.com.espacocomercio</groupId>
 	<artifactId>ecommerce-static</artifactId>
 	<version>1.0.0.0</version>
 	<packaging>pom</packaging>
@@ -19,8 +19,7 @@
 	<developers>
 		<developer>
 			<name>Daniel Freire</name>
-			<organization>Ticket Services</organization>
-			<email>daniel.freire@consulting-for.edenred.com</email>
+			<email>daniel@danielfreire.net</email>
 			<roles>
 				<role>System Architect</role>
 				<role>Senior Developer</role>

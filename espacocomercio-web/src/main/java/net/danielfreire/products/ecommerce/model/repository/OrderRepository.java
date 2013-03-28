@@ -1,5 +1,7 @@
 package net.danielfreire.products.ecommerce.model.repository;
 
+import java.util.List;
+
 import net.danielfreire.products.ecommerce.model.domain.ClientEcommerce;
 import net.danielfreire.products.ecommerce.model.domain.Order;
 
@@ -14,5 +16,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	public Page<Order> findByClientAndStatusOrderLessThan(ClientEcommerce client, Integer statusOrderLessThan, Pageable p);
 	
 	public Page<Order> findByClientAndStatusOrderGreaterThan(ClientEcommerce client, Integer statusOrderLessThan, Pageable p);
-	
+
+	public List<Order> findByClient(ClientEcommerce c);
 }

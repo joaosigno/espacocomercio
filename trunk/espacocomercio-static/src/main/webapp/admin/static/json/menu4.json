@@ -1,0 +1,20 @@
+{
+    "title": "Administração",
+	"menus": {
+        "Home": {
+        	"id": "home",
+        	"icon": "icofont-dashboard",
+        	"url": "/ecommerce/admin"
+        },
+        "Categorias": {
+        	"id": "category",
+        	"icon": "icofont-magnet",
+        	"url": "/ecommerce/admin/category"
+        },
+        "Produtos": {
+        	"id": "product",
+        	"icon": "icofont-bar-chart",
+        	"url": "/ecommerce/admin/product"
+        }
+    }
+}

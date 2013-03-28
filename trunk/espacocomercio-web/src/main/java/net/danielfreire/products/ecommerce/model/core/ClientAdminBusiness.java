@@ -18,5 +18,7 @@ public interface ClientAdminBusiness {
 	GenericResponse load(HttpServletRequest request) throws Exception;
 
 	GenericResponse remove(HttpServletRequest request) throws Exception;
+	
+	GenericResponse home(HttpServletRequest request) throws Exception;
 
 }

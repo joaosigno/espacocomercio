@@ -81,15 +81,15 @@
                                     Ir para
                                 </a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                    <li><a tabindex="-1" href="/ecommerce/">Loja</a></li>
-                                    <li><a tabindex="-1" href="/ecommerce/admin/order">E-mail</a></li>
+                                    <li><a id="aToLoja" tabindex="-1" href="/ecommerce/" target="_blank">Loja</a></li>
+                                    <li><a tabindex="-1" href="http://gmail.com" target="_blank">E-mail</a></li>
                                 </ul>
                             </div>
                             
                             <div class="btn-group user-group">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <img class="corner-all" align="middle" src="/ecommerce/admin/static/img/user-thumb.jpg" title="Nome do perfil" alt="Nome do perfil">
-                                    <button class="btn btn-small btn-inverse">Nome do perfil</button>
+                                    <img class="corner-all" align="middle" src="/ecommerce/admin/static/img/user-thumb.jpg" title="Perfil" alt="Perfil">
+                                    <button class="btn btn-small btn-inverse">Perfil</button>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user" role="menu" aria-labelledby="dLabel">
                                     <li>
@@ -98,15 +98,15 @@
                                                 <img class="img-circle" src="/ecommerce/admin/static/img/user.jpg" title="perfil" alt="perfil">
                                             </a>
                                             <div class="media-body description">
-                                                <p><strong>Nome do perfil</strong></p>
-                                                <p class="muted">E-mail do perfil</p>
+                                                <p><strong>Perfil</strong></p>
+                                                <p class="muted"><span id="spanEmailPerfil"></span></p>
                                                 <a href="/ecommerce/admin/user" class="btn btn-primary btn-small btn-block">Configurar</a>
                                             </div>
                                         </div>
                                     </li>
                                     <li class="dropdown-footer">
                                         <div>
-                                            <a class="btn btn-small pull-right" href="/finance-web/admin/logout">Sair</a>
+                                            <a class="btn btn-small pull-right" href="/ecommerce-web/admin/logout">Sair</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -120,84 +120,7 @@
 
         <section class="section">
             <div class="row-fluid">
-                <div class="span1">
-                    <aside class="side-left" style="top: 60px;">
-                        <ul class="sidebar">
-                            <li class="active first">
-                                <a href="/ecommerce/admin/" title="Home">
-                                    <div class="helper-font-24">
-                                        <i class="icofont-dashboard"></i>
-                                    </div>
-                                    <span class="sidebar-text">Home</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/ecommerce/admin/finance" title="Finanças">
-                                    <div class="helper-font-24">
-                                        <i class="icofont-magnet"></i>
-                                    </div>
-                                    <span class="sidebar-text">Finanças</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/ecommerce/admin/category" title="Categorias">
-                                    <div class="helper-font-24">
-                                        <i class="icofont-magnet"></i>
-                                    </div>
-                                    <span class="sidebar-text">Categorias</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/ecommerce/admin/product" title="Produtos">
-                                    <div class="helper-font-24">
-                                        <i class="icofont-bar-chart"></i>
-                                    </div>
-                                    <span class="sidebar-text">Produtos</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/ecommerce/admin/order" title="Pedidos">
-                                    <div class="helper-font-24">
-                                        <i class="icofont-table"></i>
-                                    </div>
-                                    <span class="sidebar-text">Pedidos</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/ecommerce/admin/send" title="Frete">
-                                    <div class="helper-font-24">
-                                        <i class="icofont-columns"></i>
-                                    </div>
-                                    <span class="sidebar-text">Frete</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/ecommerce/admin/payment" title="Formas de pagamento">
-                                    <div class="helper-font-24">
-                                        <i class="icofont-star"></i>
-                                    </div>
-                                    <span class="sidebar-text">Formas de pgto</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/ecommerce/admin/user" title="Usuários">
-                                    <div class="helper-font-24">
-                                        <i class="icofont-reorder"></i>
-                                    </div>
-                                    <span class="sidebar-text">Usuários</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/ecommerce/admin/config" title="Usuários">
-                                    <div class="helper-font-24">
-                                        <i class="icofont-reorder"></i>
-                                    </div>
-                                    <span class="sidebar-text">Configurações</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </aside>
-                </div>
+                <div class="span1" id="divAdminMenu"><!-- Menu --></div>
                 
                 <div class="span9">
                     <div class="content">
@@ -207,7 +130,7 @@
                                     <a href="#">
                                         <canvas height="32" width="32"></canvas>
                                         <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A600&quot;, &quot;#00A600&quot;]" style="display: none;">5,3,9,6,5,9,7,3,5,2</span>
-                                        <div class="action-text color-green">0 <span class="helper-font-small color-silver-dark">Visitas</span></div>
+                                        <div class="action-text color-green"><span id="spanVisitsTotal">0</span> <span class="helper-font-small color-silver-dark">Visitas</span></div>
                                     </a>
                                 </li>
                                 <li class="divider"></li>
@@ -215,7 +138,7 @@
                                     <a href="#">
                                         <canvas height="32" width="32"></canvas>
                                         <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A0B1&quot;, &quot;#00A0B1&quot;]" style="display: none;">9,7,9,6,3,5,3,5,5,2</span>
-                                        <div class="action-text color-teal">0 <span class="helper-font-small color-silver-dark">Clientes</span></div>
+                                        <div class="action-text color-teal"><span id="spanClientsTotal">0</span> <span class="helper-font-small color-silver-dark">Clientes</span></div>
                                     </a>
                                 </li>
                                 <li class="divider"></li>
@@ -223,11 +146,11 @@
                                     <a href="#">
                                         <canvas height="32" width="32"></canvas>
                                         <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#BF1E4B&quot;, &quot;#BF1E4B&quot;]" style="display: none;">6,5,9,7,3,5,2,5,3,9</span>
-                                        <div class="action-text color-red">0 <span class="helper-font-small color-silver-dark">Pedidos</span></div>
+                                        <div class="action-text color-red"><span id="spanOrdersTotal">0</span> <span class="helper-font-small color-silver-dark">Pedidos</span></div>
                                     </a>
                                 </li>
                             </ul>
-                            <h2><i class="icofont-home"></i> Nome da loja <small> Administração</small></h2>
+                            <h2><i class="icofont-home"></i> <span id="spanTitleEcommerce"></span> <small> Administração</small></h2>
                         </div>
                         
                         <div class="content-body">
@@ -287,7 +210,7 @@
                                                 <div class="span4">
                                                     <div class="dashboard-stat">
                                                         <div id="visitor-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
-                                                        <div class="stat-label grd-green color-white">Produtos</div>
+                                                        <div class="stat-label grd-green color-white">Visitantes</div>
                                                     </div>
                                                 </div>
                                                 <div class="span4">
@@ -486,5 +409,11 @@
 
         <script src="/ecommerce/admin/static/js/holder.js"></script>
         <script src="/ecommerce/admin/static/js/functions.js"></script>
+        
+        <script type="text/javascript">
+        	loadMenuAdmin();
+        	loadHome();
+        </script>
+        
 	</body>
 </html>

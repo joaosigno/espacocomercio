@@ -1,6 +1,7 @@
 package net.danielfreire.products.ecommerce.model.core;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,9 +9,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import net.danielfreire.products.ecommerce.model.domain.ClientAdmin;
+import net.danielfreire.products.ecommerce.model.domain.ClientEcommerce;
+import net.danielfreire.products.ecommerce.model.domain.Order;
 import net.danielfreire.products.ecommerce.model.domain.Site;
 import net.danielfreire.products.ecommerce.model.repository.ClientAdminRepository;
+import net.danielfreire.products.ecommerce.model.repository.ClientEcommerceRepository;
+import net.danielfreire.products.ecommerce.model.repository.OrderRepository;
 import net.danielfreire.products.ecommerce.util.EcommerceUtil;
+import net.danielfreire.util.ConvertTools;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
 import net.danielfreire.util.GridTitleResponse;
@@ -27,6 +33,10 @@ public class ClientAdminBusinessImpl implements ClientAdminBusiness {
 	
 	@Autowired
 	private ClientAdminRepository repository;
+	@Autowired
+	private ClientEcommerceRepository clientRepository;
+	@Autowired
+	private OrderRepository orderRepository;
 
 	@Override
 	public GenericResponse login(HttpServletRequest request) throws Exception {
@@ -73,7 +83,7 @@ public class ClientAdminBusinessImpl implements ClientAdminBusiness {
 		final ClientAdmin user = EcommerceUtil.getInstance().getSessionAdmin(request);
 		
 		GenericResponse resp = new GenericResponse();
-		resp.setGeneric( new String[] { user.getPermission().toString(), user.getSite().getName(), user.getUser() });
+		resp.setGeneric( new String[] { user.getPermission().toString(), user.getSite().getName(), user.getUser(), ConvertTools.getInstance().normalizeString(user.getSite().getName()) });
 		
 		return resp;
 	}
@@ -190,6 +200,74 @@ public class ClientAdminBusinessImpl implements ClientAdminBusiness {
 		} else {
 			resp = PortalTools.getInstance().getRespError("permission.invalid");
 		}
+		
+		return resp;
+	}
+
+	@Override
+	public GenericResponse home(HttpServletRequest request) throws Exception {
+		final ClientAdmin user = EcommerceUtil.getInstance().getSessionAdmin(request);
+		final List<ClientEcommerce> clients = clientRepository.findBySite(user.getSite());
+		
+		int qtdOrder = 0;
+		int mes1 = 0, mes2 = 0, mes3 = 0, mes4 = 0, mes5 = 0, mes6 = 0, mes7 = 0;
+		int o1 = 0, o2 = 0, o3 = 0, o4 = 0, o5 = 0, o6 = 0, o7 = 0;
+		for (ClientEcommerce c : clients) {
+			List<Order> orders = orderRepository.findByClient(c);
+			qtdOrder += orders.size();
+			
+			Calendar now = Calendar.getInstance();
+			if (now.get(Calendar.MONTH) == c.getCreationDate().get(Calendar.MONTH))
+				mes7++;
+			now.add(Calendar.MONTH, -1);
+			if (now.get(Calendar.MONTH) == c.getCreationDate().get(Calendar.MONTH))
+				mes6++;
+			now.add(Calendar.MONTH, -1);
+			if (now.get(Calendar.MONTH) == c.getCreationDate().get(Calendar.MONTH))
+				mes5++;
+			now.add(Calendar.MONTH, -1);
+			if (now.get(Calendar.MONTH) == c.getCreationDate().get(Calendar.MONTH))
+				mes4++;
+			now.add(Calendar.MONTH, -1);
+			if (now.get(Calendar.MONTH) == c.getCreationDate().get(Calendar.MONTH))
+				mes3++;
+			now.add(Calendar.MONTH, -1);
+			if (now.get(Calendar.MONTH) == c.getCreationDate().get(Calendar.MONTH))
+				mes2++;
+			now.add(Calendar.MONTH, -1);
+			if (now.get(Calendar.MONTH) == c.getCreationDate().get(Calendar.MONTH))
+				mes1++;
+			
+			for (Order o : orders) {
+				Calendar now2 = Calendar.getInstance();
+				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+					o7++;
+				now2.add(Calendar.MONTH, -1);
+				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+					o6++;
+				now2.add(Calendar.MONTH, -1);
+				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+					o5++;
+				now2.add(Calendar.MONTH, -1);
+				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+					o4++;
+				now2.add(Calendar.MONTH, -1);
+				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+					o3++;
+				now2.add(Calendar.MONTH, -1);
+				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+					o2++;
+				now2.add(Calendar.MONTH, -1);
+				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+					o1++;
+			}
+		}
+		
+		final Integer[] arrayClients = {mes1, mes2, mes3, mes4, mes5, mes6, mes7};
+		final Integer[] arrayOrders = {o1, o2, o3, o4, o5, o6, o7};
+		
+		GenericResponse resp = new GenericResponse();
+		resp.setGeneric(new Object[] {clients.size(), qtdOrder, ConvertTools.getInstance().normalizeString(user.getSite().getName()), arrayClients, arrayOrders});
 		
 		return resp;
 	}

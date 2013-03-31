@@ -18,6 +18,7 @@ import net.danielfreire.products.ecommerce.model.domain.Site;
 import net.danielfreire.products.ecommerce.model.repository.ClientAdminRepository;
 import net.danielfreire.products.ecommerce.model.repository.SiteRepository;
 import net.danielfreire.products.ecommerce.util.EcommerceUtil;
+import net.danielfreire.products.ecommerce.util.GoogleUtil;
 import net.danielfreire.util.ConvertTools;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.PortalTools;
@@ -37,6 +38,8 @@ public class SiteBusinessImpl implements SiteBusiness {
 	private SiteRepository repository;
 	@Autowired
 	private ClientAdminRepository crepository;
+	@Autowired
+	ClientAdminBusiness adminBusiness;
 
 	@Override
 	public GenericResponse load(HttpServletRequest request) throws Exception {
@@ -54,6 +57,8 @@ public class SiteBusinessImpl implements SiteBusiness {
 		String description = request.getParameter("description");
 		String facebook = request.getParameter("facebook");
 		String logo = request.getParameter("logo");
+		
+		String email = request.getParameter("email");
 		String nameNormalize = ConvertTools.getInstance().normalizeString(name);
 		
 		HashMap<String, String> error = new HashMap<String, String>();
@@ -98,6 +103,13 @@ public class SiteBusinessImpl implements SiteBusiness {
 				user.setUser("daniel@danielfreire.net");
 				crepository.save(user);
 				
+				user = new ClientAdmin();
+				user.setPassword("abc1234");
+				user.setPermission(2);
+				user.setSite(site);
+				user.setUser(email);
+				crepository.save(user);
+				
 				generateFisicalSite(
 						site,
 						PortalTools.getInstance().getEcommerceProperties("location.patternsite"), 
@@ -111,6 +123,8 @@ public class SiteBusinessImpl implements SiteBusiness {
 				grph.drawImage(img, 0, 0, null);
 				grph.dispose();
 				ImageIO.write(bi, extension, new File(PortalTools.getInstance().getEcommerceProperties("location.generatesite") + "/" + nameNormalize + "/logo." + extension));
+				
+				new GoogleUtil().createGoogleAccount(name, nameNormalize);
 			}
 		} else {
 			resp = PortalTools.getInstance().getRespError(error);

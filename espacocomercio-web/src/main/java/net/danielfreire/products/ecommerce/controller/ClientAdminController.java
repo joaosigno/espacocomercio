@@ -94,9 +94,9 @@ public class ClientAdminController {
 	}
 	
 	@RequestMapping(value="/admin/home", method = RequestMethod.GET)
-	public @ResponseBody GenericResponse home(HttpServletRequest request) {
+	public @ResponseBody GenericResponse home(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			return business.home(request);
+			return business.home(request, response);
 		} catch (Exception e) {
 			return PortalTools.getInstance().getRespError(e);
 		}

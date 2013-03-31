@@ -148,7 +148,7 @@ public class OrderBusinessImpl implements OrderBusiness {
 			order.setDiscount(0.0);
 			order.setPayment(paymentRepository.findByNameAndSite("PagSeguro", client.getSite()));
 			order.setSendCust(send);
-			order.setStatusOrder(2);
+			order.setStatusOrder(1);
 			order.setTotalValue(total);
 			
 			order = repository.saveAndFlush(order);

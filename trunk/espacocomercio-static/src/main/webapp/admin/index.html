@@ -82,7 +82,7 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                     <li><a id="aToLoja" tabindex="-1" href="/ecommerce/" target="_blank">Loja</a></li>
-                                    <li><a tabindex="-1" href="http://gmail.com" target="_blank">E-mail</a></li>
+                                    <li><a tabindex="-1" href="https://www.google.com/a/espacocomercio.com.br/ServiceLogin" target="_blank">E-mail</a></li>
                                 </ul>
                             </div>
                             
@@ -130,7 +130,7 @@
                                     <a href="#">
                                         <canvas height="32" width="32"></canvas>
                                         <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A600&quot;, &quot;#00A600&quot;]" style="display: none;">5,3,9,6,5,9,7,3,5,2</span>
-                                        <div class="action-text color-green"><span id="spanVisitsTotal">0</span> <span class="helper-font-small color-silver-dark">Visitas</span></div>
+                                        <div class="action-text color-green"><span id="spanVisitsTotal">0</span> <span class="helper-font-small color-silver-dark">Total Visitas</span></div>
                                     </a>
                                 </li>
                                 <li class="divider"></li>
@@ -138,7 +138,7 @@
                                     <a href="#">
                                         <canvas height="32" width="32"></canvas>
                                         <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A0B1&quot;, &quot;#00A0B1&quot;]" style="display: none;">9,7,9,6,3,5,3,5,5,2</span>
-                                        <div class="action-text color-teal"><span id="spanClientsTotal">0</span> <span class="helper-font-small color-silver-dark">Clientes</span></div>
+                                        <div class="action-text color-teal"><span id="spanClientsTotal">0</span> <span class="helper-font-small color-silver-dark">Total Clientes</span></div>
                                     </a>
                                 </li>
                                 <li class="divider"></li>
@@ -146,7 +146,7 @@
                                     <a href="#">
                                         <canvas height="32" width="32"></canvas>
                                         <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#BF1E4B&quot;, &quot;#BF1E4B&quot;]" style="display: none;">6,5,9,7,3,5,2,5,3,9</span>
-                                        <div class="action-text color-red"><span id="spanOrdersTotal">0</span> <span class="helper-font-small color-silver-dark">Pedidos</span></div>
+                                        <div class="action-text color-red"><span id="spanOrdersTotal">0</span> <span class="helper-font-small color-silver-dark">Total Pedidos</span></div>
                                     </a>
                                 </li>
                             </ul>
@@ -156,34 +156,36 @@
                         <div class="content-body">
                             <div class="shortcut-group">
                                 <ul class="a-btn-group">
-                                    <li>
-                                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Redigir mensagem">
-                                            <span></span>
-                                            <span><i class="icofont-edit color-silver-dark"></i></span>
-                                            <span class="color-silver-dark"><i class="icofont-file color-silver-dark"></i></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Mensagens">
+                                	<li>
+                                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novas Mensagens">
                                             <span></span>
                                             <span><i class="icofont-envelope color-silver-dark"></i></span>
                                             <span class="color-silver-dark"><i class="icofont-envelope-alt color-teal"></i></span>
-                                            <div class="badge badge-info">9</div> <!--don't use span here!-->
+                                            <div class="badge badge-info">9</div>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Pagamentos">
+                                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Pedidos">
+                                            <span></span>
+                                            <span><i class="icofont-shopping-cart color-silver-dark"></i></span>
+                                            <span class="color-silver-dark"><i class="icofont-shopping-cart color-red"></i></span>
+                                            <div class="label label-important" id="newOrdersCount"></div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Pagamentos">
                                             <span></span>
                                             <span><i class="icofont-barcode color-silver-dark"></i></span>
-                                            <span class="color-silver-dark"><i class="icofont-shopping-cart color-red"></i></span>
-                                            <div class="label label-important">2</div> <!--don't use span here!-->
+                                            <span class="color-silver-dark"><i class="icofont-barcode color-red"></i></span>
+                                            <div class="label label-important" id="newPaymentsCount"></div>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Estatísticas">
+                                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Clientes">
                                             <span></span>
                                             <span><i class="icofont-bar-chart color-silver-dark"></i></span>
                                             <span class="color-silver-dark"><i class="typicn-lineChart"></i></span>
+                                            <div class="badge badge-info" id="newClientsCount"></div>
                                         </a>
                                     </li>
                                     <li class="clearfix"></li>

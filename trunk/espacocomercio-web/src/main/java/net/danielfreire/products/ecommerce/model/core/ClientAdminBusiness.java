@@ -1,6 +1,7 @@
 package net.danielfreire.products.ecommerce.model.core;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
@@ -19,6 +20,6 @@ public interface ClientAdminBusiness {
 
 	GenericResponse remove(HttpServletRequest request) throws Exception;
 	
-	GenericResponse home(HttpServletRequest request) throws Exception;
+	GenericResponse home(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
 }

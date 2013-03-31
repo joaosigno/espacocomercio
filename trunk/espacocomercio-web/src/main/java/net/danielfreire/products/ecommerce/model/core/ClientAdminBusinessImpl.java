@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.danielfreire.products.ecommerce.model.domain.ClientAdmin;
 import net.danielfreire.products.ecommerce.model.domain.ClientEcommerce;
@@ -205,17 +206,46 @@ public class ClientAdminBusinessImpl implements ClientAdminBusiness {
 	}
 
 	@Override
-	public GenericResponse home(HttpServletRequest request) throws Exception {
+	public GenericResponse home(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		final ClientAdmin user = EcommerceUtil.getInstance().getSessionAdmin(request);
-		final List<ClientEcommerce> clients = clientRepository.findBySite(user.getSite());
 		
-		int qtdOrder = 0;
-		int mes1 = 0, mes2 = 0, mes3 = 0, mes4 = 0, mes5 = 0, mes6 = 0, mes7 = 0;
+		final Long clientTotalCount = clientRepository.countBySite(user.getSite());
+		final Long orderTotalCount = orderRepository.countBySite(user.getSite());
+		
+		Calendar dtInit = Calendar.getInstance();
+		dtInit.add(Calendar.MONTH, -6);
+		Calendar dtNow = Calendar.getInstance();
+		
+		final List<Order> listOrders = orderRepository.findBySite(user.getSite(), dtInit, dtNow);
 		int o1 = 0, o2 = 0, o3 = 0, o4 = 0, o5 = 0, o6 = 0, o7 = 0;
+		for (Order o : listOrders) {
+			Calendar now2 = Calendar.getInstance();
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+				o7++;
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+				o6++;
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+				o5++;
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+				o4++;
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+				o3++;
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+				o2++;
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
+				o1++;
+		}
+		final Integer[] arrayOrdersByMonth = {o1, o2, o3, o4, o5, o6, o7};
+		
+		final List<ClientEcommerce> clients = clientRepository.findBySiteAndCreationDateGreaterThanAndCreationDateLessThan(user.getSite(), dtInit, dtNow);
+		int mes1 = 0, mes2 = 0, mes3 = 0, mes4 = 0, mes5 = 0, mes6 = 0, mes7 = 0;
 		for (ClientEcommerce c : clients) {
-			List<Order> orders = orderRepository.findByClient(c);
-			qtdOrder += orders.size();
-			
 			Calendar now = Calendar.getInstance();
 			if (now.get(Calendar.MONTH) == c.getCreationDate().get(Calendar.MONTH))
 				mes7++;
@@ -237,37 +267,27 @@ public class ClientAdminBusinessImpl implements ClientAdminBusiness {
 			now.add(Calendar.MONTH, -1);
 			if (now.get(Calendar.MONTH) == c.getCreationDate().get(Calendar.MONTH))
 				mes1++;
-			
-			for (Order o : orders) {
-				Calendar now2 = Calendar.getInstance();
-				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
-					o7++;
-				now2.add(Calendar.MONTH, -1);
-				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
-					o6++;
-				now2.add(Calendar.MONTH, -1);
-				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
-					o5++;
-				now2.add(Calendar.MONTH, -1);
-				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
-					o4++;
-				now2.add(Calendar.MONTH, -1);
-				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
-					o3++;
-				now2.add(Calendar.MONTH, -1);
-				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
-					o2++;
-				now2.add(Calendar.MONTH, -1);
-				if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH))
-					o1++;
-			}
 		}
+		final Integer[] arrayClientsByMonth = {mes1, mes2, mes3, mes4, mes5, mes6, mes7};
 		
-		final Integer[] arrayClients = {mes1, mes2, mes3, mes4, mes5, mes6, mes7};
-		final Integer[] arrayOrders = {o1, o2, o3, o4, o5, o6, o7};
+		dtInit = Calendar.getInstance();
+		dtInit.add(Calendar.DAY_OF_MONTH, -2);
+		final Long newClientCount = clientRepository.countBySiteAndCreationDateGreaterThan(user.getSite(), dtInit);
+		final Long newOrderCount = orderRepository.countBySiteAndDateCreateGreaterThan(user.getSite(), dtInit);
+		final Long newOrderPaymentsCount = orderRepository.countBySiteAndStatusOrder(user.getSite(), 2);
+		
+		final String nameSite = ConvertTools.getInstance().normalizeString(user.getSite().getName());
 		
 		GenericResponse resp = new GenericResponse();
-		resp.setGeneric(new Object[] {clients.size(), qtdOrder, ConvertTools.getInstance().normalizeString(user.getSite().getName()), arrayClients, arrayOrders});
+		resp.setGeneric(new Object[] {
+				clientTotalCount, //0
+				orderTotalCount, //1
+				nameSite, //2
+				arrayClientsByMonth,//3 
+				arrayOrdersByMonth, //4
+				newClientCount, //5
+				newOrderCount, //6
+				newOrderPaymentsCount}); //7
 		
 		return resp;
 	}

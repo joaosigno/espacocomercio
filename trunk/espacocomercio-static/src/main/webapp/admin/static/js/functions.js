@@ -125,6 +125,9 @@ function loadHome() {
         		$('span#spanVisitsTotal').text(r.visits);
         		generateGrafics(r.pagesMonth, data.generic[3], data.generic[4]);
         	});
+			$('div#newClientsCount').html(data.generic[5]);
+			$('div#newOrdersCount').html(data.generic[6]);
+			$('div#newPaymentsCount').html(data.generic[7]);
 			
 		} else {
 			errorForm(data)

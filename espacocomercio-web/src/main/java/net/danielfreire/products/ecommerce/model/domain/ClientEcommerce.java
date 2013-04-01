@@ -10,8 +10,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.data.jpa.domain.AbstractPersistable;
-
 @Entity
 @Table(name="client_ecommerce")
 public class ClientEcommerce extends AbstractPersistable<Integer> {
@@ -49,80 +47,77 @@ public class ClientEcommerce extends AbstractPersistable<Integer> {
 		super();
 	}
 	
-	public ClientEcommerce(Integer id) {
+	public ClientEcommerce(final Integer idClient) {
 		super();
-		setId(id);
+		super.id = idClient;
 	}
 	
 	public String getAddressStreet() {
 		return addressStreet;
 	}
-	public void setAddressStreet(String addressStreet) {
+	public void setAddressStreet(final String addressStreet) {
 		this.addressStreet = addressStreet;
 	}
 	public String getAddressNumber() {
 		return addressNumber;
 	}
-	public void setAddressNumber(String addressNumber) {
+	public void setAddressNumber(final String addressNumber) {
 		this.addressNumber = addressNumber;
 	}
 	public String getAddressZipcode() {
 		return addressZipcode;
 	}
-	public void setAddressZipcode(String addressZipcode) {
+	public void setAddressZipcode(final String addressZipcode) {
 		this.addressZipcode = addressZipcode;
 	}
 	public String getAddressCity() {
 		return addressCity;
 	}
-	public void setAddressCity(String addressCity) {
+	public void setAddressCity(final String addressCity) {
 		this.addressCity = addressCity;
 	}
 	public String getAddressComplement() {
 		return addressComplement;
 	}
-	public void setAddressComplement(String addressComplement) {
+	public void setAddressComplement(final String addressComplement) {
 		this.addressComplement = addressComplement;
 	}
 	public Boolean getActive() {
 		return active;
 	}
-	public void setActive(Boolean active) {
+	public void setActive(final Boolean active) {
 		this.active = active;
 	}
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 	public Boolean getNewsletter() {
 		return newsletter;
 	}
-	public void setNewsletter(Boolean newsletter) {
+	public void setNewsletter(final Boolean newsletter) {
 		this.newsletter = newsletter;
 	}
 	public String getUser() {
 		return user;
 	}
-	public void setUser(String user) {
+	public void setUser(final String user) {
 		this.user = user;
 	}
 	public String getPassword() {
 		return password;
 	}
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
-	}
-	public void setId(Integer id) {
-		super.setId(id);
 	}
 
 	public Site getSite() {
 		return site;
 	}
 
-	public void setSite(Site site) {
+	public void setSite(final Site site) {
 		this.site = site;
 	}
 
@@ -130,7 +125,7 @@ public class ClientEcommerce extends AbstractPersistable<Integer> {
 		return creationDate;
 	}
 
-	public void setCreationDate(Calendar creationDate) {
+	public void setCreationDate(final Calendar creationDate) {
 		this.creationDate = creationDate;
 	}
 

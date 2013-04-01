@@ -10,8 +10,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.data.jpa.domain.AbstractPersistable;
-
 @Entity
 @Table(name="product")
 public class Product extends AbstractPersistable<Integer> {
@@ -45,51 +43,51 @@ public class Product extends AbstractPersistable<Integer> {
 		super();
 	}
 	
-	public Product(Integer id) {
+	public Product(final Integer idProduct) {
 		super();
-		super.setId(id);
+		super.id = idProduct;
 	}
 	
-	public Product(Integer id, Integer sid) {
+	public Product(final Integer idProduct, final Integer sid) {
 		super();
-		super.setId(id);
-		setSite(new Site(sid));
+		super.id = idProduct;
+		this.site = new Site(sid);
 	}
 	
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 	public String getIntroduction() {
 		return introduction;
 	}
-	public void setIntroduction(String introduction) {
+	public void setIntroduction(final String introduction) {
 		this.introduction = introduction;
 	}
 	public String getImages() {
 		return images;
 	}
-	public void setImages(String images) {
+	public void setImages(final String images) {
 		this.images = images;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 	public Double getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(Double quantity) {
+	public void setQuantity(final Double quantity) {
 		this.quantity = quantity;
 	}
 	public Double getUnityvalue() {
 		return unityvalue;
 	}
-	public void setUnityvalue(Double unityvalue) {
+	public void setUnityvalue(final Double unityvalue) {
 		this.unityvalue = unityvalue;
 	}
 
@@ -97,7 +95,7 @@ public class Product extends AbstractPersistable<Integer> {
 		return datecreate;
 	}
 
-	public void setDatecreate(Calendar datecreate) {
+	public void setDatecreate(final Calendar datecreate) {
 		this.datecreate = datecreate;
 	}
 
@@ -105,7 +103,7 @@ public class Product extends AbstractPersistable<Integer> {
 		return keyUrl;
 	}
 
-	public void setKeyUrl(String keyUrl) {
+	public void setKeyUrl(final String keyUrl) {
 		this.keyUrl = keyUrl;
 	}
 
@@ -113,7 +111,7 @@ public class Product extends AbstractPersistable<Integer> {
 		return quantityFrete;
 	}
 
-	public void setQuantityFrete(Double quantityFrete) {
+	public void setQuantityFrete(final Double quantityFrete) {
 		this.quantityFrete = quantityFrete;
 	}
 
@@ -121,7 +119,7 @@ public class Product extends AbstractPersistable<Integer> {
 		return site;
 	}
 
-	public void setSite(Site site) {
+	public void setSite(final Site site) {
 		this.site = site;
 	}
 	

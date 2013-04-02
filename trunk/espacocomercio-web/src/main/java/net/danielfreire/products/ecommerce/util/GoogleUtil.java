@@ -2,6 +2,7 @@ package net.danielfreire.products.ecommerce.util;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import net.danielfreire.products.ecommerce.model.domain.ClientEcommerce;
 import net.danielfreire.products.ecommerce.model.domain.Site;
@@ -28,46 +29,47 @@ import com.google.gdata.data.extensions.StructuredPostalAddress;
 
 public class GoogleUtil {
 
-	private static final String PASS_AUTH_PATTERN = "oik5683kdm344##";
+	private static final String KEY_ECO_DOMAIN = "ecommerce.domain";
+	private static final String KEY_GOOGLE_USER = "account.google.user";
+	private static final String KEY_GOOGLE_PASS = "account.google.password";
 
-	public void createGoogleAccount(String name, String siteIdString) throws Exception {
-		AppsForYourDomainClient client = new AppsForYourDomainClient(
-				PortalTools.getInstance().getEcommerceProperties("account.google.user"), 
-				PortalTools.getInstance().getEcommerceProperties("account.google.password"), 
-				PortalTools.getInstance().getEcommerceProperties("ecommerce.domain"));
-		client.createUser(siteIdString, name, "- Espaço Comércio", PASS_AUTH_PATTERN);
+	public void createGoogleAccount(final String name, final String siteIdString) throws java.lang.Exception {
+		final AppsForYourDomainClient client = new AppsForYourDomainClient(
+				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_USER), 
+				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_PASS), 
+				PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN));
+		client.createUser(siteIdString, name, "- Espaço Comércio", PortalTools.PASS_AUTH_PATTERN);
 	}
 	
-    public void createContact(Site site, ClientEcommerce client) throws Exception {
-    	AppsForYourDomainClient admin = new AppsForYourDomainClient(
-				PortalTools.getInstance().getEcommerceProperties("account.google.user"), 
-				PortalTools.getInstance().getEcommerceProperties("account.google.password"), 
-				PortalTools.getInstance().getEcommerceProperties("ecommerce.domain"));
-    	UserEntry u = admin.retrieveUser(ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties("ecommerce.domain"));
-    	u.getLogin().setPassword(PASS_AUTH_PATTERN);
-    	admin.updateUser(ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties("ecommerce.domain"), u);
+    public void createContact(final Site site, final ClientEcommerce client) throws java.lang.Exception {
+    	final AppsForYourDomainClient admin = new AppsForYourDomainClient(
+				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_USER), 
+				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_PASS), 
+				PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN));
+    	final UserEntry userEntry = admin.retrieveUser(ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN));
+    	userEntry.getLogin().setPassword(site.getGmailPass());
+    	admin.updateUser(ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN), userEntry);
     	
-    	ContactsService myService = new ContactsService("RupalMindfire-AddressApp");
+    	final ContactsService myService = new ContactsService("RupalMindfire-AddressApp");
     	myService.setUserCredentials(
-    			ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties("ecommerce.domain"), 
-    			PASS_AUTH_PATTERN);
+    			ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN), 
+    			site.getGmailPass());
     	
-        ContactEntry contact = new ContactEntry();
-        Name name = new Name();
-        final String NO_YOMI = null;
-        name.setFullName(new FullName(client.getName(), NO_YOMI));
-        name.setGivenName(new GivenName(client.getName().split(" ").length>1?client.getName().split(" ")[0]:client.getName(), NO_YOMI));
-        name.setFamilyName(new FamilyName(client.getName().split(" ").length>1?client.getName().split(" ")[client.getName().split(" ").length-1]:"", NO_YOMI));
+        final ContactEntry contact = new ContactEntry();
+        final Name name = new Name();
+        name.setFullName(new FullName(client.getName(), null));
+        name.setGivenName(new GivenName(client.getName().split(" ").length>1?client.getName().split(" ")[0]:client.getName(), null));
+        name.setFamilyName(new FamilyName(client.getName().split(" ").length>1?client.getName().split(" ")[client.getName().split(" ").length-1]:"", null));
         contact.setName(name);
-        contact.setContent(new PlainTextConstruct(new SimpleDateFormat("dd/MM/yyyy HH:mm").format(client.getCreationDate().getTime())));
+        contact.setContent(new PlainTextConstruct(new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(client.getCreationDate().getTime())));
 
-        Email primaryMail = new Email();
+        final Email primaryMail = new Email();
         primaryMail.setAddress(client.getUser());
         primaryMail.setRel("http://schemas.google.com/g/2005#home");
         primaryMail.setPrimary(true);
         contact.addEmailAddress(primaryMail);
 
-        StructuredPostalAddress address = new StructuredPostalAddress();
+        final StructuredPostalAddress address = new StructuredPostalAddress();
         address.setCity(new City(client.getAddressCity()));
         address.setCountry(new Country("BR", "BRASIL"));
         address.setFormattedAddress(new FormattedAddress(client.getAddressStreet() + ", " + client.getAddressNumber()));
@@ -77,7 +79,7 @@ public class GoogleUtil {
         address.setPrimary(true);
         contact.addStructuredPostalAddress(address);
 
-        URL postUrl = new URL("https://www.google.com/m8/feeds/contacts/default/full");
+        final URL postUrl = new URL("https://www.google.com/m8/feeds/contacts/default/full");
         myService.insert(postUrl, contact);
     }
 	 

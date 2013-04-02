@@ -25,12 +25,12 @@ public class EcommerceUtil {
 	
 	public void sessionAdminUser(HttpServletRequest request, ClientAdmin clientAdmin) {
 		clientAdmin.setPassword("***");
-		request.getSession().removeAttribute(PortalTools.getInstance().idAdminSession);
-		request.getSession().setAttribute(PortalTools.getInstance().idAdminSession, clientAdmin);
+		request.getSession().removeAttribute(PortalTools.getInstance().ID_ADMIN_SESSION);
+		request.getSession().setAttribute(PortalTools.getInstance().ID_ADMIN_SESSION, clientAdmin);
 	}
 	
 	public ClientAdmin getSessionAdmin(HttpServletRequest request) {
-		return (ClientAdmin) request.getSession().getAttribute(PortalTools.getInstance().idAdminSession);
+		return (ClientAdmin) request.getSession().getAttribute(PortalTools.getInstance().ID_ADMIN_SESSION);
 	}
 	
 	public void generateMenuPortal(Site site, List<ProductCategory> list) throws Exception {

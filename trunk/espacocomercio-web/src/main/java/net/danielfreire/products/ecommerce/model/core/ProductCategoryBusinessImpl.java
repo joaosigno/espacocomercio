@@ -135,7 +135,7 @@ public class ProductCategoryBusinessImpl implements ProductCategoryBusiness {
 
 	@Override
 	public List<ProductCategory> listSite(String cid) throws Exception {
-		return categoryRepository.findBySite(new Site(Integer.parseInt(PortalTools.getInstance().Decode(cid))));
+		return categoryRepository.findBySite(new Site(Integer.parseInt(PortalTools.getInstance().decode(cid))));
 	}
 
 	private void generateMenuPortal(HttpServletRequest request) throws Exception {

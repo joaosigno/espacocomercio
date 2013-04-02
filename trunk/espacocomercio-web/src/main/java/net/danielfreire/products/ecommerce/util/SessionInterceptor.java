@@ -24,7 +24,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 
 	private GenericResponse preHandle(HttpServletRequest request) {
 		try {
-			if (request.getSession().getAttribute(PortalTools.getInstance().idSession)!=null) {
+			if (request.getSession().getAttribute(PortalTools.getInstance().ID_SESSION)!=null) {
 				return new GenericResponse();
 			} else {
 				return PortalTools.getInstance().getRespError("session.invalid");

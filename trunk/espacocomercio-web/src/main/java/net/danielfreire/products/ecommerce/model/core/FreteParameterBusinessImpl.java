@@ -113,7 +113,7 @@ public class FreteParameterBusinessImpl implements FreteParameterBusiness {
 		
 		final String state = request.getParameter("uf");
 		final String[] params = request.getParameterValues("param");
-		final Integer siteId = Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")));
+		final Integer siteId = Integer.parseInt(PortalTools.getInstance().decode(request.getParameter("sid")));
 		
 		FreteParameter frete = repository.findBySiteAndState(new Site(siteId), state);
 		
@@ -157,7 +157,7 @@ public class FreteParameterBusinessImpl implements FreteParameterBusiness {
 			throws Exception {
 		
 		GenericResponse resp = new GenericResponse();
-		resp.setGeneric(repository.findBySite(new Site(Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid"))))));
+		resp.setGeneric(repository.findBySite(new Site(Integer.parseInt(PortalTools.getInstance().decode(request.getParameter("sid"))))));
 		
 		return resp;
 	}

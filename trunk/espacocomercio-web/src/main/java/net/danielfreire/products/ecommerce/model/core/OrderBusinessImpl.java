@@ -110,7 +110,7 @@ public class OrderBusinessImpl implements OrderBusiness {
 		GenericResponse resp = new GenericResponse();
 		
 		final String opt = request.getParameter("opt");
-		final ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession);
+		final ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().ID_SESSION);
 		
 		List<Order> list = new ArrayList<Order>();
 		
@@ -172,8 +172,8 @@ public class OrderBusinessImpl implements OrderBusiness {
 				EcommerceUtil.getInstance().generateProductCache(prod, prod.getSite());
 			}
 			
-			request.getSession().removeAttribute(PortalTools.getInstance().idCartSession);
-			request.getSession().removeAttribute(PortalTools.getInstance().idSession);
+			request.getSession().removeAttribute(PortalTools.getInstance().ID_CART_SESSION);
+			request.getSession().removeAttribute(PortalTools.getInstance().ID_SESSION);
 			
 			HashMap<String, Object> ret = new HashMap<String, Object>();
 			ret.put("client", client);

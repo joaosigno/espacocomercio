@@ -264,7 +264,7 @@ public class ProductBusinessImpl implements ProductBusiness {
 	@Override
 	public GridResponse listToPortal(String sid, String categoryId,
 			String search, String page) throws Exception {
-		String siteId = PortalTools.getInstance().Decode(sid);
+		String siteId = PortalTools.getInstance().decode(sid);
 		
 		int pagination = 0;
 		if (ValidateTools.getInstancia().isNumber(page)) {
@@ -293,10 +293,10 @@ public class ProductBusinessImpl implements ProductBusiness {
 			throws Exception {
 		GenericResponse resp = new GenericResponse();
 		
-		if (ValidateTools.getInstancia().isNullEmpty(productId) || ValidateTools.getInstancia().isNullEmpty(siteId) || !ValidateTools.getInstancia().isNumber(PortalTools.getInstance().Decode(siteId))) {
+		if (ValidateTools.getInstancia().isNullEmpty(productId) || ValidateTools.getInstancia().isNullEmpty(siteId) || !ValidateTools.getInstancia().isNumber(PortalTools.getInstance().decode(siteId))) {
 			resp.setStatus(false);
 		} else {
-			resp.setGeneric(repository.findByKeyUrlAndSite(productId, new Site(Integer.parseInt(PortalTools.getInstance().Decode(siteId)))));
+			resp.setGeneric(repository.findByKeyUrlAndSite(productId, new Site(Integer.parseInt(PortalTools.getInstance().decode(siteId)))));
 		}
 		
 		return resp;
@@ -307,7 +307,7 @@ public class ProductBusinessImpl implements ProductBusiness {
 	public GenericResponse addCart(HttpServletRequest request) throws Exception {
 		final Integer productId = Integer.parseInt(request.getParameter("pid"));
 		
-		ArrayList<Product> list = (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().idCartSession);
+		ArrayList<Product> list = (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().ID_CART_SESSION);
 		
 		if (list!=null && list.size()>0) {
 			boolean exist = false;
@@ -318,14 +318,14 @@ public class ProductBusinessImpl implements ProductBusiness {
 			}
 			
 			if (!exist) {
-				list.add(new Product(productId, Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")))));
+				list.add(new Product(productId, Integer.parseInt(PortalTools.getInstance().decode(request.getParameter("sid")))));
 			}
 		} else {
 			list = new ArrayList<Product>();
-			list.add(new Product(productId, Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")))));
+			list.add(new Product(productId, Integer.parseInt(PortalTools.getInstance().decode(request.getParameter("sid")))));
 		}
 		
-		request.getSession().setAttribute(PortalTools.getInstance().idCartSession, list);
+		request.getSession().setAttribute(PortalTools.getInstance().ID_CART_SESSION, list);
 		
 		return new GenericResponse();
 	}
@@ -336,9 +336,9 @@ public class ProductBusinessImpl implements ProductBusiness {
 		GenericResponse resp = new GenericResponse();
 		
 		ArrayList<Product> list = new ArrayList<Product>();
-		final ArrayList<Product> listSession = (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().idCartSession);
+		final ArrayList<Product> listSession = (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().ID_CART_SESSION);
 		for (Product p : listSession) {
-			if (p.getSite().getId()==Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")))) {
+			if (p.getSite().getId()==Integer.parseInt(PortalTools.getInstance().decode(request.getParameter("sid")))) {
 				Product product = repository.findOne(p.getId());
 				list.add(product);
 			}
@@ -358,14 +358,14 @@ public class ProductBusinessImpl implements ProductBusiness {
 		Integer id = Integer.parseInt(request.getParameter("id"));
 		
 		ArrayList<Product> newlist = new ArrayList<Product>();
-		ArrayList<Product> list = (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().idCartSession);
+		ArrayList<Product> list = (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().ID_CART_SESSION);
 		for (Product p : list) {
 			if (p.getId()!=id) {
 				newlist.add(p);
 			}
 		}
 		
-		request.getSession().setAttribute(PortalTools.getInstance().idCartSession, newlist);
+		request.getSession().setAttribute(PortalTools.getInstance().ID_CART_SESSION, newlist);
 		
 		return new GenericResponse();
 	}

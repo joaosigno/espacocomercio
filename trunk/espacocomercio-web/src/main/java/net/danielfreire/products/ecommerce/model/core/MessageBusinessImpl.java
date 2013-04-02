@@ -1,6 +1,10 @@
 package net.danielfreire.products.ecommerce.model.core;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +16,7 @@ import net.danielfreire.products.ecommerce.util.EcommerceUtil;
 import net.danielfreire.util.ConvertTools;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.MailUtil;
+import net.danielfreire.util.PortalTools;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,9 +26,9 @@ public class MessageBusinessImpl implements MessageBusiness {
 	
 	private static final String ORIGIN_SYSTEM = "system";
 	@Autowired
-	private transient MessageRepository repository;
+	private MessageRepository repository;
 	@Autowired
-	private transient SiteRepository siteRepository;
+	private SiteRepository siteRepository;
 
 	@Override
 	public GenericResponse newMessage(final HttpServletRequest request) throws Exception {
@@ -39,7 +44,8 @@ public class MessageBusinessImpl implements MessageBusiness {
 		return new GenericResponse();
 	}
 
-	private void createMessage(final String name, final String type, final String email,
+	@Override
+	public void createMessage(final String name, final String type, final String email,
 			final String text, final String origin, final Integer sid) throws Exception {
 		final Message message = new Message();
 		
@@ -63,7 +69,7 @@ public class MessageBusinessImpl implements MessageBusiness {
 		if (origin.equals(ORIGIN_SYSTEM)) {
 			sendMessageMailSystem(type, text, message.getSite());
 		} else {
-			sendMessageMail(name, type, email, text, origin, message.getSite());
+			sendMessageMail(name, type, email, text, message.getSite());
 		}
 		
 	}
@@ -77,16 +83,67 @@ public class MessageBusinessImpl implements MessageBusiness {
 	}
 
 	private void sendMessageMail(final String name, final String type, final String email,
-			final String text, final String origin, final Site site) throws Exception {
-		final StringBuilder template = new StringBuilder()
-			.append(text+name+type+email+origin);
-		new MailUtil().sendMail(type, ConvertTools.getInstance().normalizeString(site.getName()), template.toString(), "system");
+			final String text, final Site site) throws Exception {
+		
+		FileReader fileReader = new FileReader(PortalTools.getInstance().getEcommerceProperties("location.email.template") + "/generic_message.html");
+		BufferedReader reader = new BufferedReader(fileReader);
+		String html = "";
+		String line = "";  
+		while((line = reader.readLine()) != null) {  
+			html += line;  
+		}
+		fileReader.close();
+		reader.close();
+		
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties("url.ecommerce")+"/"+ConvertTools.getInstance().normalizeString(site.getName())+"/logo.png");
+		params.put("[msg.name]", name);
+		params.put("[msg.type]", type);
+		params.put("[msg.email]", email);
+		params.put("[msg.text]", text);
+		params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties("url.ecommerce")+"/"+ConvertTools.getInstance().normalizeString(site.getName()));
+		
+		Set<String> keys = params.keySet();  
+        for (String chave : keys)  
+        {  
+            if(chave != null)  
+                html = html.replace(chave, params.get(chave));
+        }
+        
+        html = html.replaceAll("  ", "");
+        html = ConvertTools.getInstance().normalizeEspecialChar(html);
+		
+		new MailUtil().sendMail(type, ConvertTools.getInstance().normalizeString(site.getName()), html, "e-commerce");
 	}
 
 	private void sendMessageMailSystem(final String type, final String text, final Site site) throws Exception {
-		final StringBuilder template = new StringBuilder()
-			.append(text);
-		new MailUtil().sendMail(type, ConvertTools.getInstance().normalizeString(site.getName()), template.toString(), "system");
+		
+		FileReader fileReader = new FileReader(PortalTools.getInstance().getEcommerceProperties("location.email.template") + "/system_message.html");
+		BufferedReader reader = new BufferedReader(fileReader);
+		String html = "";
+		String line = "";  
+		while((line = reader.readLine()) != null) {  
+			html += line;  
+		}
+		fileReader.close();
+		reader.close();
+		
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties("url.ecommerce")+"/"+ConvertTools.getInstance().normalizeString(site.getName())+"/logo.png");
+		params.put("[msg.text]", text);
+		params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties("url.ecommerce")+"/"+ConvertTools.getInstance().normalizeString(site.getName()));
+		
+		Set<String> keys = params.keySet();  
+        for (String chave : keys)  
+        {  
+            if(chave != null)  
+                html = html.replace(chave, params.get(chave));
+        }
+        
+        html = html.replaceAll("  ", "");
+        html = ConvertTools.getInstance().normalizeEspecialChar(html);
+        
+		new MailUtil().sendMail(type, ConvertTools.getInstance().normalizeString(site.getName()), html, "e-commerce");
 	}
 
 	@Override

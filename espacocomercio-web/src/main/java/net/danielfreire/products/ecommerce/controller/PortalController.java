@@ -100,7 +100,7 @@ public class PortalController {
 	@RequestMapping(value="/logoutSession", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse logout(HttpServletRequest request) {
 		try {
-			request.getSession().removeAttribute(PortalTools.getInstance().idSession);
+			request.getSession().removeAttribute(PortalTools.getInstance().ID_SESSION);
 			return new GenericResponse();
 		} catch (Exception e) {
 			return PortalTools.getInstance().getRespError(e);

@@ -20,25 +20,30 @@ public class Site extends AbstractPersistable<Integer> {
 	private String facebook;
 	@Column(name="logo", length=255)
 	private String logo;
+	@Column(name="email", length=255)
+	private String email;
+	@Column(name="gmailPass", length=45)
+	private String gmailPass;
 	
 	public Site() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 	
-	public Site(Integer id) {
-		super.setId(id);
+	public Site(final Integer idSite) {
+		super();
+		super.setId(idSite);
 	}
 	
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -46,7 +51,7 @@ public class Site extends AbstractPersistable<Integer> {
 		return facebook;
 	}
 
-	public void setFacebook(String facebook) {
+	public void setFacebook(final String facebook) {
 		this.facebook = facebook;
 	}
 
@@ -54,9 +59,40 @@ public class Site extends AbstractPersistable<Integer> {
 		return logo;
 	}
 
-	public void setLogo(String logo) {
+	public void setLogo(final String logo) {
 		this.logo = logo;
 	}
 	
+	public void setIdSite(final Integer idSite) {
+		super.setId(idSite);
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(final String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @return the gmailPass
+	 */
+	public String getGmailPass() {
+		return gmailPass;
+	}
+
+	/**
+	 * @param gmailPass the gmailPass to set
+	 */
+	public void setGmailPass(final String gmailPass) {
+		this.gmailPass = gmailPass;
+	}
 	
 }

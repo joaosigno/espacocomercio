@@ -1,7 +1,5 @@
 package net.danielfreire.products.ecommerce.model.core;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Set;
@@ -25,13 +23,14 @@ import org.springframework.stereotype.Component;
 public class MessageBusinessImpl implements MessageBusiness {
 	
 	private static final String ORIGIN_SYSTEM = "system";
+	private static final String KEY_URL_ECOMMERCE = "url.ecommerce";
 	@Autowired
-	private MessageRepository repository;
+	private transient MessageRepository repository;
 	@Autowired
-	private SiteRepository siteRepository;
+	private transient SiteRepository siteRepository;
 
 	@Override
-	public GenericResponse newMessage(final HttpServletRequest request) throws Exception {
+	public GenericResponse newMessage(final HttpServletRequest request) throws java.lang.Exception {
 		final String name = request.getParameter("name");
 		final String type = request.getParameter("type");
 		final String email = request.getParameter("email");
@@ -46,7 +45,7 @@ public class MessageBusinessImpl implements MessageBusiness {
 
 	@Override
 	public void createMessage(final String name, final String type, final String email,
-			final String text, final String origin, final Integer sid) throws Exception {
+			final String text, final String origin, final Integer sid) throws java.lang.Exception {
 		final Message message = new Message();
 		
 		final StringBuilder messageText = new StringBuilder()
@@ -75,39 +74,33 @@ public class MessageBusinessImpl implements MessageBusiness {
 	}
 
 	private String getValue(final String value) {
-		if (value!=null) {
-			return value;
-		} else { 
-			return "";
-		}
+		String ret = "";
+		if (value!=null) { 
+			ret = value; 
+		} 
+		
+		return ret;
 	}
 
 	private void sendMessageMail(final String name, final String type, final String email,
-			final String text, final Site site) throws Exception {
+			final String text, final Site site) throws java.lang.Exception {
 		
-		FileReader fileReader = new FileReader(PortalTools.getInstance().getEcommerceProperties("location.email.template") + "/generic_message.html");
-		BufferedReader reader = new BufferedReader(fileReader);
-		String html = "";
-		String line = "";  
-		while((line = reader.readLine()) != null) {  
-			html += line;  
-		}
-		fileReader.close();
-		reader.close();
+		String html = PortalTools.getInstance().getContentFile(PortalTools.getInstance().getEcommerceProperties("location.email.template") + "/generic_message.html");
 		
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties("url.ecommerce")+"/"+ConvertTools.getInstance().normalizeString(site.getName())+"/logo.png");
+		final HashMap<String, String> params = new HashMap<String, String>();
+		params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties(KEY_URL_ECOMMERCE)+"/"+ConvertTools.getInstance().normalizeString(site.getName())+"/logo.png");
 		params.put("[msg.name]", name);
 		params.put("[msg.type]", type);
 		params.put("[msg.email]", email);
 		params.put("[msg.text]", text);
-		params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties("url.ecommerce")+"/"+ConvertTools.getInstance().normalizeString(site.getName()));
+		params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties(KEY_URL_ECOMMERCE)+"/"+ConvertTools.getInstance().normalizeString(site.getName()));
 		
-		Set<String> keys = params.keySet();  
+		final Set<String> keys = params.keySet();  
         for (String chave : keys)  
         {  
-            if(chave != null)  
-                html = html.replace(chave, params.get(chave));
+            if(chave != null) {
+            	html = html.replace(chave, params.get(chave));
+            }
         }
         
         html = html.replaceAll("  ", "");
@@ -116,28 +109,20 @@ public class MessageBusinessImpl implements MessageBusiness {
 		new MailUtil().sendMail(type, ConvertTools.getInstance().normalizeString(site.getName()), html, "e-commerce");
 	}
 
-	private void sendMessageMailSystem(final String type, final String text, final Site site) throws Exception {
+	private void sendMessageMailSystem(final String type, final String text, final Site site) throws java.lang.Exception {
+		String html = PortalTools.getInstance().getContentFile(PortalTools.getInstance().getEcommerceProperties("location.email.template") + "/system_message.html");
 		
-		FileReader fileReader = new FileReader(PortalTools.getInstance().getEcommerceProperties("location.email.template") + "/system_message.html");
-		BufferedReader reader = new BufferedReader(fileReader);
-		String html = "";
-		String line = "";  
-		while((line = reader.readLine()) != null) {  
-			html += line;  
-		}
-		fileReader.close();
-		reader.close();
-		
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties("url.ecommerce")+"/"+ConvertTools.getInstance().normalizeString(site.getName())+"/logo.png");
+		final HashMap<String, String> params = new HashMap<String, String>();
+		params.put("[logo.location]", PortalTools.getInstance().getEcommerceProperties(KEY_URL_ECOMMERCE)+"/"+ConvertTools.getInstance().normalizeString(site.getName())+"/logo.png");
 		params.put("[msg.text]", text);
-		params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties("url.ecommerce")+"/"+ConvertTools.getInstance().normalizeString(site.getName()));
+		params.put("[site.url]", PortalTools.getInstance().getEcommerceProperties(KEY_URL_ECOMMERCE)+"/"+ConvertTools.getInstance().normalizeString(site.getName()));
 		
-		Set<String> keys = params.keySet();  
+		final Set<String> keys = params.keySet();  
         for (String chave : keys)  
         {  
-            if(chave != null)  
+            if (chave != null) {
                 html = html.replace(chave, params.get(chave));
+            }
         }
         
         html = html.replaceAll("  ", "");

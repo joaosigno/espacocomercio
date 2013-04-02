@@ -100,7 +100,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 			site = EcommerceUtil.getInstance().getSessionAdmin(request).getSite();
 			active = request.getParameter("active");
 		} else {
-			site = siteRepository.findOne(Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid"))));
+			site = siteRepository.findOne(Integer.parseInt(PortalTools.getInstance().decode(request.getParameter("sid"))));
 			final Captcha captcha = (Captcha) request.getSession().getAttribute(Captcha.NAME);
 			if (!captcha.isCorrect(request.getParameter("captcha"))) {
 				captchaIsValid = false;
@@ -219,7 +219,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 		
 		final String user = request.getParameter("user");
 		final String password = request.getParameter("password");
-		final Integer siteId = Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")));
+		final Integer siteId = Integer.parseInt(PortalTools.getInstance().decode(request.getParameter("sid")));
 		final String contextid = request.getParameter("contextid");
 		
 		if (!ValidateTools.getInstancia().isEmail(user) || !ValidateTools.getInstancia().isPassword(password)) {
@@ -232,8 +232,8 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 				
 				if (client.getActive()) {
 					client.setPassword(null);
-					request.getSession().removeAttribute(PortalTools.getInstance().idSession);
-					request.getSession().setAttribute(PortalTools.getInstance().idSession, client);
+					request.getSession().removeAttribute(PortalTools.getInstance().ID_SESSION);
+					request.getSession().setAttribute(PortalTools.getInstance().ID_SESSION, client);
 				} else {
 					resp = PortalTools.getInstance().getRespError("login.non.active");
 					new MailUtil().activationClient(client.getUser(), client.getName(), contextid, siteId, client.getSite().getLogo(), client.getSite().getName());
@@ -253,7 +253,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 		GenericResponse resp = new GenericResponse();
 		
 		final String user = request.getParameter("user");
-		final Integer siteId = Integer.parseInt(PortalTools.getInstance().Decode(request.getParameter("sid")));
+		final Integer siteId = Integer.parseInt(PortalTools.getInstance().decode(request.getParameter("sid")));
 		final String contextid = request.getParameter("contextid");
 		
 		if (!ValidateTools.getInstancia().isEmail(user)) {
@@ -299,7 +299,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 		}
 		
 		if (resp.getStatus()) {
-			ClientEcommerce client = repository.findOne(((ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession)).getId());
+			ClientEcommerce client = repository.findOne(((ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().ID_SESSION)).getId());
 			if (!client.getPassword().equals(senha1)) {
 				resp = PortalTools.getInstance().getRespError("password.atual");
 			} else {
@@ -327,7 +327,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 		}
 		
 		if (resp.getStatus()) {
-			ClientEcommerce client = repository.findOne(((ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession)).getId());
+			ClientEcommerce client = repository.findOne(((ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().ID_SESSION)).getId());
 			
 			client.setAddressCity(addressCity);
 			client.setAddressComplement(addressComplement);
@@ -338,7 +338,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 			repository.save(client);
 			
 			client.setPassword(null);
-			request.getSession().setAttribute(PortalTools.getInstance().idSession, client);
+			request.getSession().setAttribute(PortalTools.getInstance().ID_SESSION, client);
 		}
 		
 		return resp;
@@ -359,7 +359,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 		}
 		
 		if (resp.getStatus()) {
-			ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession);
+			ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().ID_SESSION);
 			
 			if (!user.equals(client.getUser())) {
 				if (repository.findBySiteAndUser(client.getSite(), user)!=null) {
@@ -377,7 +377,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 				repository.save(client);
 				
 				client.setPassword(null);
-				request.getSession().setAttribute(PortalTools.getInstance().idSession, client);
+				request.getSession().setAttribute(PortalTools.getInstance().ID_SESSION, client);
 			}
 		}
 		
@@ -388,19 +388,19 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 	public HashMap<String, Object> portalSession(HttpServletRequest request, String sid) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
-		ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().idSession);
-		if (client!=null && client.getSite().getId()==Integer.parseInt(PortalTools.getInstance().Decode(sid))) {
+		ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().ID_SESSION);
+		if (client!=null && client.getSite().getId()==Integer.parseInt(PortalTools.getInstance().decode(sid))) {
 			map.put("client", client);
 		} else {
 			map.put("client", null);
 		}
 		
 		@SuppressWarnings("unchecked")
-		final ArrayList<Product> list = (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().idCartSession);
+		final ArrayList<Product> list = (ArrayList<Product>) request.getSession().getAttribute(PortalTools.getInstance().ID_CART_SESSION);
 		if (list!=null && list.size()>0) {
 			ArrayList<Product> listSession = new ArrayList<Product>();
 			for (Product p : list) {
-				if (p.getSite().getId() == Integer.parseInt(PortalTools.getInstance().Decode(sid))) {
+				if (p.getSite().getId() == Integer.parseInt(PortalTools.getInstance().decode(sid))) {
 					listSession.add(p);
 				}
 			}
@@ -413,14 +413,14 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 
 	@Override
 	public void clearSession(HttpServletRequest request) throws Exception {
-		request.getSession().removeAttribute(PortalTools.getInstance().idCartSession);
-		request.getSession().removeAttribute(PortalTools.getInstance().idSession);
+		request.getSession().removeAttribute(PortalTools.getInstance().ID_CART_SESSION);
+		request.getSession().removeAttribute(PortalTools.getInstance().ID_SESSION);
 	}
 
 	@Override
 	public void active(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		final String key = request.getParameter("key");
-		String[] keys = PortalTools.getInstance().Decode(key).replace("[SEP]", "#").split("#");
+		String[] keys = PortalTools.getInstance().decode(key).replace("[SEP]", "#").split("#");
 		
 		ClientEcommerce client = repository.findBySiteAndUser(new Site(Integer.parseInt(keys[1])), keys[0]);
 		client.setActive(true);

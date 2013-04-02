@@ -20,25 +20,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ClientAdminController {
 	
 	@Autowired
-	ClientAdminBusiness business;
+	private transient ClientAdminBusiness business;
 	
 	@RequestMapping(value="/admin/login", method = RequestMethod.POST)
-	public @ResponseBody GenericResponse adminlogin(HttpServletRequest request) {
+	public @ResponseBody GenericResponse adminlogin(final HttpServletRequest request) {
+		GenericResponse resp;
 		try {
-			return business.login(request);
+			resp = business.login(request);
 		} catch (Exception e) {
-			return PortalTools.getInstance().getRespError(e);
+			resp = PortalTools.getInstance().getRespError(e);
 		}
+		
+		return resp;
 	}
 	
 	@RequestMapping(value="/admin/logout", method = RequestMethod.GET)
-	public @ResponseBody void logout(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody void logout(final HttpServletRequest request, final HttpServletResponse response) {
 		try {
 			
-			request.getSession().removeAttribute(PortalTools.getInstance().idAdminSession);
+			request.getSession().removeAttribute(PortalTools.ID_ADMIN_SESSION);
 			
 			response.setContentType("text/html");
-		    PrintWriter out = response.getWriter();
+		    final PrintWriter out = response.getWriter();
 
 		    out.println("<HTML><HEAD><script>location.href='/ecommerce';</script></HEAD><BODY></BODY></HTML>");
 			
@@ -48,58 +51,61 @@ public class ClientAdminController {
 	}
 	
 	@RequestMapping(value="/admin/menu", method = RequestMethod.GET)
-	public @ResponseBody GenericResponse menu(HttpServletRequest request) {
+	public @ResponseBody GenericResponse menu(final HttpServletRequest request) {
+		GenericResponse resp;
 		try {
-			return business.menu(request);
+			resp = business.menu(request);
 		} catch (Exception e) {
-			return PortalTools.getInstance().getRespError(e);
+			resp = PortalTools.getInstance().getRespError(e);
 		}
+		
+		return resp;
 	}
 	
 	@RequestMapping(value="/admin/user/consult", method = RequestMethod.GET)
-	public @ResponseBody GridResponse categoryconsult(HttpServletRequest request) {
+	public @ResponseBody GridResponse categoryconsult(final HttpServletRequest request) {
+		GridResponse resp;
 		try {
-			return business.consult(request);
+			resp = business.consult(request);
 		} catch (Exception e) {
 			PortalTools.getInstance().getRespError(e);
-			return new GridResponse();
+			resp = new GridResponse();
 		}
+		
+		return resp;
 	}
 	
 	@RequestMapping(value="/admin/user/save", method = RequestMethod.POST)
-	public @ResponseBody GenericResponse save(HttpServletRequest request) {
+	public @ResponseBody GenericResponse save(final HttpServletRequest request) {
+		GenericResponse resp;
 		try {
-			return business.save(request);
+			resp = business.save(request);
 		} catch (Exception e) {
-			return PortalTools.getInstance().getRespError(e);
+			resp = PortalTools.getInstance().getRespError(e);
 		}
+		return resp;
 	}
 	
 	@RequestMapping(value="/admin/user/load", method = RequestMethod.GET)
-	public @ResponseBody GenericResponse load(HttpServletRequest request) {
+	public @ResponseBody GenericResponse load(final HttpServletRequest request) {
+		GenericResponse resp;
 		try {
-			return business.load(request);
+			resp = business.load(request);
 		} catch (Exception e) {
-			return PortalTools.getInstance().getRespError(e);
+			resp = PortalTools.getInstance().getRespError(e);
 		}
+		return resp;
 	}
 	
 	@RequestMapping(value="/admin/user/remove", method = RequestMethod.POST)
-	public @ResponseBody GenericResponse remove(HttpServletRequest request) {
+	public @ResponseBody GenericResponse remove(final HttpServletRequest request) {
+		GenericResponse resp;
 		try {
-			return business.remove(request);
+			resp = business.remove(request);
 		} catch (Exception e) {
-			return PortalTools.getInstance().getRespError(e);
+			resp = PortalTools.getInstance().getRespError(e);
 		}
+		 return resp;
 	}
 	
-	@RequestMapping(value="/admin/home", method = RequestMethod.GET)
-	public @ResponseBody GenericResponse home(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			return business.home(request, response);
-		} catch (Exception e) {
-			return PortalTools.getInstance().getRespError(e);
-		}
-	}
-
 }

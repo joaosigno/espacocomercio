@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.danielfreire.products.ecommerce.model.core.ClientEcommerceBusiness;
+import net.danielfreire.products.ecommerce.model.core.ClientForAdminBusiness;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
 import net.danielfreire.util.PortalTools;
@@ -21,11 +22,13 @@ public class ClientController {
 	
 	@Autowired
 	ClientEcommerceBusiness business;
+	@Autowired
+	ClientForAdminBusiness clientAdmBusiness;
 	
 	@RequestMapping(value="/admin/client/consult", method = RequestMethod.GET)
 	public @ResponseBody GridResponse categoryconsult(HttpServletRequest request) {
 		try {
-			return business.consult(request);
+			return clientAdmBusiness.consult(request);
 		} catch (Exception e) {
 			PortalTools.getInstance().getRespError(e);
 			return new GridResponse();
@@ -35,7 +38,7 @@ public class ClientController {
 	@RequestMapping(value="/admin/client/update", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse clientupdate(HttpServletRequest request) {
 		try {
-			return business.updateAdmin(request);
+			return clientAdmBusiness.updateAdmin(request);
 		} catch (Exception e) {
 			PortalTools.getInstance().getRespError(e);
 			return new GenericResponse();
@@ -45,7 +48,7 @@ public class ClientController {
 	@RequestMapping(value="/admin/client/list", method = RequestMethod.GET)
 	public @ResponseBody GenericResponse list(HttpServletRequest request) {
 		try {
-			return business.list(request);
+			return clientAdmBusiness.list(request);
 		} catch (Exception e) {
 			return PortalTools.getInstance().getRespError(e);
 		}

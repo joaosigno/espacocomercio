@@ -132,14 +132,11 @@ public class MessageBusinessImpl implements MessageBusiness {
 	}
 
 	@Override
-	public GenericResponse countLastMessage(final HttpServletRequest request) {
+	public Long countLastMessage(final HttpServletRequest request) {
 		final Calendar init = Calendar.getInstance();
 		init.add(Calendar.DAY_OF_MONTH, -1);
 		
-		final GenericResponse resp = new GenericResponse();
-		resp.setGeneric(repository.countBySiteAndCreationDateGreaterThan(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), init));
-		
-		return resp;
+		return repository.countBySiteAndCreationDateGreaterThan(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), init);
 	}
 
 }

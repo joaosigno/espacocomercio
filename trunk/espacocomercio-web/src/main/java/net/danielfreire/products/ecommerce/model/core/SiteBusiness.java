@@ -13,6 +13,8 @@ public interface SiteBusiness {
 
 	void upload(HttpServletRequest request, HttpServletResponse response) throws java.lang.Exception;
 	
-	Long countTotalSite(HttpServletRequest request) throws java.lang.Exception;
+	Long countTotalSiteBySessionAdmin(HttpServletRequest request) throws java.lang.Exception;
+	
+	String getNormalizeNameSiteBySessionAdmin(HttpServletRequest request);
 
 }

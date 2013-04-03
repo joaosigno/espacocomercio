@@ -247,8 +247,13 @@ public class SiteBusinessImpl implements SiteBusiness {
 	}
 
 	@Override
-	public Long countTotalSite(final HttpServletRequest request) throws java.lang.Exception {
+	public Long countTotalSiteBySessionAdmin(final HttpServletRequest request) throws java.lang.Exception {
 		return clientRepository.countBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite());
+	}
+
+	@Override
+	public String getNormalizeNameSiteBySessionAdmin(HttpServletRequest request) {
+		return ConvertTools.getInstance().normalizeString(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getName());
 	}
 
 }

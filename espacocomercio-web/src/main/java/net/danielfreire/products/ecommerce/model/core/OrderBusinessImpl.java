@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,26 +34,28 @@ import org.springframework.stereotype.Component;
 @Component("orderBusiness")
 public class OrderBusinessImpl implements OrderBusiness {
 	
+	private static final String LBL_TEXT = "text";
+	private static final String LBL_DATE = "dateCreate";
 	@Autowired
-	private OrderRepository repository;
+	private transient OrderRepository repository;
 	@Autowired
-	private ClientEcommerceRepository clientRepository;
+	private transient ClientEcommerceRepository clientRepository;
 	@Autowired
-	private ProductHasOrderRepository productHasOrderRepository;
+	private transient ProductHasOrderRepository pHasOrderRepo;
 	@Autowired
-	private PaymentRepository paymentRepository;
+	private transient PaymentRepository paymentRepository;
 	@Autowired
-	private ProductRepository productRepository;
+	private transient ProductRepository productRepository;
 
 	@Override
-	public GenericResponse update(HttpServletRequest request) {
-		final Integer id = Integer.parseInt(request.getParameter("id"));
+	public GenericResponse update(final HttpServletRequest request) {
+		final Integer idOrder = Integer.parseInt(request.getParameter("id"));
 		final Double discount = Double.parseDouble(request.getParameter("discount").replace(",", "."));
 		final Double sendCust = Double.parseDouble(request.getParameter("sendCust").replace(",", "."));
 		final Integer statusOrder = Integer.parseInt(request.getParameter("statusOrder"));
 		final Integer payment = Integer.parseInt(request.getParameter("payment"));
 		
-		Order order = repository.findOne(id);
+		final Order order = repository.findOne(idOrder);
 		
 		if (statusOrder==3 && order.getStatusOrder()<3) {
 			order.setDatePayment(Calendar.getInstance());
@@ -64,7 +67,7 @@ public class OrderBusinessImpl implements OrderBusiness {
 		order.setPayment(new Payment(payment));
 		
 		Double totalValue = 0.0;
-		for (ProductHasOrder prodHasOrder : productHasOrderRepository.findByOrderId(id)) {
+		for (ProductHasOrder prodHasOrder : pHasOrderRepo.findByOrderId(idOrder)) {
 			totalValue = totalValue + (prodHasOrder.getUnityvalue() * prodHasOrder.getQuantity());
 		}
 		totalValue = ((totalValue + sendCust) - discount);
@@ -76,50 +79,51 @@ public class OrderBusinessImpl implements OrderBusiness {
 	}
 
 	@Override
-	public GridResponse consult(HttpServletRequest request) throws Exception {
-		String page = request.getParameter("page");
-		String clientId = request.getParameter("cid");
+	public GridResponse consult(final HttpServletRequest request) throws java.lang.Exception {
+		GridResponse resp = new GridResponse();
+		final String page = request.getParameter("page");
+		final String clientId = request.getParameter("cid");
 		
-		ClientEcommerce client = clientRepository.findOne(Integer.parseInt(clientId));
-		if (client.getSite().getId()!=EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId()) {
-			return new GridResponse();
-		} else {
+		final ClientEcommerce client = clientRepository.findOne(Integer.parseInt(clientId));
+		if (client.getSite().getId()==EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId()) {
 			int pagination = 0;
 			if (ValidateTools.getInstancia().isNumber(page)) {
 				pagination = Integer.parseInt(page)-1;
 			} 
 			
-			ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
-			titles.add(PortalTools.getInstance().getRowGrid("payment", "Forma de pgto", "text"));
-			titles.add(PortalTools.getInstance().getRowGrid("dateCreate", "Data de criação", "text"));
-			titles.add(PortalTools.getInstance().getRowGrid("datePayment", "Data de pgto", "text"));
-			titles.add(PortalTools.getInstance().getRowGrid("statusOrder", "Status", "text"));
-			titles.add(PortalTools.getInstance().getRowGrid("sendCust", "Custo de envio", "text"));
-			titles.add(PortalTools.getInstance().getRowGrid("discount", "Desconto", "text"));
-			titles.add(PortalTools.getInstance().getRowGrid("totalValue", "Valor total", "text"));
-			titles.add(PortalTools.getInstance().getRowGrid("cesta", "Produtos", "text"));
+			final ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
+			titles.add(PortalTools.getInstance().getRowGrid("payment", "Forma de pgto", LBL_TEXT));
+			titles.add(PortalTools.getInstance().getRowGrid(LBL_DATE, "Data de criação", LBL_TEXT));
+			titles.add(PortalTools.getInstance().getRowGrid("datePayment", "Data de pgto", LBL_TEXT));
+			titles.add(PortalTools.getInstance().getRowGrid("statusOrder", "Status", LBL_TEXT));
+			titles.add(PortalTools.getInstance().getRowGrid("sendCust", "Custo de envio", LBL_TEXT));
+			titles.add(PortalTools.getInstance().getRowGrid("discount", "Desconto", LBL_TEXT));
+			titles.add(PortalTools.getInstance().getRowGrid("totalValue", "Valor total", LBL_TEXT));
+			titles.add(PortalTools.getInstance().getRowGrid("cesta", "Produtos", LBL_TEXT));
 			
-			Page<Order> pageable = repository.findByClient(client, new PageRequest(pagination, 10));
+			final Page<Order> pageable = repository.findByClient(client, new PageRequest(pagination, 10));
 			
-			return PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
+			resp = PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
 		}
+		
+		return resp;
 	}
 
 	@Override
-	public GenericResponse listByOpt(HttpServletRequest request) throws Exception {
-		GenericResponse resp = new GenericResponse();
+	public GenericResponse listByOpt(final HttpServletRequest request) throws java.lang.Exception {
+		final GenericResponse resp = new GenericResponse();
 		
 		final String opt = request.getParameter("opt");
-		final ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.getInstance().ID_SESSION);
+		final ClientEcommerce client = (ClientEcommerce) request.getSession().getAttribute(PortalTools.ID_SESSION);
 		
 		List<Order> list = new ArrayList<Order>();
 		
-		if (opt.equals("order1")) {
-			list = repository.findByClientAndStatusOrderLessThan(client, 4, new PageRequest(0, 10, Direction.DESC, "dateCreate")).getContent();
-		} else if (opt.equals("order2")) {
-			list = repository.findByClientAndStatusOrderGreaterThan(client, 3, new PageRequest(0, 10, Direction.DESC, "dateCreate")).getContent();
-		} else if (opt.equals("order3")) {
-			list = repository.findByClient(client, new PageRequest(0, 10, Direction.DESC, "dateCreate")).getContent();
+		if ("order1".equals(opt)) {
+			list = repository.findByClientAndStatusOrderLessThan(client, 4, new PageRequest(0, 10, Direction.DESC, LBL_DATE)).getContent();
+		} else if ("order2".equals(opt)) {
+			list = repository.findByClientAndStatusOrderGreaterThan(client, 3, new PageRequest(0, 10, Direction.DESC, LBL_DATE)).getContent();
+		} else if ("order3".equals(opt)) {
+			list = repository.findByClient(client, new PageRequest(0, 10, Direction.DESC, LBL_DATE)).getContent();
 		} 
 		
 		resp.setGenericList(list);
@@ -129,13 +133,13 @@ public class OrderBusinessImpl implements OrderBusiness {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public GenericResponse insert(HttpServletRequest request, HashMap<String, Object> map) throws Exception {
+	public GenericResponse insert(final HttpServletRequest request, final Map<String, Object> map) throws java.lang.Exception {
 		GenericResponse resp = new GenericResponse();
 		
-		ClientEcommerce client = (ClientEcommerce) map.get("client");
-		ArrayList<Product> products = (ArrayList<Product>) map.get("cart");
-		Double send = Double.parseDouble(request.getParameter("send").replace(",", "."));
-		Double total = Double.parseDouble(request.getParameter("total").replace(",", "."));
+		final ClientEcommerce client = (ClientEcommerce) map.get("client");
+		final ArrayList<Product> products = (ArrayList<Product>) map.get("cart");
+		final Double send = Double.parseDouble(request.getParameter("send").replace(",", "."));
+		final Double total = Double.parseDouble(request.getParameter("total").replace(",", "."));
 		
 		if (client==null || products==null) {
 			resp = PortalTools.getInstance().getRespError("session.invalid");
@@ -153,17 +157,13 @@ public class OrderBusinessImpl implements OrderBusiness {
 			
 			order = repository.saveAndFlush(order);
 			
-			ArrayList<Product> prods = new ArrayList<Product>();
+			final ArrayList<Product> prods = new ArrayList<Product>();
 			
 			for (Product p : products) {
-				Product prod = productRepository.findOne(p.getId());
-				ProductHasOrder prodorder = new ProductHasOrder();
-				prodorder.setOrderId(order.getId());
-				prodorder.setProduct(prod);
-				prodorder.setQuantity(Integer.parseInt(request.getParameter("qtdSelect"+p.getId())));
-				prodorder.setUnityvalue(prod.getUnityvalue());
+				final Product prod = productRepository.findOne(p.getId());
+				final ProductHasOrder prodorder =  generateProductOrder(order.getId(), prod, Integer.parseInt(request.getParameter("qtdSelect"+p.getId())), prod.getUnityvalue());
 				
-				productHasOrderRepository.save(prodorder);
+				pHasOrderRepo.save(prodorder);
 				
 				prod.setQuantity(prod.getQuantity()-prodorder.getQuantity());
 				productRepository.save(prod);
@@ -172,10 +172,10 @@ public class OrderBusinessImpl implements OrderBusiness {
 				EcommerceUtil.getInstance().generateProductCache(prod, prod.getSite());
 			}
 			
-			request.getSession().removeAttribute(PortalTools.getInstance().ID_CART_SESSION);
-			request.getSession().removeAttribute(PortalTools.getInstance().ID_SESSION);
+			request.getSession().removeAttribute(PortalTools.ID_CART_SESSION);
+			request.getSession().removeAttribute(PortalTools.ID_SESSION);
 			
-			HashMap<String, Object> ret = new HashMap<String, Object>();
+			final HashMap<String, Object> ret = new HashMap<String, Object>();
 			ret.put("client", client);
 			ret.put("cart", prods);
 			ret.put("order", order.getId());
@@ -185,6 +185,80 @@ public class OrderBusinessImpl implements OrderBusiness {
 		}
 		
 		return resp;
+	}
+
+	private ProductHasOrder generateProductOrder(final Integer idPOrder, final Product prod, final int quant,
+			final Double unityvalue) {
+		final ProductHasOrder prodorder = new ProductHasOrder();
+		prodorder.setOrderId(idPOrder);
+		prodorder.setProduct(prod);
+		prodorder.setQuantity(quant);
+		prodorder.setUnityvalue(unityvalue);
+		
+		return prodorder;
+	}
+
+	@Override
+	public Long countOrders(final HttpServletRequest request) {
+		return repository.countBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite());
+	}
+
+	@Override
+	public Integer[] getListOrdersByLastMonths(final HttpServletRequest request) {
+		final Calendar dtInit = Calendar.getInstance();
+		dtInit.add(Calendar.MONTH, -6);
+		final Calendar dtNow = Calendar.getInstance();
+		
+		final List<Order> listOrders = repository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), dtInit, dtNow);
+		int oder1 = 0, order2 = 0, order3 = 0, order4 = 0, order5 = 0, order6 = 0, order7 = 0;
+		for (Order o : listOrders) {
+			final Calendar now2 = Calendar.getInstance();
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH)) {
+				order7++;
+			}
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH)) {
+				order6++;
+			}
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH)) {
+				order5++;
+			}
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH)) {
+				order4++;
+			}
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH)) {
+				order3++;
+			}
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH)) {
+				order2++;
+			}
+			now2.add(Calendar.MONTH, -1);
+			if (now2.get(Calendar.MONTH) == o.getDateCreate().get(Calendar.MONTH)) {
+				oder1++;
+			}
+		}
+		
+		return new Integer[]{oder1, order2, order3, order4, order5, order6, order7};
+	}
+
+	@Override
+	public Long countLastOrders(final HttpServletRequest request) {
+		final Calendar dtInit = Calendar.getInstance();
+		dtInit.add(Calendar.DAY_OF_MONTH, -2);
+		
+		return repository.countBySiteAndDateCreateGreaterThan(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), dtInit);
+	}
+
+	@Override
+	public Long countLastOrdersPayment(final HttpServletRequest request) {
+		final Calendar dtInit = Calendar.getInstance();
+		dtInit.add(Calendar.DAY_OF_MONTH, -2);
+		
+		return repository.countBySiteAndStatusOrder(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), 2);
 	}
 	
 }

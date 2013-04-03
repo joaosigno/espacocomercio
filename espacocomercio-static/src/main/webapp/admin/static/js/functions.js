@@ -128,6 +128,7 @@ function loadHome() {
 			$('div#newClientsCount').html(data.generic[5]);
 			$('div#newOrdersCount').html(data.generic[6]);
 			$('div#newPaymentsCount').html(data.generic[7]);
+			$('div#newMessagesCount').html(data.generic[8]);
 			
 		} else {
 			errorForm(data)

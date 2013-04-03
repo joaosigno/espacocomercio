@@ -121,9 +121,9 @@ function loadHome() {
 			
 			$('span#spanClientsTotal').text(data.generic[0]);
 			$('span#spanOrdersTotal').text(data.generic[1]);
-			$.getJSON('/gapi/espacocomercio.php?p='+data.generic[2], function(r) {
+			$.getJSON('/gapi/espacocomercio.php?p='+data.generic[2]+'&tk='+new Date().getTime().toString(), function(r) {
         		$('span#spanVisitsTotal').text(r.visits);
-        		generateGrafics(r.pagesMonth, data.generic[3], data.generic[4]);
+        		generateGrafics(r.pagesMonth, data.generic[3], data.generic[4], r.pages, r.views);
         	});
 			$('div#newClientsCount').html(data.generic[5]);
 			$('div#newOrdersCount').html(data.generic[6]);
@@ -137,7 +137,7 @@ function loadHome() {
 	});
 }
 
-function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth) {
+function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth, viewsByURL, totalViews) {
 	$('#tab-stat > a[data-toggle="tab"]').on('shown', function(){
         if(sessionStorage.mode == 4){
             $('body,html').animate({
@@ -154,7 +154,7 @@ function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth) {
     var i = 0;
     $.each(visitsByMonth, function(key, val) {
     	var m = convertMonth(val.month.toString().split(' ')[0]);
-    	d1.push([m, val.pageview]);
+    	d1.push([m, val.visits]);
     	
     	months[i] = m;
     	i++;
@@ -173,6 +173,24 @@ function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth) {
     	d2.push([months[i], val]);
     	i++;
     });
+    
+    var d4 = [];
+    i = 0;
+    var t = 0;
+    $.each(viewsByURL, function(key, val) {
+    	if (i<10) {
+	    	d4[i] = {
+				label: val.url,
+				data: (((val.pageview * 100) / totalViews).toString().split('.')[0] * 1)
+			}
+	    	i++;
+	    	t = t + (((val.pageview * 100) / totalViews).toString().split('.')[0] * 1);
+    	}
+    });
+    d4[i] = {
+			label: "Outros",
+			data: 100 - t
+		}
     
     //d1 = [ ['jan', 231], ['feb', 243], ['mar', 323], ['apr', 352], ['maj', 354], ['jun', 467], ['jul', 429] ];
     //d2 = [ ['jan', 87], ['feb', 67], ['mar', 96], ['apr', 105], ['maj', 98], ['jun', 53], ['jul', 87] ];
@@ -229,12 +247,23 @@ function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth) {
     $.plot(visitor, data_visitor, options_lines);
     $.plot(order, data_order, options_lines);
     $.plot(user, data_user, options_lines);
+    $.plot('#views-stat', d4, {
+        series: {
+            pie: {
+                show: true
+            }
+        },
+        grid: {
+            hoverable: true,
+            clickable: true
+        }
+    });
     
     var previousPoint = null;
     $('#visitor-stat, #order-stat, #user-stat').bind("plothover", function (event, pos, item) {
         
         if (item) {
-            if (previousPoint != item.dataIndex) {
+    		if (previousPoint != item.dataIndex) {
                 previousPoint = item.dataIndex;
 
                 $("#tooltip").remove();
@@ -242,8 +271,7 @@ function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth) {
                 y = item.datapoint[1].toFixed(2);
                 label = item.series.xaxis.ticks[item.datapoint[0]].label;
                 
-                showTooltip(item.pageX, item.pageY,
-                label + " = " + y);
+                showTooltip(item.pageX, item.pageY, label + " = " + y);
             }
         }
         else {
@@ -252,6 +280,26 @@ function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth) {
         }
         
     });
+    
+//    $('#views-stat').bind("plothover", function(event, pos, obj) {
+//
+//		if (!obj) {
+//			return;
+//		}
+//
+//		var percent = parseFloat(obj.series.percent).toFixed(2);
+//		$("#hover").html("<span style='font-weight:bold; color:" + obj.series.color + "'>" + obj.series.label + " (" + percent + "%)</span>");
+//	});
+//
+//    $('#views-stat').bind("plotclick", function(event, pos, obj) {
+//
+//		if (!obj) {
+//			return;
+//		}
+//
+//		percent = parseFloat(obj.series.percent).toFixed(2);
+//		alert(""  + obj.series.label + ": " + percent + "%");
+//	});
 }
 
 function showTooltip(x, y, contents) {

@@ -1,9 +1,11 @@
 package net.danielfreire.products.ecommerce.model.core;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.danielfreire.products.ecommerce.model.domain.Order;
 import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.GridResponse;
 
@@ -24,4 +26,6 @@ public interface OrderBusiness {
 	Long countLastOrders(HttpServletRequest request);
 	
 	Long countLastOrdersPayment(HttpServletRequest request);
+
+	List<Order> listLastOrders(HttpServletRequest request);
 }

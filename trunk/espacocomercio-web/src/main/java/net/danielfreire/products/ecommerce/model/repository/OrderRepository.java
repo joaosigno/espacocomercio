@@ -14,23 +14,26 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 	
-	public Page<Order> findByClient(ClientEcommerce client, Pageable p);
+	Page<Order> findByClient(ClientEcommerce client, Pageable pageable);
 	
-	public Page<Order> findByClientAndStatusOrderLessThan(ClientEcommerce client, Integer statusOrderLessThan, Pageable p);
+	Page<Order> findByClientAndStatusOrderLessThan(ClientEcommerce client, Integer statusOrder, Pageable pageable);
 	
-	public Page<Order> findByClientAndStatusOrderGreaterThan(ClientEcommerce client, Integer statusOrderLessThan, Pageable p);
+	Page<Order> findByClientAndStatusOrderGreaterThan(ClientEcommerce client, Integer statusOrder, Pageable pageable);
 
-	public List<Order> findByClient(ClientEcommerce c);
+	List<Order> findByClient(ClientEcommerce client);
 	
 	@Query("select count(id) from Order where client.id in (select id from ClientEcommerce where site = ?1)")
-	public Long countBySite(Site site);
+	Long countBySite(Site site);
 	
 	@Query("from Order where dateCreate >= ?2 and dateCreate <= ?3 and client.id in (select id from ClientEcommerce where site = ?1)")
-	public List<Order> findBySite(Site site, Calendar dtIni, Calendar dtEnd);
+	List<Order> findBySite(Site site, Calendar dtIni, Calendar dtEnd);
 
 	@Query("select count(id) from Order where dateCreate >= ?2 and client.id in (select id from ClientEcommerce where site = ?1)")
-	public Long countBySiteAndDateCreateGreaterThan(Site site, Calendar dtInit);
+	Long countBySiteAndDateCreateGreaterThan(Site site, Calendar dtInit);
 
 	@Query("select count(id) from Order where statusOrder = ?2 and client.id in (select id from ClientEcommerce where site = ?1)")
-	public Long countBySiteAndStatusOrder(Site site, Integer i);
+	Long countBySiteAndStatusOrder(Site site, Integer status);
+	
+	@Query("from Order where client.id in (select id from ClientEcommerce where site = ?1) order by dateCreate desc")
+	List<Order> findLastOrdersBySite(Site site, Pageable pageable);
 }

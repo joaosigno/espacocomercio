@@ -260,6 +260,11 @@ public class OrderBusinessImpl implements OrderBusiness {
 		
 		return repository.countBySiteAndStatusOrder(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), 2);
 	}
+
+	@Override
+	public List<Order> listLastOrders(HttpServletRequest request) {
+		return repository.findLastOrdersBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), new PageRequest(0, 10));
+	}
 	
 }
 

@@ -538,7 +538,7 @@ ul.dropdown-notification > li.dropdown-header:hover{
 }
 
 .side-contact ul.contact-list{
-    max-height: 380px;
+    max-height: 580px;
     overflow: hidden;
     overflow-y: auto;
 }

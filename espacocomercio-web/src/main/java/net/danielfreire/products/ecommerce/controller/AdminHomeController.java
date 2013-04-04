@@ -41,7 +41,20 @@ public class AdminHomeController {
 					clientBusiness.countLastClientsRegistry(request), //5
 					orderBusiness.countLastOrders(request), //6
 					orderBusiness.countLastOrdersPayment(request), //7
-					messageBusiness.countLastMessage(request)}); //8
+					messageBusiness.countLastMessage(request), //8
+					orderBusiness.listLastOrders(request)}); //9
+		} catch (Exception e) {
+			resp =  PortalTools.getInstance().getRespError(e);
+		}
+		
+		return resp;
+	}
+	
+	@RequestMapping(value="/admin/msg", method = RequestMethod.GET)
+	public @ResponseBody GenericResponse messages(final HttpServletRequest request, final HttpServletResponse response) {
+		GenericResponse resp = new GenericResponse();
+		try {
+			resp.setGeneric(messageBusiness.countLastMessage(request));
 		} catch (Exception e) {
 			resp =  PortalTools.getInstance().getRespError(e);
 		}

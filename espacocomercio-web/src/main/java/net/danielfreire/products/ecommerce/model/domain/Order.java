@@ -42,49 +42,49 @@ public class Order extends AbstractPersistable<Integer> {
 	public Double getTotalValue() {
 		return totalValue;
 	}
-	public void setTotalValue(Double totalValue) {
+	public void setTotalValue(final Double totalValue) {
 		this.totalValue = totalValue;
 	}
 	public Double getSendCust() {
 		return sendCust;
 	}
-	public void setSendCust(Double sendCust) {
+	public void setSendCust(final Double sendCust) {
 		this.sendCust = sendCust;
 	}
 	public Calendar getDateCreate() {
 		return dateCreate;
 	}
-	public void setDateCreate(Calendar dateCreate) {
+	public void setDateCreate(final Calendar dateCreate) {
 		this.dateCreate = dateCreate;
 	}
 	public Calendar getDatePayment() {
 		return datePayment;
 	}
-	public void setDatePayment(Calendar datePayment) {
+	public void setDatePayment(final Calendar datePayment) {
 		this.datePayment = datePayment;
 	}
 	public ClientEcommerce getClient() {
 		return client;
 	}
-	public void setClient(ClientEcommerce client) {
+	public void setClient(final ClientEcommerce client) {
 		this.client = client;
 	}
 	public Payment getPayment() {
 		return payment;
 	}
-	public void setPayment(Payment payment) {
+	public void setPayment(final Payment payment) {
 		this.payment = payment;
 	}
 	public Double getDiscount() {
 		return discount;
 	}
-	public void setDiscount(Double discount) {
+	public void setDiscount(final Double discount) {
 		this.discount = discount;
 	}
 	public Integer getStatusOrder() {
 		return statusOrder;
 	}
-	public void setStatusOrder(Integer statusOrder) {
+	public void setStatusOrder(final Integer statusOrder) {
 		this.statusOrder = statusOrder;
 	}
 	

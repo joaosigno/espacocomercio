@@ -48,10 +48,6 @@ $(function(){
     
 });
 
-$(document).ready(function() {
-    
-});
-
 function loadMenuAdmin() {
 	$.getJSON('/ecommerce-web/admin/menu?tk='+new Date().getTime(), function(data) {
 		if (data.status) {
@@ -129,11 +125,47 @@ function loadHome() {
 			$('div#newOrdersCount').html(data.generic[6]);
 			$('div#newPaymentsCount').html(data.generic[7]);
 			$('div#newMessagesCount').html(data.generic[8]);
+			$('a#newMessagesCount').html(data.generic[8]);
+			var html = '';
+			$.each(data.generic[9], function(key, val) {
+				html += '<li class="contact-alt grd-white">';
+                html += '<a href="#">';
+                html += '<div class="contact-item">';
+                html += '<div class="contact-item-body">';
+                if (val.statusOrder==1) {
+                	html += '<div class="status" title="Aguardando pagamento"><i class="icofont-certificate color-orange"></i></div>';
+                } else if (val.statusOrder==2) {
+                	html += '<div class="status" title="Pagamento confirmado"><i class="icofont-certificate color-silver-dark"></i></div>';
+                } else if (val.statusOrder==3 || val.statusOrder==4) {
+                	html += '<div class="status" title="Enviado ou Conluído com sucesso"><i class="icofont-certificate color-green"></i></div>';
+                } else {
+                	html += '<div class="status" title="Cancelado"><i class="icofont-certificate color-red"></i></div>';
+                }
+                if (val.totalValue.toString().indexOf('.')==-1) {
+					html += '<p class="contact-item-heading bold">Valor: R$ '+val.totalValue.toString()+',00</p>';
+				} else {
+					html += '<p class="contact-item-heading bold">Valor: R$ '+val.totalValue.toString().replace('.', ',')+'</p>';
+				}
+                html += '<p class="help-block"><small class="muted">Cliente: '+val.client.name+'</small></p>';
+                html += '</div>';
+                html += '</div>';
+                html += '</a>';
+                html += '</li>';
+			});
+			$('ul#ulLastOrders').html(html);
 			
 		} else {
 			errorForm(data)
 		}
 		
+	});
+}
+
+function checkMessages() {
+	$.getJSON('/ecommerce-web/admin/msg?tk='+new Date().getTime(), function(data) {
+		if (data.status) {
+			$('a#newMessagesCount').html(data.generic);
+		}
 	});
 }
 
@@ -179,22 +211,19 @@ function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth, viewsByUR
     var t = 0;
     $.each(viewsByURL, function(key, val) {
     	if (i<10) {
+    		var percent = (((val.pageview * 100) / totalViews).toString().split('.')[0] * 1);
 	    	d4[i] = {
-				label: val.url,
-				data: (((val.pageview * 100) / totalViews).toString().split('.')[0] * 1)
+				label: percent + "% - " + val.url,
+				data: percent
 			}
 	    	i++;
-	    	t = t + (((val.pageview * 100) / totalViews).toString().split('.')[0] * 1);
+	    	t = t + percent;
     	}
     });
     d4[i] = {
-			label: "Outros",
+			label: (100 - t) + "% - Outros </p></td></tr><tr><td colspan=\"2\" style=\"text-align:left;font-size: 14px;\"><p><strong>Total de visualizações: </strong>"+totalViews+"</p></td></tr>",
 			data: 100 - t
 		}
-    
-    //d1 = [ ['jan', 231], ['feb', 243], ['mar', 323], ['apr', 352], ['maj', 354], ['jun', 467], ['jul', 429] ];
-    //d2 = [ ['jan', 87], ['feb', 67], ['mar', 96], ['apr', 105], ['maj', 98], ['jun', 53], ['jul', 87] ];
-    //d3 = [ ['jan', 34], ['feb', 27], ['mar', 46], ['apr', 65], ['maj', 47], ['jun', 79], ['jul', 95] ];
     
     var visitor = $("#visitor-stat"),
     order = $("#order-stat"),
@@ -253,9 +282,15 @@ function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth, viewsByUR
                 show: true
             }
         },
+        legend: {
+            show: true,
+            labelFormatter: function(label, series) {
+                return '<p style="text-align:left;font-size:12px;padding:0px;margin:0px;">' + label + '</p>';
+            }
+        },
         grid: {
-            hoverable: true,
-            clickable: true
+        	hoverable: true,
+        	clickable: true
         }
     });
     
@@ -280,26 +315,6 @@ function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth, viewsByUR
         }
         
     });
-    
-//    $('#views-stat').bind("plothover", function(event, pos, obj) {
-//
-//		if (!obj) {
-//			return;
-//		}
-//
-//		var percent = parseFloat(obj.series.percent).toFixed(2);
-//		$("#hover").html("<span style='font-weight:bold; color:" + obj.series.color + "'>" + obj.series.label + " (" + percent + "%)</span>");
-//	});
-//
-//    $('#views-stat').bind("plotclick", function(event, pos, obj) {
-//
-//		if (!obj) {
-//			return;
-//		}
-//
-//		percent = parseFloat(obj.series.percent).toFixed(2);
-//		alert(""  + obj.series.label + ": " + percent + "%");
-//	});
 }
 
 function showTooltip(x, y, contents) {

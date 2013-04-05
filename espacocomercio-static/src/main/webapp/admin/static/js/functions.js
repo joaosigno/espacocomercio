@@ -1,58 +1,9 @@
-$(function(){
-    // tooltip helper
-    $('[rel=tooltip]').tooltip();	
-    $('[rel=tooltip-bottom]').tooltip({
-        placement : 'bottom'
-    });	
-    $('[rel=tooltip-right]').tooltip({
-        placement : 'right'
-    });	
-    $('[rel=tooltip-left]').tooltip({
-        placement : 'left'
-    });	
-    // end tooltip helper
-    
-    
-    // animate scroll, define class scroll will be activate this
-    $(".scroll").click(function(e){
-        e.preventDefault();
-        $("html,body").animate({scrollTop: $(this.hash).offset().top-60}, 'slow');
-    });
-    // end animate scroll
-    
-    
-    // control box
-    // collapse a box
-    $('.header-control [data-box=collapse]').click(function(){
-        var collapse = $(this),
-        box = collapse.parent().parent().parent();
-
-        collapse.find('i').toggleClass('icofont-caret-up icofont-caret-down'); // change icon
-        box.find('.box-body').slideToggle(); // toggle body box
-    });
-
-    // close a box
-    $('.header-control [data-box=close]').click(function(){
-        var close = $(this),
-        box = close.parent().parent().parent(),
-        data_anim = close.attr('data-hide'),
-        animate = (data_anim == undefined || data_anim == '') ? 'fadeOut' : data_anim;
-
-        box.addClass('animated '+animate);
-        setTimeout(function(){
-            box.hide()
-        },1000);
-    });
-    // end control box
-    
-    
-});
-
+var titlePage = "";
 function loadMenuAdmin() {
 	$.getJSON('/ecommerce-web/admin/menu?tk='+new Date().getTime(), function(data) {
 		if (data.status) {
 			loadMenu('/ecommerce/admin/static/json/menu'+data.generic[0]+'.json');
-			$('span#spanTitleEcommerce').text(data.generic[1]);
+			titlePage = data.generic[1];
 			$('span#spanEmailPerfil').text(data.generic[2]);
 			$('a#aToLoja').attr('href', '/ecommerce/'+data.generic[3]);
 		} else {
@@ -112,50 +63,100 @@ function errorForm(data) {
 }
 
 function loadHome() {
+	$('#contentAll').html('<div class="span12" style="text-align:center; min-height: 600px;"><img src="static/img/loading.gif"></div>');
 	$.getJSON('/ecommerce-web/admin/home?tk='+new Date().getTime(), function(data) {
 		if (data.status) {
 			
-			$('span#spanClientsTotal').text(data.generic[0]);
-			$('span#spanOrdersTotal').text(data.generic[1]);
-			$.getJSON('/gapi/espacocomercio.php?p='+data.generic[2]+'&tk='+new Date().getTime().toString(), function(r) {
-        		$('span#spanVisitsTotal').text(r.visits);
-        		generateGrafics(r.pagesMonth, data.generic[3], data.generic[4], r.pages, r.views);
-        	});
-			$('div#newClientsCount').html(data.generic[5]);
-			$('div#newOrdersCount').html(data.generic[6]);
-			$('div#newPaymentsCount').html(data.generic[7]);
-			$('div#newMessagesCount').html(data.generic[8]);
-			$('a#newMessagesCount').html(data.generic[8]);
-			var html = '';
-			$.each(data.generic[9], function(key, val) {
-				html += '<li class="contact-alt grd-white">';
-                html += '<a href="#">';
-                html += '<div class="contact-item">';
-                html += '<div class="contact-item-body">';
-                if (val.statusOrder==1) {
-                	html += '<div class="status" title="Aguardando pagamento"><i class="icofont-certificate color-orange"></i></div>';
-                } else if (val.statusOrder==2) {
-                	html += '<div class="status" title="Pagamento confirmado"><i class="icofont-certificate color-silver-dark"></i></div>';
-                } else if (val.statusOrder==3 || val.statusOrder==4) {
-                	html += '<div class="status" title="Enviado ou Conluído com sucesso"><i class="icofont-certificate color-green"></i></div>';
-                } else {
-                	html += '<div class="status" title="Cancelado"><i class="icofont-certificate color-red"></i></div>';
-                }
-                if (val.totalValue.toString().indexOf('.')==-1) {
-					html += '<p class="contact-item-heading bold">Valor: R$ '+val.totalValue.toString()+',00</p>';
-				} else {
-					html += '<p class="contact-item-heading bold">Valor: R$ '+val.totalValue.toString().replace('.', ',')+'</p>';
-				}
-                html += '<p class="help-block"><small class="muted">Cliente: '+val.client.name+'</small></p>';
-                html += '</div>';
-                html += '</div>';
-                html += '</a>';
-                html += '</li>';
+			$('#contentAll').load('includes/home.html', function() {
+				$('span#spanTitleEcommerce').text(titlePage);
+				$('span#spanClientsTotal').text(data.generic[0]);
+				$('span#spanOrdersTotal').text(data.generic[1]);
+				$('div#newClientsCount').html(data.generic[5]);
+				$('div#newOrdersCount').html(data.generic[6]);
+				$('div#newPaymentsCount').html(data.generic[7]);
+				$('div#newMessagesCount').html(data.generic[8]);
+				$('a#newMessagesCount').html(data.generic[8]);
+				var html = '';
+				$.each(data.generic[9], function(key, val) {
+					html += '<li class="contact-alt grd-white">';
+	                html += '<a href="#">';
+	                html += '<div class="contact-item">';
+	                html += '<div class="contact-item-body">';
+	                if (val.statusOrder==1) {
+	                	html += '<div class="status" title="Aguardando pagamento"><i class="icofont-certificate color-orange"></i></div>';
+	                } else if (val.statusOrder==2) {
+	                	html += '<div class="status" title="Pagamento confirmado"><i class="icofont-certificate color-silver-dark"></i></div>';
+	                } else if (val.statusOrder==3 || val.statusOrder==4) {
+	                	html += '<div class="status" title="Enviado ou Conluído com sucesso"><i class="icofont-certificate color-green"></i></div>';
+	                } else {
+	                	html += '<div class="status" title="Cancelado"><i class="icofont-certificate color-red"></i></div>';
+	                }
+	                if (val.totalValue.toString().indexOf('.')==-1) {
+						html += '<p class="contact-item-heading bold">Valor: R$ '+val.totalValue.toString()+',00</p>';
+					} else {
+						html += '<p class="contact-item-heading bold">Valor: R$ '+val.totalValue.toString().replace('.', ',')+'</p>';
+					}
+	                html += '<p class="help-block"><small class="muted">Cliente: '+val.client.name+'</small></p>';
+	                html += '</div>';
+	                html += '</div>';
+	                html += '</a>';
+	                html += '</li>';
+				});
+				$('ul#ulLastOrders').html(html);
+				// tooltip helper
+			    $('[rel=tooltip]').tooltip();	
+			    $('[rel=tooltip-bottom]').tooltip({
+			        placement : 'bottom'
+			    });	
+			    $('[rel=tooltip-right]').tooltip({
+			        placement : 'right'
+			    });	
+			    $('[rel=tooltip-left]').tooltip({
+			        placement : 'left'
+			    });	
+			    // end tooltip helper
+			    
+			    
+			    // animate scroll, define class scroll will be activate this
+			    $(".scroll").click(function(e){
+			        e.preventDefault();
+			        $("html,body").animate({scrollTop: $(this.hash).offset().top-60}, 'slow');
+			    });
+			    // end animate scroll
+			    
+			    
+			    // control box
+			    // collapse a box
+			    $('.header-control [data-box=collapse]').click(function(){
+			        var collapse = $(this),
+			        box = collapse.parent().parent().parent();
+
+			        collapse.find('i').toggleClass('icofont-caret-up icofont-caret-down'); // change icon
+			        box.find('.box-body').slideToggle(); // toggle body box
+			    });
+
+			    // close a box
+			    $('.header-control [data-box=close]').click(function(){
+			        var close = $(this),
+			        box = close.parent().parent().parent(),
+			        data_anim = close.attr('data-hide'),
+			        animate = (data_anim == undefined || data_anim == '') ? 'fadeOut' : data_anim;
+
+			        box.addClass('animated '+animate);
+			        setTimeout(function(){
+			            box.hide()
+			        },1000);
+			    });
+			    // end control box
+				$.getJSON('/gapi/espacocomercio.php?p='+data.generic[2]+'&tk='+new Date().getTime().toString(), function(r) {
+	        		$('span#spanVisitsTotal').text(r.visits);
+	        		generateGrafics(r.pagesMonth, data.generic[3], data.generic[4], r.pages, r.views);
+	        	});
 			});
-			$('ul#ulLastOrders').html(html);
 			
 		} else {
-			errorForm(data)
+			errorForm(data);
+			$('#contentAll').html('');
 		}
 		
 	});

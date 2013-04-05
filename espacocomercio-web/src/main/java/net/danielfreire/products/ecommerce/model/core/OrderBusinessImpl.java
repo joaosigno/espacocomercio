@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.danielfreire.products.ecommerce.model.domain.ClientAdmin;
 import net.danielfreire.products.ecommerce.model.domain.ClientEcommerce;
 import net.danielfreire.products.ecommerce.model.domain.Order;
 import net.danielfreire.products.ecommerce.model.domain.Payment;
@@ -262,8 +263,15 @@ public class OrderBusinessImpl implements OrderBusiness {
 	}
 
 	@Override
-	public List<Order> listLastOrders(HttpServletRequest request) {
-		return repository.findLastOrdersBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), new PageRequest(0, 10));
+	public List<Order> listLastOrders(final HttpServletRequest request) {
+		final ClientAdmin user = EcommerceUtil.getInstance().getSessionAdmin(request);
+		List<Order> orders;
+		if (user.getPermission()<4) {
+			orders = repository.findLastOrdersBySite(user.getSite(), new PageRequest(0, 10));
+		} else {
+			orders = new ArrayList<Order>();
+		}
+		return orders;
 	}
 	
 }

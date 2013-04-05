@@ -3,32 +3,32 @@
 	"menus": {
         "Home": {
         	"id": "home",
-        	"icon": "icofont-dashboard",
+        	"icon": "icofont-bar-chart",
         	"url": "/ecommerce/admin"
         },
         "Categorias": {
         	"id": "category",
-        	"icon": "icofont-magnet",
+        	"icon": "icofont-reorder",
         	"url": "/ecommerce/admin/category"
         },
         "Produtos": {
         	"id": "product",
-        	"icon": "icofont-bar-chart",
+        	"icon": "icofont-barcode",
         	"url": "/ecommerce/admin/product"
         },
         "Pedidos": {
         	"id": "order",
-        	"icon": "icofont-table",
+        	"icon": "icofont-edit",
         	"url": "/ecommerce/admin/order"
         },
         "Frete": {
         	"id": "send",
-        	"icon": "icofont-columns",
+        	"icon": "icofont-dashboard",
         	"url": "/ecommerce/admin/send"
         },
         "Formas de pgto": {
         	"id": "payment",
-        	"icon": "icofont-star",
+        	"icon": "icofont-money",
         	"url": "/ecommerce/admin/payment"
         }
     }

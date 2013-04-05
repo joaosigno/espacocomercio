@@ -47,7 +47,7 @@
                                 <a class="btn btn-danger btn-small" data-toggle="dropdown" href="#" title="Mensagens" id="newMessagesCount"></a>
                                 <ul class="dropdown-menu dropdown-notification">
                                     <li class="dropdown-header grd-white">
-                                    	<a href="https://www.gmail.com/a/espacocomercio.com.br/ServiceLogin" target="_blank">Mensagens</a>
+                                    	<a href="https://www.google.com/a/espacocomercio.com.br/ServiceLogin" target="_blank">Mensagens</a>
                                     </li>
                                 </ul>
                             </div>
@@ -58,7 +58,7 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                     <li><a id="aToLoja" tabindex="-1" href="/ecommerce/" target="_blank">Loja</a></li>
-                                    <li><a tabindex="-1" href="https://www.gmail.com/a/espacocomercio.com.br/ServiceLogin" target="_blank">E-mail</a></li>
+                                    <li><a tabindex="-1" href="https://www.google.com/a/espacocomercio.com.br/ServiceLogin" target="_blank">E-mail</a></li>
                                 </ul>
                             </div>
                             
@@ -95,159 +95,11 @@
         </header>
 
         <section class="section">
-            <div class="row-fluid">
-                <div class="span1" id="divAdminMenu"><!-- Menu --></div>
-                
-                <div class="span9">
-                    <div class="content">
-                        <div class="content-header">
-                            <ul class="content-header-action pull-right">
-                                <li>
-                                    <a href="#">
-                                        <canvas height="32" width="32"></canvas>
-                                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A600&quot;, &quot;#00A600&quot;]" style="display: none;">5,3,9,6,5,9,7,3,5,2</span>
-                                        <div class="action-text color-green"><span id="spanVisitsTotal">0</span> <span class="helper-font-small color-silver-dark">Total Visitas</span></div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="#">
-                                        <canvas height="32" width="32"></canvas>
-                                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A0B1&quot;, &quot;#00A0B1&quot;]" style="display: none;">9,7,9,6,3,5,3,5,5,2</span>
-                                        <div class="action-text color-teal"><span id="spanClientsTotal">0</span> <span class="helper-font-small color-silver-dark">Total Clientes</span></div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="#">
-                                        <canvas height="32" width="32"></canvas>
-                                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#BF1E4B&quot;, &quot;#BF1E4B&quot;]" style="display: none;">6,5,9,7,3,5,2,5,3,9</span>
-                                        <div class="action-text color-red"><span id="spanOrdersTotal">0</span> <span class="helper-font-small color-silver-dark">Total Pedidos</span></div>
-                                    </a>
-                                </li>
-                            </ul>
-                            <h2><i class="icofont-home"></i> <span id="spanTitleEcommerce"></span> <small> Administração</small></h2>
-                        </div>
-                        
-                        <div class="content-body">
-                            <div class="shortcut-group">
-                                <ul class="a-btn-group">
-                                	<li>
-                                        <a href="https://www.gmail.com/a/espacocomercio.com.br/ServiceLogin" target="_blank" class="a-btn grd-white" rel="tooltip" data-original-title="Novas Mensagens">
-                                            <span></span>
-                                            <span><i class="icofont-envelope color-silver-dark"></i></span>
-                                            <span class="color-silver-dark"><i class="icofont-envelope-alt color-teal"></i></span>
-                                            <div class="badge badge-info" id="newMessagesCount"></div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Pedidos">
-                                            <span></span>
-                                            <span><i class="icofont-shopping-cart color-silver-dark"></i></span>
-                                            <span class="color-silver-dark"><i class="icofont-shopping-cart color-red"></i></span>
-                                            <div class="label label-important" id="newOrdersCount"></div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Pagamentos">
-                                            <span></span>
-                                            <span><i class="icofont-barcode color-silver-dark"></i></span>
-                                            <span class="color-silver-dark"><i class="icofont-barcode color-red"></i></span>
-                                            <div class="label label-important" id="newPaymentsCount"></div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Clientes">
-                                            <span></span>
-                                            <span><i class="icofont-bar-chart color-silver-dark"></i></span>
-                                            <span class="color-silver-dark"><i class="typicn-lineChart"></i></span>
-                                            <div class="badge badge-info" id="newClientsCount"></div>
-                                        </a>
-                                    </li>
-                                    <li class="clearfix"></li>
-                                </ul>
-                            </div>
-                            
-                            <div class="divider-content"><span></span></div>
-                            
-                            <!-- tab stat -->
-                            <div class="box-tab corner-all">
-                                <div class="box-header corner-top">
-                                    <div class="header-control pull-right">
-                                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
-                                    </div>
-                                    <ul class="nav nav-tabs" id="tab-stat">
-                                        <li class="active"><a data-toggle="tab" href="#stat-geral">Gráficos da evolução das Visitas, Pedidos e Clientes</a></li>
-                                        <li><a data-toggle="tab" href="#stat-visitors">Gráfico das Visualizações de Páginas</a></li>
-                                    </ul>
-                                </div>
-                                <div class="box-body">
-                                    <div class="tab-content">
-                                        <div class="tab-pane fade in active" id="stat-geral">
-                                            <div class="row-fluid">
-                                                <div class="span4">
-                                                    <div class="dashboard-stat">
-                                                        <div id="visitor-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
-                                                        <div class="stat-label grd-green color-white">Visitantes</div>
-                                                    </div>
-                                                </div>
-                                                <div class="span4">
-                                                    <div class="dashboard-stat">
-                                                        <div id="order-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
-                                                        <div class="stat-label grd-teal color-white">Pedidos</div>
-                                                    </div>
-                                                </div>
-                                                <div class="span4">
-                                                    <div class="dashboard-stat">
-                                                        <div id="user-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
-                                                        <div class="stat-label grd-red color-white">Clientes</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="stat-visitors">
-                                            <div class="row-fluid">
-                                                <div class="span12">
-                                                    <div class="dashboard-stat">
-                                                        <div id="views-stat" class="chart" style="padding: 0px; position: relative;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="span2">
-                    <aside class="side-right" style="top: 60px;">
-                        <div class="sidebar-right">
-                            <div class="sidebar-right-header">
-                                <div class="sr-header-left">
-                                    <p class="bold">Últimos Pedidos</p>
-                                    <a href="#"><small class="muted">Ver todos</small></a>
-<!--                                     <i class="icofont-certificate color-green"></i> Enviado ou Conluído com sucesso.<br/> -->
-<!--                                     <i class="icofont-certificate color-silver-dark"></i> Pagamento confirmado<br/> -->
-<!--                                     <i class="icofont-certificate color-orange"></i> Aguardando pagamento<br/> -->
-<!--                                     <i class="icofont-certificate color-red"></i> Cancelado -->
-                                </div>
-                            </div>
-                            <div class="sidebar-right-content">
-                                <div class="tab-content">
-                                   
-                                    <div class="tab-pane fade active in" id="pedidos">
-                                        <div class="side-contact">
-                                            <ul class="contact-list" id="ulLastOrders"></ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </aside>
-                </div>
-            </div>
+        	<div class="row-fluid">
+    			<div class="span1" id="divAdminMenu"><!-- Menu --></div>
+    			
+    			<div id="contentAll"></div>
+    		</div>
         </section>
 
         <footer>

@@ -4,12 +4,12 @@
         "Home": {
         	"id": "home",
         	"icon": "icofont-bar-chart",
-        	"url": "/ecommerce/admin"
+        	"url": "loadHome();return false;"
         },
         "Categorias": {
         	"id": "category",
         	"icon": "icofont-reorder",
-        	"url": "/ecommerce/admin/category"
+        	"url": "loadCategory();return false;"
         },
         "Produtos": {
         	"id": "product",

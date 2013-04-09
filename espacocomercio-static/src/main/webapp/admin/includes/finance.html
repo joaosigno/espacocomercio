@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Home</title>
+<title>Finanças</title>
 </head>
 <body>
 <div class="span9">
@@ -13,15 +13,7 @@
                     <a href="#">
                         <canvas height="32" width="32"></canvas>
                         <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A600&quot;, &quot;#00A600&quot;]" style="display: none;">5,3,9,6,5,9,7,3,5,2</span>
-                        <div class="action-text color-green"><span id="spanVisitsTotal">0</span> <span class="helper-font-small color-silver-dark">Total Visitas</span></div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <canvas height="32" width="32"></canvas>
-                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A0B1&quot;, &quot;#00A0B1&quot;]" style="display: none;">9,7,9,6,3,5,3,5,5,2</span>
-                        <div class="action-text color-teal"><span id="spanClientsTotal">0</span> <span class="helper-font-small color-silver-dark">Total Clientes</span></div>
+                        <div class="action-text color-green"><span id="spanVisitsTotal">0</span> <span class="helper-font-small color-silver-dark">Receitas</span></div>
                     </a>
                 </li>
                 <li class="divider"></li>
@@ -29,94 +21,77 @@
                     <a href="#">
                         <canvas height="32" width="32"></canvas>
                         <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#BF1E4B&quot;, &quot;#BF1E4B&quot;]" style="display: none;">6,5,9,7,3,5,2,5,3,9</span>
-                        <div class="action-text color-red"><span id="spanOrdersTotal">0</span> <span class="helper-font-small color-silver-dark">Total Pedidos</span></div>
+                        <div class="action-text color-red"><span id="spanOrdersTotal">0</span> <span class="helper-font-small color-silver-dark">Despesas</span></div>
                     </a>
                 </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#">
+                        <canvas height="32" width="32"></canvas>
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A0B1&quot;, &quot;#00A0B1&quot;]" style="display: none;">9,7,9,6,3,5,3,5,5,2</span>
+                        <div class="action-text color-teal"><span id="spanClientsTotal">0</span> <span class="helper-font-small color-silver-dark">Saldo</span></div>
+                    </a>
+                </li>
+                
             </ul>
-            <h2><i class="icofont-home"></i> <span id="spanTitleEcommerce"></span> <small> Administração</small></h2>
+            <h2><i class="icofont-home"></i> <span id="spanTitleEcommerce"></span> <small> Finanças</small></h2>
         </div>
         
         <div class="content-body">
-            <div class="shortcut-group">
-                <ul class="a-btn-group">
-                	<li>
-                        <a href="https://www.google.com/a/espacocomercio.com.br/ServiceLogin" target="_blank" class="a-btn grd-white" rel="tooltip" data-original-title="Novas Mensagens">
-                            <span></span>
-                            <span><i class="icofont-envelope color-silver-dark"></i></span>
-                            <span class="color-silver-dark"><i class="icofont-envelope-alt color-teal"></i></span>
-                            <div class="badge badge-info" id="newMessagesCount"></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Pedidos">
-                            <span></span>
-                            <span><i class="icofont-shopping-cart color-silver-dark"></i></span>
-                            <span class="color-silver-dark"><i class="icofont-shopping-cart color-red"></i></span>
-                            <div class="label label-important" id="newOrdersCount"></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Pagamentos">
-                            <span></span>
-                            <span><i class="icofont-barcode color-silver-dark"></i></span>
-                            <span class="color-silver-dark"><i class="icofont-barcode color-red"></i></span>
-                            <div class="label label-important" id="newPaymentsCount"></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Clientes">
-                            <span></span>
-                            <span><i class="icofont-bar-chart color-silver-dark"></i></span>
-                            <span class="color-silver-dark"><i class="typicn-lineChart"></i></span>
-                            <div class="badge badge-info" id="newClientsCount"></div>
-                        </a>
-                    </li>
-                    <li class="clearfix"></li>
-                </ul>
-            </div>
-            
-            <div class="divider-content"><span></span></div>
-            
-            <!-- tab stat -->
             <div class="box-tab corner-all">
                 <div class="box-header corner-top">
                     <div class="header-control pull-right">
                         <a data-box="collapse"><i class="icofont-caret-up"></i></a>
                     </div>
                     <ul class="nav nav-tabs" id="tab-stat">
-                        <li class="active"><a data-toggle="tab" href="#stat-geral">Gráficos da evolução das Visitas, Pedidos e Clientes</a></li>
-                        <li><a data-toggle="tab" href="#stat-visitors">Gráfico das Visualizações de Páginas</a></li>
+                        <li class="active"><a data-toggle="tab" href="#relatorios">Relatórios</a></li>
+                        <li><a data-toggle="tab" href="#extratos" id="clickExtrato">Extrato</a></li>
+                        <li><a data-toggle="tab" href="#fluxodecaixa">Fluxo de caixa</a></li>
                     </ul>
                 </div>
                 <div class="box-body">
                     <div class="tab-content">
-                        <div class="tab-pane fade in active" id="stat-geral">
+                        <div class="tab-pane fade in active" id="relatorios">
                             <div class="row-fluid">
-                                <div class="span4">
+<!--                                 <div class="span4"> -->
+<!--                                     <div class="dashboard-stat"> -->
+<!--                                         <div id="receitas-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div> -->
+<!--                                         <div class="stat-label grd-green color-white">Receitas</div> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                                 <div class="span4"> -->
+<!--                                     <div class="dashboard-stat"> -->
+<!--                                         <div id="despesas-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div> -->
+<!--                                         <div class="stat-label grd-red color-white">Despesas</div> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                                 <div class="span4"> -->
+<!--                                     <div class="dashboard-stat"> -->
+<!--                                         <div id="saldo-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div> -->
+<!--                                         <div class="stat-label grd-teal color-white">Saldo</div> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+								<div class="span12">
+									<div class="dashboard-stat">
+									Em construção
+									</div>
+								</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="extratos">
+                            <div class="row-fluid">
+                                <div class="span12">
                                     <div class="dashboard-stat">
-                                        <div id="visitor-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
-                                        <div class="stat-label grd-green color-white">Visitantes</div>
-                                    </div>
-                                </div>
-                                <div class="span4">
-                                    <div class="dashboard-stat">
-                                        <div id="order-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
-                                        <div class="stat-label grd-teal color-white">Pedidos</div>
-                                    </div>
-                                </div>
-                                <div class="span4">
-                                    <div class="dashboard-stat">
-                                        <div id="user-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
-                                        <div class="stat-label grd-red color-white">Clientes</div>
+                                    Em construção
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="stat-visitors">
+                        <div class="tab-pane fade" id="fluxodecaixa">
                             <div class="row-fluid">
                                 <div class="span12">
                                     <div class="dashboard-stat">
-                                        <div id="views-stat" class="chart" style="padding: 0px; position: relative;"></div>
+                                    Em construção
                                     </div>
                                 </div>
                             </div>
@@ -133,16 +108,16 @@
         <div class="sidebar-right">
             <div class="sidebar-right-header">
                 <div class="sr-header-left">
-                    <p class="bold">Últimos Pedidos</p>
-                    <a href="#"><small class="muted">Ver todos</small></a>
+                    <p class="bold">Extrato rápido</p>
+                    <a href="#" onclick="$('a#clickExtrato').click(); return false;"><small class="muted">Ver todos</small></a>
                 </div>
             </div>
             <div class="sidebar-right-content">
                 <div class="tab-content">
                    
-                    <div class="tab-pane fade active in" id="pedidos">
+                    <div class="tab-pane fade active in" id="extratorapido">
                         <div class="side-contact">
-                            <ul class="contact-list" id="ulLastOrders"></ul>
+                            <ul class="contact-list" id="ulExtrato"></ul>
                         </div>
                     </div>
                 </div>

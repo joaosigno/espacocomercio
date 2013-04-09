@@ -36,7 +36,7 @@ function generateItemMenu(key, val) {
 	var html = '';
 	
 	html += '<li id="liMenu-'+val.id+'">';
-	html += 	'<a href="'+val.url+'" title="'+key+'">';
+	html += 	'<a href="#" onclick="'+val.url+'" title="'+key+'">';
 	html += 		'<div class="helper-font-24">';
 	html += 			'<i class="'+val.icon+'"></i>';
 	html += 		'</div>';
@@ -63,6 +63,7 @@ function errorForm(data) {
 }
 
 function loadHome() {
+	setMenuActive('home');
 	$('#contentAll').html('<div class="span12" style="text-align:center; min-height: 600px;"><img src="static/img/loading.gif"></div>');
 	$.getJSON('/ecommerce-web/admin/home?tk='+new Date().getTime(), function(data) {
 		if (data.status) {
@@ -160,6 +161,28 @@ function loadHome() {
 		}
 		
 	});
+}
+
+function loadFinance() {
+	setMenuActive('finance');
+	$('#contentAll').html('<div class="span12" style="text-align:center; min-height: 600px;"><img src="static/img/loading.gif"></div>');
+	$('#contentAll').load('includes/finance.html');
+}
+
+function loadCategory() {
+	setMenuActive('category');
+	$('#contentAll').html('<div class="span12" style="text-align:center; min-height: 600px;"><img src="static/img/loading.gif"></div>');
+	$('#contentAll').load('includes/category.html', function() {
+		$('#box-tab-Category').css('margin-left', '10px');
+		loadGrid('/ecommerce-web/admin/product/category/consult', 'grid', 'formEdit', '/ecommerce-web/admin/product/category/remove');
+	});
+}
+
+function setMenuActive(p) {
+	$('ul.sidebar').find('li').each(function() {
+		$(this).removeAttr('class');
+	});
+	$('li#liMenu-'+p).attr('class', 'active');
 }
 
 function checkMessages() {
@@ -344,4 +367,371 @@ function convertMonth(num) {
 	if (num==10) return "out";
 	if (num==11) return "nov";
 	if (num==12) return "dez";
+}
+
+function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
+	if (editUrl==undefined || editUrl==null) {
+		editUrl = false;
+	}
+	
+	urlJson = insertParam(urlJson, 'tk', new Date().getTime());
+	
+	$.getJSON( urlJson,  function(data) {
+		if (data.status!=undefined && !data.status) {
+			errorForm(data);
+		} else {
+			var pageNow = data.page;
+			var totalPages = data.totalPages;
+		
+			var html = 	'<table class="table table-striped" style="margin-top: 30px;">';
+			html += 		'<thead>';
+			html +=				'<tr>';
+			
+			var menu = new Array();
+			var i = 0;
+			$.each(data.titles, function(key, val) {
+				if (val.type=='text') {
+					if (val.id=='permissions') {
+						html += '<th style="text-align: center" id="th'+val.id+'">'+val.title+'</th>';
+					} else {
+						html += '<th id="th'+val.id+'">'+val.title+'</th>';
+					}
+				} else if (val.type=='image') {
+					html += '<th><i class="'+val.imgClass+'"></i></th>';
+				}
+				
+				menu[i] = val.id;
+				i++;
+			});
+			
+			html += 				'<th style="text-align: center; width: 5%;"><i class="icon-align-justify"></i></th>';
+			html +=				'</tr>';
+			html += 		'</thead>';
+			html += 		'<tbody>';
+			
+			$.each(data.rows, function(key, val) {
+				var idcomp = divId + val.id;
+				
+				html += '<tr>';
+				for (var e = 0; e < menu.length; e++) {
+					
+					if (menu[e]=='images') {
+						html += '<td>'+getSequenceImages(val[menu[e]], '20', '20')+'</td>';
+					} else if (menu[e]=='unityvalue' || menu[e]=='totalValue' || menu[e]=='sendCust' || menu[e]=='discount' || menu[e]=='value') {
+						if (val[menu[e]]!=null && val[menu[e]]!=undefined && val[menu[e]]!='') {
+							if (val[menu[e]].toString().indexOf('.')==-1) {
+								html += '<td id="' + idcomp + menu[e] + '">R$ '+val[menu[e]].toString()+',00</td>';
+							} else {
+								html += '<td id="' + idcomp + menu[e] + '">R$ '+val[menu[e]].toString().replace('.', ',')+'</td>';
+							}
+						} else {
+							html += '<td id="' + idcomp + menu[e] + '">R$ 0,00</td>';
+						}
+					} else if (menu[e]=='dateCreate' || menu[e]=='datePayment' || menu[e]=='dateExpiration' || menu[e]=='born') {
+						if (val[menu[e]]!=null && val[menu[e]]!=undefined && val[menu[e]]!='') {
+							var dat = new Date();
+							dat.setTime(val[menu[e]].toString());
+							var hour = '';
+							if (dat.getHours()!=0 && dat.getMinutes()!=0) {
+								hour = ' '+dat.getHours()+':'+dat.getMinutes();
+							} 
+							
+							var dtAll = '';
+							if (dat.getDate().toString().length==1) {
+								dtAll += '0'+dat.getDate()+'/';
+							} else {
+								dtAll += dat.getDate()+'/';
+							}
+							if ((dat.getMonth()+1).toString().length==1) {
+								dtAll += '0'+(dat.getMonth()+1).toString()+'/';
+							} else {
+								dtAll += (dat.getMonth()+1).toString()+'/';
+							}
+							dtAll+=dat.getFullYear();
+							
+							html += '<td id="' + idcomp + menu[e] + '">'+dtAll+hour+'</td>';
+						} else {
+							html += '<td id="' + idcomp + menu[e] + '"></td>';
+						}
+					} else if (menu[e]=='statusOrder') {
+						html += '<td id="' + idcomp + menu[e] + '">'+getLblOrderStatus(val[menu[e]])+'</td>';
+					} else if (menu[e]=='cesta') {
+						html += '<td style="text-align: center"><a href="#" onclick="viewCart(\''+val.id+'\');"><i class="icon-plus"></i></a></td>';
+					} else if (menu[e]=='permissions') {
+						html += '<td style="text-align: center"><a href="#" onclick="viewPermissions(\''+val.id+'\');"><i class="icon-plus"></i></a></td>';
+					} else if (menu[e]=='permission') {
+						html += '<td id="' + idcomp + menu[e] + '">'+getLblPermissions(val[menu[e]].toString())+'</td>';
+					} else if (menu[e]=='address') { 
+						html += '<td style="text-align: center"><a href="#" onclick="viewAddress(\''+val.addressStreet+'\', \''+val.addressCity+'\', \''+val.addressZipcode+'\', \''+val.addressNumber+'\', \''+val.addressComplement+'\');"><i class="icon-plus"></i></a></td>';
+					} else {
+						if(typeof(val[menu[e]]) == "string"){
+							if (val[menu[e]]!=undefined && val[menu[e]]!=null) {
+								html += '<td id="' + idcomp + menu[e] + '">'+val[menu[e]].toString()+'</td>';
+							} else {
+								html += '<td id="' + idcomp + menu[e] + '"></td>';
+							}
+						}else if (typeof(val[menu[e]]) == "object"){
+							if (val[menu[e]]!=undefined && val[menu[e]]!=null) {
+								if (val[menu[e]].title!=undefined && val[menu[e]].title!=null) {
+									html += '<td id="' + idcomp + menu[e] + '">'+val[menu[e]].id + ' - ' + val[menu[e]].title+'</td>';
+								} else if (val[menu[e]].name!=undefined && val[menu[e]].name!=null) {
+									html += '<td id="' + idcomp + menu[e] + '">'+val[menu[e]].id + ' - ' + val[menu[e]].name+'</td>';
+								}
+							} else {
+								html += '<td id="' + idcomp + menu[e] + '"></td>';
+							}
+						}else if (typeof(val[menu[e]]) == "boolean"){
+							html += '<td id="' + idcomp + menu[e] + '">'+val[menu[e]]+'</td>';
+						}else {
+							if (val[menu[e]]!=undefined && val[menu[e]]!=null) {
+								html += '<td id="' + idcomp + menu[e] + '">'+val[menu[e]].toString()+'</td>';
+							} else {
+								html += '<td id="' + idcomp + menu[e] + '"></td>';
+							}
+						}
+					} 
+					
+				}
+				
+				if (!editUrl) {
+					html += '<td id="' + idcomp + '" style="text-align:center;"><a href="#" onclick="editTable(\''+val.id+'\', \''+divId+'\', \''+formEditId+'\', \''+urlJson+'\', \''+urlDelete+'\');"><i class="icon-edit"></i></a>';
+				} else {
+					html += '<td style="text-align:center;"><a href="../update?pid='+val.id+'"><i class="icon-edit"></i></a>';
+				} 
+				
+				if (urlDelete != undefined && urlDelete != null && urlDelete != '') {
+					html += '<a href="#" onclick="removeTable(\''+ urlDelete +'\', \''+val.id+'\', \''+divId+'\', \''+formEditId+'\', \''+urlJson+'\');"><i class="icon-trash"></i></a>';
+				}
+				html += '</td>';
+				html += '</tr>';
+				
+			});
+			
+			html += 		'</tbody>';
+			html += 	'</table>';
+			html += 	'<div class="pagination" style="text-align:right">';
+			html += 		'<ul>';
+			if (pageNow>1) {
+				html += '<li><a href="javascript: loadGrid(\''+insertParam(urlJson, 'page', ((pageNow*1)-1))+'\', \''+divId+'\', \''+formEditId+'\', \''+urlDelete+'\', '+editUrl+');">Anterior</a></li>';
+			} else {
+				html += '<li class="disabled"><a href="#">Anterior</a></li>';
+			}
+			
+			for (var a=1; a <= (totalPages*1); a++) {
+				if (a == pageNow) {
+					html += '<li class="active"><a href="#">'+a.toString()+'</a></li>';
+				} else {
+					html += '<li><a href="javascript: loadGrid(\''+insertParam(urlJson, 'page', a)+'\', \''+divId+'\', \''+formEditId+'\', \''+urlDelete+'\', '+editUrl+');">'+a.toString()+'</a></li>';
+				}
+			}
+			
+			if (pageNow<totalPages) {
+				html += '<li><a href="javascript: loadGrid(\''+insertParam(urlJson, 'page', ((pageNow*1)+1))+'\', \''+divId+'\', \''+formEditId+'\', \''+urlDelete+'\', '+editUrl+');">Próxima</a></li>';
+			} else {
+				html += '<li class="disabled"><a href="#">Próxima</a></li>';
+			}
+			
+			html += 		'</ul>';
+			html += 	'</div>';
+			
+			$('div#'+divId).html(html);
+		}
+	});
+}
+
+function insertParam(url, key, value) {
+	if (url.indexOf("?")==-1) {
+		url += '?'+key+'='+value;
+	} else {
+		if (url.indexOf(key+'=')==-1) {
+			url += '&'+key+'='+value;
+		} else {
+			param = url.split('?')[1].split('&');
+			url = url.split('?')[0];
+			for (var i=0; i<param.length; i++) {
+				keyParam = param[i].split('=');
+				if (keyParam[0]==key) {
+					url = insertParam(url, key, value);
+				} else {
+					url = insertParam(url, keyParam[0], keyParam[1]);
+				}
+			}
+		}
+	}
+
+    return url;
+}
+
+function getSequenceImages(images, w, h, update) {
+	if (update==undefined || update==null || update=='') {
+		update = false;
+	}
+	
+	var newvalueSplit = images.split('[LIN]');
+	var newvalue = '';
+	
+	var position = 1;
+	while (position <= newvalueSplit.length) {
+		for (var a=0; a<newvalueSplit.length; a++) {
+			var nv = newvalueSplit[a].split('[COL]');
+			
+			if (nv[0].toString() == position.toString()) {
+				if (update) {
+					newvalue += '<a href="#" onclick="upload(\''+nv[0]+'\');"><img id="iposition'+nv[0]+'" src="'+nv[1]+'" width="'+w+'" height="'+h+'" style="width: '+w+'px; height: '+h+'"></a>';
+				} else {
+					newvalue += '<img id="iposition'+nv[0]+'" src="'+nv[1]+'" width="'+w+'" height="'+h+'" style="width: '+w+'px; height: '+h+'">';
+				}
+				
+				position++;
+			}
+		}
+	}
+	for (var e= (newvalueSplit.length+1); e<=6; e++) {
+		if (update) {
+			newvalue += '<a href="#" onclick="upload(\''+e+'\');"><img id="iposition'+e+'" src="/library/img/imgfoto.png" class="img-rounded" width="'+w+'" height="'+h+'" style="width: '+w+'px; height: '+h+'"></a>';
+		} else {
+			newvalue += '<img id="iposition'+e+'" src="/library/img/imgfoto.png" class="img-rounded" width="'+w+'" height="'+h+'" style="width: '+w+'px; height: '+h+'">';
+		}
+	}
+	
+	return newvalue;
+}
+
+function getLblOrderStatus(id) {
+	if (id==1 || id=='1') {
+		return "Aguardando pagamento";
+	} else if (id==2 || id=='2') {
+		return "Pagamento confirmado";
+	} else if (id==3 || id=='3') {
+		return "Enviado (em trânsito)";
+	} else if (id==4 || id=='4') {
+		return "Concluído";
+	} else if (id==5 || id=='5') {
+		return "Cancelado";
+	} 
+}
+
+function getLblPermissions(id) {
+	if (id==2) {
+		return "1. Administrador da empresa.";
+	}
+	if (id==3) {
+		return "2. Gerente de vendas.";
+	}
+	if (id==4) {
+		return "3. Vendedor.";
+	} else {
+		return "";
+	}
+}
+
+function removeTable(urlDelete, id, divId, formId, urlJson) {
+	$.post(urlDelete, 'id='+id, function(data){
+		if (data.status) {
+			alert("Alteração realizada com sucesso.");
+			loadGrid(urlJson, divId, formId, urlDelete);
+		} else {
+			errorForm(data);
+		}
+	}, "json");
+}
+
+function editTable(id, divId, formId, urlJson, urlDelete) {
+	var idcomp = divId + id;
+	
+	$('form#'+formId).find('input').each(function() {
+		var name = $(this).attr('name');
+		var clas = $(this).attr('class');
+		
+		if (clas==undefined || clas==null) {
+			clas='';
+		}
+		
+		if (name=='id') {
+			$(this).val(id);
+		} else {
+			var idtk = idcomp + name;
+			var tdvalue = $('td#'+idtk).text();
+			
+			if ($(this).attr('type')=='text') {
+				if (clas.indexOf('datePickerInput')!=-1) {
+					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level datePickerInput">');
+				} else if (tdvalue.indexOf('R$ ')!=-1) {
+					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+(tdvalue.replace('R$ ', ''))+'" class="input-block-level money">');
+				} else {
+					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level">');
+				}
+			}
+		}
+	});
+	$('form#'+formId).find('select').each(function() {
+		var name = $(this).attr('name');
+		var idtk = idcomp + name;
+		var tdvalue = $('td#'+idtk).text();
+		
+		$(this).val(tdvalue);
+		
+		$('td#'+idtk).html('<select id="select'+idtk+'" class="input-block-level">' + $(this).html() + '</select>');
+		
+		if (idtk=='grid1statusOrder') {
+			$('#select'+idtk).val(getIdOrderStatus(tdvalue));
+		} else {
+			if (tdvalue.indexOf(' - ')==-1) {
+				$('#select'+idtk).val(tdvalue);
+			} else {
+				$('#select'+idtk).val(tdvalue.split(' - ')[0]);
+			}
+		}
+	});
+	
+	if ($("input.money").size()>0) {
+		$("input.money").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: false});
+	}
+	
+	$( "#grid .datePickerInput" ).datepicker();
+	$( "#grid .datePickerInput" ).datepicker( "option", "dateFormat", 'dd/mm/yy' );
+	
+	$('td#'+idcomp).html('<a href="#" onclick="submitEdit(\''+id+'\', \''+divId+'\', \''+formId+'\', \''+urlJson+'\', \''+urlDelete+'\');"><i class="icon-ok"></i></a><a href="#" onclick="loadGrid(\''+urlJson+'\', \''+divId+'\', \''+formId+'\', \''+urlDelete+'\');"><i class="icon-remove"></i></a>');
+}
+
+function submitEdit(id, divId, formId, urlJson, urlDelete) {
+	$( ".datePickerInput" ).datepicker( "destroy" );
+	var idcomp = divId + id;
+	
+	$('form#'+formId).find('input').each(function() {
+		var name = $(this).attr('name');
+		if (name!='id') {
+			var idtk = idcomp + name;
+			$(this).val($('#input'+idtk).val());
+		}
+	});
+	$('form#'+formId).find('select').each(function() {
+		var name = $(this).attr('name');
+		var idtk = idcomp + name;
+		$(this).val($('#select'+idtk).val());
+	});
+	
+	$.post($('form#'+formId).attr('action'), $('form#'+formId).serialize(), function(data){
+		if (data.status) {
+			alert("Alteração realizada com sucesso.");
+			loadGrid(urlJson, divId, formId, urlDelete);
+		} else {
+			errorFormGrid(data, id, divId);
+		}
+	}, "json");
+}
+
+function errorFormGrid(data, id, divTableId) {
+	if (!data.status) {
+		$.each(data.messageError, function(key, val) {
+			if (key=='generic') {
+				alert(val);
+			} else if (key=='sessionInvalid') {
+				location.href='/ecommerce/portal/login';
+			} else {
+				var idtk = divTableId + id + key;
+				$('td#'+idtk).attr('class', 'control-group error');
+			}
+		});
+	}
 }

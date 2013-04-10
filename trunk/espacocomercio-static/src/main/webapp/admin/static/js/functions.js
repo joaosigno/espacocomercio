@@ -64,7 +64,7 @@ function errorForm(data) {
 
 function loadHome() {
 	setMenuActive('home');
-	$('#contentAll').html('<div class="span12" style="text-align:center; min-height: 600px;"><img src="static/img/loading.gif"></div>');
+	loading('contentAll');
 	$.getJSON('/ecommerce-web/admin/home?tk='+new Date().getTime(), function(data) {
 		if (data.status) {
 			
@@ -165,17 +165,21 @@ function loadHome() {
 
 function loadFinance() {
 	setMenuActive('finance');
-	$('#contentAll').html('<div class="span12" style="text-align:center; min-height: 600px;"><img src="static/img/loading.gif"></div>');
+	loading('contentAll');
 	$('#contentAll').load('includes/finance.html');
 }
 
 function loadCategory() {
 	setMenuActive('category');
-	$('#contentAll').html('<div class="span12" style="text-align:center; min-height: 600px;"><img src="static/img/loading.gif"></div>');
+	loading('contentAll');
 	$('#contentAll').load('includes/category.html', function() {
 		$('#box-tab-Category').css('margin-left', '10px');
 		loadGrid('/ecommerce-web/admin/product/category/consult', 'grid', 'formEdit', '/ecommerce-web/admin/product/category/remove');
 	});
+}
+
+function loading(divId) {
+	$('#'+divId).html('<div style="text-align:center; min-height: 600px; width: 100%"><img src="static/img/loading.gif"></div>');
 }
 
 function setMenuActive(p) {
@@ -370,6 +374,7 @@ function convertMonth(num) {
 }
 
 function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
+	loading(divId);
 	if (editUrl==undefined || editUrl==null) {
 		editUrl = false;
 	}
@@ -379,11 +384,12 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 	$.getJSON( urlJson,  function(data) {
 		if (data.status!=undefined && !data.status) {
 			errorForm(data);
+			$('#'+divId).html("");
 		} else {
 			var pageNow = data.page;
 			var totalPages = data.totalPages;
 		
-			var html = 	'<table class="table table-striped" style="margin-top: 30px;">';
+			var html = 	'<table class="table table-striped table-hover" style="margin-top: 30px;">';
 			html += 		'<thead>';
 			html +=				'<tr>';
 			
@@ -655,11 +661,11 @@ function editTable(id, divId, formId, urlJson, urlDelete) {
 			
 			if ($(this).attr('type')=='text') {
 				if (clas.indexOf('datePickerInput')!=-1) {
-					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level datePickerInput">');
+					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level datePickerInput" style="border: 1px solid #ccc;">');
 				} else if (tdvalue.indexOf('R$ ')!=-1) {
-					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+(tdvalue.replace('R$ ', ''))+'" class="input-block-level money">');
+					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+(tdvalue.replace('R$ ', ''))+'" class="input-block-level money" style="border: 1px solid #ccc;">');
 				} else {
-					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level">');
+					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level" style="border: 1px solid #ccc;">');
 				}
 			}
 		}
@@ -671,7 +677,7 @@ function editTable(id, divId, formId, urlJson, urlDelete) {
 		
 		$(this).val(tdvalue);
 		
-		$('td#'+idtk).html('<select id="select'+idtk+'" class="input-block-level">' + $(this).html() + '</select>');
+		$('td#'+idtk).html('<select id="select'+idtk+'" class="input-block-level" style="border: 1px solid #ccc;">' + $(this).html() + '</select>');
 		
 		if (idtk=='grid1statusOrder') {
 			$('#select'+idtk).val(getIdOrderStatus(tdvalue));
@@ -730,8 +736,25 @@ function errorFormGrid(data, id, divTableId) {
 				location.href='/ecommerce/portal/login';
 			} else {
 				var idtk = divTableId + id + key;
-				$('td#'+idtk).attr('class', 'control-group error');
+				$('#input'+idtk).attr('style', 'border: 1px solid #953b39;');
 			}
 		});
+	}
+}
+
+function postJson(id, url, params) {
+	$.post(url, params, function(data){
+		callback(id, data);
+	}, "json");
+}
+
+function callback(id, data) {
+	if (id=='cadastrocategoria') {
+		if (data.status) {
+			alert("Categoria criada com sucesso.", true);
+			$('button[type="reset"]').click();
+		} else {
+			errorForm(data);
+		}
 	}
 }

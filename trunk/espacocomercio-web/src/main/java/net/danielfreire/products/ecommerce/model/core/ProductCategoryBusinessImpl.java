@@ -3,6 +3,7 @@ package net.danielfreire.products.ecommerce.model.core;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,17 +26,18 @@ import org.springframework.stereotype.Component;
 @Component("productCategoryBusiness")
 public class ProductCategoryBusinessImpl implements ProductCategoryBusiness {
 
+	private static final String LBL_NAME = "name";
 	@Autowired
-	private ProductCategoryRepository categoryRepository;
+	private transient ProductCategoryRepository categoryRepo;
 	
 	@Override
-	public GenericResponse insert(HttpServletRequest request) throws Exception {
+	public GenericResponse insert(final HttpServletRequest request) throws java.lang.Exception {
 		GenericResponse resp = new GenericResponse();
 		
-		String name = request.getParameter("name");
-		String description = request.getParameter("description");
+		final String name = request.getParameter(LBL_NAME);
+		final String description = request.getParameter("description");
 		
-		ProductCategory category = new ProductCategory();
+		final ProductCategory category = new ProductCategory();
 		category.setDescription(description);
 		category.setName(name);
 		category.setSite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite());
@@ -44,7 +46,7 @@ public class ProductCategoryBusinessImpl implements ProductCategoryBusiness {
 		if (isCategory(category).size()>0) {
 			resp = PortalTools.getInstance().getRespError(isCategory(category));
 		} else {
-			categoryRepository.save(category);
+			categoryRepo.save(category);
 			generateMenuPortal(request);
 		}
 		
@@ -52,14 +54,14 @@ public class ProductCategoryBusinessImpl implements ProductCategoryBusiness {
 	}
 
 	@Override
-	public GenericResponse update(HttpServletRequest request) throws Exception {
+	public GenericResponse update(final HttpServletRequest request) throws java.lang.Exception {
 		GenericResponse resp = new GenericResponse();
 		
-		String name = request.getParameter("name");
-		String description = request.getParameter("description");
-		String id = request.getParameter("id");
+		final String name = request.getParameter(LBL_NAME);
+		final String description = request.getParameter("description");
+		final String idCategory = request.getParameter("id");
 		
-		ProductCategory category = new ProductCategory(Integer.parseInt(id));
+		final ProductCategory category = new ProductCategory(Integer.parseInt(idCategory));
 		category.setDescription(description);
 		category.setName(name);
 		category.setSite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite());
@@ -68,7 +70,7 @@ public class ProductCategoryBusinessImpl implements ProductCategoryBusiness {
 		if (isCategory(category).size()>0) {
 			resp = PortalTools.getInstance().getRespError(isCategory(category));
 		} else {
-			categoryRepository.save(category);
+			categoryRepo.save(category);
 			generateMenuPortal(request);
 		}
 		
@@ -76,71 +78,71 @@ public class ProductCategoryBusinessImpl implements ProductCategoryBusiness {
 	}
 
 	@Override
-	public GenericResponse load(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public GenericResponse list(HttpServletRequest request) {
-		GenericResponse resp = new GenericResponse();
-		resp.setGeneric(categoryRepository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite()));
+	public GenericResponse list(final HttpServletRequest request) {
+		final GenericResponse resp = new GenericResponse();
+		resp.setGeneric(categoryRepo.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite()));
 		return resp;
 	}
 	
-	private HashMap<String, String> isCategory(ProductCategory category) {
-		HashMap<String, String> errors = new HashMap<String, String>();
+	private Map<String, String> isCategory(final ProductCategory category) {
+		final HashMap<String, String> errors = new HashMap<String, String>();
 		
 		if (ValidateTools.getInstancia().isNullEmpty(category.getName())) {
-			errors.put("name", PortalTools.getInstance().getMessage("name.invalid"));
+			errors.put(LBL_NAME, PortalTools.getInstance().getMessage("name.invalid"));
 		}
-		if (category.getId()==null && categoryRepository.findByNameAndSite(category.getName(), category.getSite())!=null) {
-			errors.put("name", PortalTools.getInstance().getMessage("category.existent"));
+		if (category.getId()==null && categoryRepo.findByNameAndSite(category.getName(), category.getSite())!=null) {
+			errors.put(LBL_NAME, PortalTools.getInstance().getMessage("category.existent"));
 		}
 		
 		return errors;
 	}
 
 	@Override
-	public GridResponse consult(HttpServletRequest request) throws Exception {
-		String page = request.getParameter("page");
+	public GridResponse consult(final HttpServletRequest request) throws java.lang.Exception {
+		final String page = request.getParameter("page");
 		
 		int pagination = 0;
 		if (ValidateTools.getInstancia().isNumber(page)) {
 			pagination = Integer.parseInt(page)-1;
 		} 
 		
-		ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
-		titles.add(PortalTools.getInstance().getRowGrid("name", "Nome", "text"));
+		final ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
+		titles.add(PortalTools.getInstance().getRowGrid(LBL_NAME, "Nome", "text"));
 		titles.add(PortalTools.getInstance().getRowGrid("description", "Descrição", "text"));
 		
-		Page<ProductCategory> pageable = categoryRepository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), new PageRequest(pagination, 10));
+		final Page<ProductCategory> pageable = categoryRepo.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), new PageRequest(pagination, 10));
 		
 		return PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
 	}
 
 	@Override
-	public GenericResponse remove(HttpServletRequest request) throws Exception {
-		ProductCategory category = categoryRepository.findOne(Integer.parseInt(request.getParameter("id")));
+	public GenericResponse remove(final HttpServletRequest request) throws java.lang.Exception {
+		GenericResponse resp = new GenericResponse();
+		final ProductCategory category = categoryRepo.findOne(Integer.parseInt(request.getParameter("id")));
 		
 		if (category.getSite().getId() == EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId()) {
-			categoryRepository.delete(category);
+			categoryRepo.delete(category);
 			generateMenuPortal(request);
 		} else {
-			return PortalTools.getInstance().getRespError("permission.invalid");
+			resp = PortalTools.getInstance().getRespError("permission.invalid");
 		}
 		
-		return new GenericResponse();
+		return resp;
 	}
 
 	@Override
-	public List<ProductCategory> listSite(String cid) throws Exception {
-		return categoryRepository.findBySite(new Site(Integer.parseInt(PortalTools.getInstance().decode(cid))));
+	public List<ProductCategory> listSite(final String cid) throws java.lang.Exception {
+		return categoryRepo.findBySite(new Site(Integer.parseInt(PortalTools.getInstance().decode(cid))));
 	}
 
-	private void generateMenuPortal(HttpServletRequest request) throws Exception {
+	private void generateMenuPortal(final HttpServletRequest request) throws java.lang.Exception {
 		EcommerceUtil.getInstance().generateMenuPortal(
 				EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), 
-				categoryRepository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite()));
+				categoryRepo.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite()));
+	}
+
+	@Override
+	public Long countCategorys(final HttpServletRequest request) {
+		return categoryRepo.countBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite());
 	}
 }

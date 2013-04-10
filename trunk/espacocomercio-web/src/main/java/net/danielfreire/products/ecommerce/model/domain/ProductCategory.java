@@ -28,29 +28,29 @@ public class ProductCategory extends AbstractPersistable<Integer> {
 		super();
 	}
 	
-	public ProductCategory(Integer id) {
+	public ProductCategory(final Integer idCategory) {
 		super();
-		super.setId(id);
+		super.setId(idCategory);
 	}
 	
 	public Site getSite() {
 		return site;
 	}
 
-	public void setSite(Site site) {
+	public void setSite(final Site site) {
 		this.site = site;
 	}
 
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -58,7 +58,7 @@ public class ProductCategory extends AbstractPersistable<Integer> {
 		return keyUrl;
 	}
 
-	public void setKeyUrl(String keyUrl) {
+	public void setKeyUrl(final String keyUrl) {
 		this.keyUrl = keyUrl;
 	}
 

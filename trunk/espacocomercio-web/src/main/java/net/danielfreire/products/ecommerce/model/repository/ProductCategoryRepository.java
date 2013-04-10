@@ -8,15 +8,19 @@ import net.danielfreire.products.ecommerce.model.domain.Site;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Integer> {
 	
-	public Page<ProductCategory> findBySite(Site site, Pageable p);
+	Page<ProductCategory> findBySite(Site site, Pageable pageable);
 	
-	public List<ProductCategory> findBySite(Site site);
+	List<ProductCategory> findBySite(Site site);
 	
-	public ProductCategory findByNameAndSite(String name, Site site);
+	ProductCategory findByNameAndSite(String name, Site site);
 	
-	public ProductCategory findByKeyUrlAndSite(String keyUrl, Site site);
+	ProductCategory findByKeyUrlAndSite(String keyUrl, Site site);
+
+	@Query("select count(id) from ProductCategory where site = ?1")
+	Long countBySite(Site site);
 
 }

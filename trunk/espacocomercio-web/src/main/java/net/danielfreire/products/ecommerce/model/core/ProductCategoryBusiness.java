@@ -10,18 +10,18 @@ import net.danielfreire.util.GridResponse;
 
 public interface ProductCategoryBusiness {
 	
-	GenericResponse insert(HttpServletRequest request) throws Exception;
+	GenericResponse insert(HttpServletRequest request) throws java.lang.Exception;
 	
-	GenericResponse update(HttpServletRequest request) throws Exception;
+	GenericResponse update(HttpServletRequest request) throws java.lang.Exception;
 	
-	GenericResponse remove(HttpServletRequest request) throws Exception;
+	GenericResponse remove(HttpServletRequest request) throws java.lang.Exception;
 	
-	GenericResponse load(HttpServletRequest request) throws Exception;
+	GenericResponse list(HttpServletRequest request) throws java.lang.Exception;
 	
-	GenericResponse list(HttpServletRequest request) throws Exception;
+	List<ProductCategory> listSite(String cid) throws java.lang.Exception;
 	
-	List<ProductCategory> listSite(String cid) throws Exception;
-	
-	GridResponse consult(HttpServletRequest request) throws Exception;
+	GridResponse consult(HttpServletRequest request) throws java.lang.Exception;
+
+	Long countCategorys(HttpServletRequest request);
 
 }

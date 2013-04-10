@@ -252,7 +252,7 @@ public class SiteBusinessImpl implements SiteBusiness {
 	}
 
 	@Override
-	public String getNormalizeNameSiteBySessionAdmin(HttpServletRequest request) {
+	public String getNormalizeNameSiteBySessionAdmin(final HttpServletRequest request) {
 		return ConvertTools.getInstance().normalizeString(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getName());
 	}
 

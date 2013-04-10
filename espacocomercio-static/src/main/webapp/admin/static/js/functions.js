@@ -104,51 +104,9 @@ function loadHome() {
 	                html += '</li>';
 				});
 				$('ul#ulLastOrders').html(html);
-				// tooltip helper
-			    $('[rel=tooltip]').tooltip();	
-			    $('[rel=tooltip-bottom]').tooltip({
-			        placement : 'bottom'
-			    });	
-			    $('[rel=tooltip-right]').tooltip({
-			        placement : 'right'
-			    });	
-			    $('[rel=tooltip-left]').tooltip({
-			        placement : 'left'
-			    });	
-			    // end tooltip helper
-			    
-			    
-			    // animate scroll, define class scroll will be activate this
-			    $(".scroll").click(function(e){
-			        e.preventDefault();
-			        $("html,body").animate({scrollTop: $(this.hash).offset().top-60}, 'slow');
-			    });
-			    // end animate scroll
-			    
-			    
-			    // control box
-			    // collapse a box
-			    $('.header-control [data-box=collapse]').click(function(){
-			        var collapse = $(this),
-			        box = collapse.parent().parent().parent();
-
-			        collapse.find('i').toggleClass('icofont-caret-up icofont-caret-down'); // change icon
-			        box.find('.box-body').slideToggle(); // toggle body box
-			    });
-
-			    // close a box
-			    $('.header-control [data-box=close]').click(function(){
-			        var close = $(this),
-			        box = close.parent().parent().parent(),
-			        data_anim = close.attr('data-hide'),
-			        animate = (data_anim == undefined || data_anim == '') ? 'fadeOut' : data_anim;
-
-			        box.addClass('animated '+animate);
-			        setTimeout(function(){
-			            box.hide()
-			        },1000);
-			    });
-			    // end control box
+				
+				activePlugins();
+				
 				$.getJSON('/gapi/espacocomercio.php?p='+data.generic[2]+'&tk='+new Date().getTime().toString(), function(r) {
 	        		$('span#spanVisitsTotal').text(r.visits);
 	        		generateGrafics(r.pagesMonth, data.generic[3], data.generic[4], r.pages, r.views);
@@ -166,16 +124,96 @@ function loadHome() {
 function loadFinance() {
 	setMenuActive('finance');
 	loading('contentAll');
-	$('#contentAll').load('includes/finance.html');
+	$('#contentAll').load('includes/finance.html', function() {
+		activePlugins();
+	});
 }
 
 function loadCategory() {
 	setMenuActive('category');
 	loading('contentAll');
-	$('#contentAll').load('includes/category.html', function() {
-		$('#box-tab-Category').css('margin-left', '10px');
-		loadGrid('/ecommerce-web/admin/product/category/consult', 'grid', 'formEdit', '/ecommerce-web/admin/product/category/remove');
+	$.getJSON('/ecommerce-web/admin/category?tk='+new Date().getTime(), function(data) {
+		$('#contentAll').load('includes/category.html', function() {
+			$('#box-tab-Category').css('margin-left', '10px');
+			loadGrid('/ecommerce-web/admin/product/category/consult', 'grid', 'formEdit', '/ecommerce-web/admin/product/category/remove');
+			$('span#spanCategoryTotal').text(data.generic[0]);
+			$('span#spanTitleEcommerce').text(data.generic[1]);
+			activePlugins();
+		});
 	});
+}
+
+function loadProduct() {
+	setMenuActive('product');
+	loading('contentAll');
+	$('#contentAll').load('includes/product.html');
+	activePlugins();
+//	$.getJSON('/ecommerce-web/admin/category?tk='+new Date().getTime(), function(data) {
+//		$('#contentAll').load('includes/category.html', function() {
+//			$('#box-tab-Category').css('margin-left', '10px');
+//			loadGrid('/ecommerce-web/admin/product/category/consult', 'grid', 'formEdit', '/ecommerce-web/admin/product/category/remove');
+//			$('span#spanCategoryTotal').text(data.generic[0]);
+//			$('span#spanTitleEcommerce').text(data.generic[1]);
+//			activePlugins();
+//		});
+//	});
+}
+
+function activePlugins() {
+	// tooltip helper
+    $('[rel=tooltip]').tooltip();	
+    $('[rel=tooltip-bottom]').tooltip({
+        placement : 'bottom'
+    });	
+    $('[rel=tooltip-right]').tooltip({
+        placement : 'right'
+    });	
+    $('[rel=tooltip-left]').tooltip({
+        placement : 'left'
+    });	
+    // end tooltip helper
+    
+    
+    // animate scroll, define class scroll will be activate this
+    $(".scroll").click(function(e){
+        e.preventDefault();
+        $("html,body").animate({scrollTop: $(this.hash).offset().top-60}, 'slow');
+    });
+    // end animate scroll
+    
+    
+    // control box
+    // collapse a box
+    $('.header-control [data-box=collapse]').click(function(){
+        var collapse = $(this),
+        box = collapse.parent().parent().parent();
+
+        collapse.find('i').toggleClass('icofont-caret-up icofont-caret-down'); // change icon
+        box.find('.box-body').slideToggle(); // toggle body box
+    });
+
+    // close a box
+    $('.header-control [data-box=close]').click(function(){
+        var close = $(this),
+        box = close.parent().parent().parent(),
+        data_anim = close.attr('data-hide'),
+        animate = (data_anim == undefined || data_anim == '') ? 'fadeOut' : data_anim;
+
+        box.addClass('animated '+animate);
+        setTimeout(function(){
+            box.hide()
+        },1000);
+    });
+    // end control box
+    $('#tab-stat > a[data-toggle="tab"]').on('shown', function(){
+        if(sessionStorage.mode == 4){
+            $('body,html').animate({
+                scrollTop: 0
+            }, 'slow');
+        }
+    });
+    
+    $("span[data-chart=peity-bar]").peity("bar");
 }
 
 function loading(divId) {
@@ -198,16 +236,6 @@ function checkMessages() {
 }
 
 function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth, viewsByURL, totalViews) {
-	$('#tab-stat > a[data-toggle="tab"]').on('shown', function(){
-        if(sessionStorage.mode == 4){
-            $('body,html').animate({
-                scrollTop: 0
-            }, 'slow');
-        }
-    });
-    
-    $("span[data-chart=peity-bar]").peity("bar");
-    
     var months = new Array();
     
     var d1 = [];

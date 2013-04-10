@@ -14,7 +14,7 @@
         "Produtos": {
         	"id": "product",
         	"icon": "icofont-barcode",
-        	"url": "/ecommerce/admin/product"
+        	"url": "loadProduct();return false;"
         }
     }
 }

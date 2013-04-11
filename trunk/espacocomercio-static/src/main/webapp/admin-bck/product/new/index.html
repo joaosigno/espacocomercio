@@ -157,6 +157,10 @@
 			
 			bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
 			
+			$('.nicEdit-panelContain').parent().css('width', $('input[name=introduction]').width()+'px');
+			$('.nicEdit-main').parent().css('width', $('input[name=introduction]').width()+'px');
+			$('.nicEdit-main').css('width', $('input[name=introduction]').width()+'px');
+			
 			$('#uploadFile').live('change', function(){
 				//$('#visualizar').html('<img src="ajax-loader.gif" alt="Enviando..."/> Enviando...');
 				$('#form_upload').ajaxForm({

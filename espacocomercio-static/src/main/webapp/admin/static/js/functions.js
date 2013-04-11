@@ -133,30 +133,81 @@ function loadCategory() {
 	setMenuActive('category');
 	loading('contentAll');
 	$.getJSON('/ecommerce-web/admin/category?tk='+new Date().getTime(), function(data) {
-		$('#contentAll').load('includes/category.html', function() {
-			$('#box-tab-Category').css('margin-left', '10px');
-			loadGrid('/ecommerce-web/admin/product/category/consult', 'grid', 'formEdit', '/ecommerce-web/admin/product/category/remove');
-			$('span#spanCategoryTotal').text(data.generic[0]);
-			$('span#spanTitleEcommerce').text(data.generic[1]);
-			activePlugins();
-		});
+		if (data.status) {
+			$('#contentAll').load('includes/category.html', function() {
+				$('#box-tab-Category').css('margin-left', '10px');
+				loadGrid('/ecommerce-web/admin/product/category/consult', 'grid', 'formEdit', '/ecommerce-web/admin/product/category/remove');
+				$('span#spanCategoryTotal').text(data.generic[0]);
+				$('span#spanTitleEcommerce').text(data.generic[1]);
+				activePlugins();
+			});
+		} else {
+			errorForm(data);
+			$('#contentAll').html('');
+		}
 	});
 }
 
 function loadProduct() {
 	setMenuActive('product');
 	loading('contentAll');
-	$('#contentAll').load('includes/product.html');
 	activePlugins();
-//	$.getJSON('/ecommerce-web/admin/category?tk='+new Date().getTime(), function(data) {
-//		$('#contentAll').load('includes/category.html', function() {
-//			$('#box-tab-Category').css('margin-left', '10px');
-//			loadGrid('/ecommerce-web/admin/product/category/consult', 'grid', 'formEdit', '/ecommerce-web/admin/product/category/remove');
-//			$('span#spanCategoryTotal').text(data.generic[0]);
-//			$('span#spanTitleEcommerce').text(data.generic[1]);
-//			activePlugins();
-//		});
-//	});
+	$.getJSON('/ecommerce-web/admin/product?tk='+new Date().getTime(), function(data) {
+		if (data.status) {
+			$('#contentAll').load('includes/product.html', function() {
+				$('span#spanProductsTotal').text(data.generic[1]);
+				$('span#spanProductsSemEstoqueTotal').text(data.generic[2]);
+				$('span#spanTitleEcommerce').text(data.generic[0]);
+				
+				var html = '';
+				$.each(data.generic[3], function(key, val) {
+					html += '<li class="contact-alt grd-white">';
+	                html += '<a href="#">';
+	                html += '<div class="contact-item">';
+	                html += '<div class="contact-item-body">';
+					html += '<p class="contact-item-heading bold">'+val.name+'</p>';
+	                html += '<p class="help-block"><small class="muted">'+val.introduction+'</small></p>';
+	                html += '</div>';
+	                html += '</div>';
+	                html += '</a>';
+	                html += '</li>';
+				});
+				$('ul#ulProdutosSemEstoque').html(html);
+				
+				generateRelat(data.generic[4], data.generic[5], "products-estoque-stat");
+				$('p#total-estoque').html("<strong>Total de produtos em estoque: </strong>"+data.generic[5]);
+				
+				activePlugins();
+				
+				preencheImages();
+				$("input[name='quantity']").mask("9?999");
+				$("input[name='quantityFrete']").mask("9?999");
+				$("input[name='unityvalue']").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: false});
+				
+				$.getJSON('/ecommerce-web/admin/product/category/list?tk='+new Date().getTime(), function(data) {
+					callback('cadastrodeprodutos_preencheCbCategory', data);
+				});
+				
+				nicEditors.allTextAreas();
+				$('.nicEdit-panelContain').parent().css('width', '99%');
+				$('.nicEdit-main').parent().css('width', '99%');
+				$('.nicEdit-main').parent().css('height', '200px');
+				$('.nicEdit-main').css('width', '100%');
+				$('.nicEdit-main').css('height', '100%');
+				
+				$('#uploadFile').live('change', function(){
+					//$('#visualizar').html('<img src="ajax-loader.gif" alt="Enviando..."/> Enviando...');
+					$('#form_upload').ajaxForm({
+						dataType: 'script',
+						target:'#upload_target'
+					}).submit();
+			     });
+			});
+		} else {
+			errorForm(data);
+			$('#contentAll').html('');
+		}
+	});
 }
 
 function activePlugins() {
@@ -235,6 +286,43 @@ function checkMessages() {
 	});
 }
 
+function generateRelat(list, total, id) {
+	var d4 = [];
+    var i = 0;
+    var t = 0;
+    $.each(list, function(key, val) {
+		var percent = (((val.quantity * 100) / total).toString().split('.')[0] * 1);
+    	d4[i] = {
+			label: percent + "% - " + val.name,
+			data: percent
+		}
+    	i++;
+    	t = t + percent;
+    });
+    d4[i] = {
+    		label: (100 - t) + "% - Outros",
+			data: 100 - t
+		}
+    
+    $.plot('#'+id, d4, {
+        series: {
+            pie: {
+                show: true
+            }
+        },
+        legend: {
+            show: true,
+            labelFormatter: function(label, series) {
+                return '<p style="text-align:left;font-size:12px;padding:0px;margin:0px;">' + label + '</p>';
+            }
+        },
+        grid: {
+        	hoverable: true,
+        	clickable: true
+        }
+    });
+}
+
 function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth, viewsByURL, totalViews) {
     var months = new Array();
     
@@ -277,7 +365,7 @@ function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth, viewsByUR
     	}
     });
     d4[i] = {
-			label: (100 - t) + "% - Outros </p></td></tr><tr><td colspan=\"2\" style=\"text-align:left;font-size: 14px;\"><p><strong>Total de visualizações: </strong>"+totalViews+"</p></td></tr>",
+			label: (100 - t) + "% - Outros </p></td></tr><tr><td class=\"legendColorBox\"><div style=\"border:1px solid #ccc;padding:1px\"><div style=\"width:4px;height:0;border:5px solid rgb(140,172,198);overflow:hidden\"></div></div></td><td class=\"legendLabel\"><p style=\"text-align:right;font-size:14px;padding:0px;margin:0px;\"><strong>Total de visualizações: </strong>"+totalViews+"</p></td></tr>",
 			data: 100 - t
 		}
     
@@ -777,12 +865,103 @@ function postJson(id, url, params) {
 }
 
 function callback(id, data) {
-	if (id=='cadastrocategoria') {
-		if (data.status) {
+	if (data.status) {
+		if (id=='cadastrocategoria') {
+			
 			alert("Categoria criada com sucesso.", true);
 			$('button[type="reset"]').click();
-		} else {
-			errorForm(data);
+			
+		} else if (id=='cadastrodeprodutos_preencheCbCategory') {
+			
+			var opt = '';
+			$.each(data.generic, function(key, val) {
+				opt += '<option value="'+val.id+'">'+val.name+'</option>';
+			});
+			$('select#comboCategory').html(opt);
+			
+		}
+	} else {
+		errorForm(data);
+	}
+}
+
+function upload(position) {
+	$('img#iposition'+position).attr('src', '/library/img/imgfotoLoading.png');
+	$('input#positionFile').val(position);
+	$('input#uploadFile').click();
+}
+
+function preencheImages() {
+	var html = 	'<a href="#" onclick="upload(\'1\');"><img id="iposition1" src="/library/img/imgfoto.png" class="img-rounded" width="128" height="131"></a>';
+	html +=		'<a href="#" onclick="upload(\'2\');"><img id="iposition2" src="/library/img/imgfoto.png" class="img-rounded" width="128" height="131"></a>';
+	html +=		'<a href="#" onclick="upload(\'3\');"><img id="iposition3" src="/library/img/imgfoto.png" class="img-rounded" width="128" height="131"></a>';
+	html +=		'<a href="#" onclick="upload(\'4\');"><img id="iposition4" src="/library/img/imgfoto.png" class="img-rounded" width="128" height="131"></a>';
+	html +=		'<a href="#" onclick="upload(\'5\');"><img id="iposition5" src="/library/img/imgfoto.png" class="img-rounded" width="128" height="131"></a>';
+	html +=		'<a href="#" onclick="upload(\'6\');"><img id="iposition6" src="/library/img/imgfoto.png" class="img-rounded" width="128" height="131"></a>';
+	$('#imagesDivUpload').html(html);
+	$('#imagesForm').val('');
+}
+
+function addCategory() {
+	opt = $('select#comboCategory option:selected').text();
+	optId = $('select#comboCategory option:selected').val();
+	
+	genericAddCategory(opt, optId);
+}
+
+function genericAddCategory(opt, optId) {
+	if ($('input#category').val()!='') {
+		sel = $('input#category').val().split('[LIN]');
+	} else {
+		sel = new Array();
+	}
+	
+	var exist = false;
+	for (var i=0; i<sel.length; i++) {
+		if (sel[i] == optId) {
+			exist = true;
 		}
 	}
+	
+	if (!exist) {
+		$('div#selectedsCategory').html($('div#selectedsCategory').html() + '<button id="optSel'+optId+'" class="btn btn-info" type="button" onclick="remCategory('+optId+');">'+opt+' <i class="icon-remove"></i></button>&nbsp;');
+		
+		if ($('input#category').val()!='') {
+			$('input#category').val($('input#category').val()+'[LIN]'+optId);
+		} else {
+			$('input#category').val(optId);
+		}
+	}
+}
+
+function remCategory(id) {
+	$('#optSel'+id).remove();
+	
+	var sel = $('input#category').val().split('[LIN]');
+	var nv = '';
+	
+	for (var i=0; i<sel.length; i++) {
+		if (sel[i] != id) {
+			if (nv == '') {
+				nv += sel[i];
+			} else {
+				nv += '[LIN]'+sel[i];
+			}
+		}
+	}
+	
+	$('input#category').val(nv);
+}
+
+function cleanCategory() {
+	$('input#category').val('');
+	$('div#selectedsCategory').html('');
+}
+
+function preencheTextArea() {
+	 $('textarea[name="description"]').val($('div.nicEdit-main').html());
+}
+function limpaTA() {
+	 $('textarea[name="description"]').val('');
+	 $('div.nicEdit-main').html('');
 }

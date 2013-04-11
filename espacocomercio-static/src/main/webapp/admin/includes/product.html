@@ -47,6 +47,8 @@
                             <div class="row-fluid">
 								<div class="span12">
 									<div class="dashboard-stat">
+										<div id="products-estoque-stat" class="chart" style="padding: 0px; position: relative;"></div>
+										<p id="total-estoque" style="text-align: right"></p>
 									</div>
 								</div>
                             </div>
@@ -66,23 +68,64 @@
                                     <div class="dashboard-stat">
                                     	<form class="form-horizontal" style="display: block;padding-top: 40px; padding-bottom: 40px;">
 											<div class="control-group">
+												<label class="control-label">Imagens: <span class="help-block">Click nas imagens ao lado para substituir por imagens que represente o produto.</span><span id="spanError-images" class="help-inline"></span></label>
+												<div class="controls" id="imagesDivUpload"></div>
+												<input type="hidden" name="images" value="" id="imagesForm">
+											</div>
+											<div class="control-group">
 												<label class="control-label">Nome:</label>
 												<div class="controls" style="text-align: left;">
-													<input name="name" type="text" class="span6" placeholder="Nome da categoria…" maxlength="45" style="border: 1px solid #ccc;font-size:16px">
+													<input name="name" type="text" class="input-block-level" placeholder="Nome do produto…" maxlength="45" style="border: 1px solid #ccc;font-size:16px">
 													<span id="spanError-name" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Categorias: <span class="help-block">Click no botão "Adicionar" para atribuir categorias ao produto.</span><span id="spanError-category" class="help-inline"></span></label>
+												<div class="controls" style="text-align: left;">
+													<select id="comboCategory" class="span3"></select><button class="btn" type="button" onclick="addCategory()">Adicionar</button>
+													<div id="selectedsCategory"></div>
+													<input type="hidden" name="category" value="" id="category">
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Introdução:</label>
+												<div class="controls" style="text-align: left;">
+													<input name="introduction" type="text" class="input-block-level" placeholder="Introdução do produto…" maxlength="255" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-introduction" class="help-inline"></span>
 												</div>
 											</div>
 											<div class="control-group">
 												<label class="control-label">Descrição:</label>
 												<div class="controls" style="text-align: left;">
-													<input name="description" type="text" class="span6" placeholder="Descrição da categoria…" maxlength="255" style="border: 1px solid #ccc;font-size:16px">
+													<textarea name="description" class="input-block-level" placeholder="Descrição da categoria…"></textarea>
 													<span id="spanError-description" class="help-inline"></span>
 												</div>
 											</div>
 											<div class="control-group">
+												<label class="control-label">Quantidade:</label>
 												<div class="controls" style="text-align: left;">
-													<button type="button" class="btn btn-primary" onclick="postJson('cadastrocategoria', '/ecommerce-web/admin/product/category/insert', $('form').serialize());" data-loading-text="Processando...">Salvar</button>
-													<button type="reset" class="btn">Limpar</button>
+													<input name="quantity" type="text" class="span3" placeholder="Quantidade…" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-quantity" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Quantidade por frete: <span class="help-block">Quantidade de produtos para cada frete cobrado (Exemplo: 1 frete = 10 produtos)</span></label>
+												<div class="controls" style="text-align: left;">
+													<input name="quantityFrete" type="text" class="span3" placeholder="Quantidade…" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-quantityFrete" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Valor:</label>
+												<div class="controls" style="text-align: left;">
+													<input name="unityvalue" type="text" class="span3" placeholder="Valor unitário…" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-unityvalue" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<div class="controls" style="text-align: left;">
+													<button type="button" class="btn btn-primary" onclick="preencheTextArea();postJson('postEdit', '/ecommerce-web/admin/product/insert', $('form#form').serialize());">Salvar</button>
+													<button type="reset" class="btn" onclick="preencheImages();cleanCategory();limpaTA();">Limpar</button>
 												</div>
 											</div>
 										</form>
@@ -126,6 +169,15 @@
             </div>
         </div>
     </aside>
+</div>
+
+<div style="display: none;">
+	<form action="/ecommerce-web/admin/product/upload" id="form_upload" enctype="multipart/form-data" method="post">
+		<input type="file" name="uploadFile" id="uploadFile" accept="image/*">
+		<input type="hidden" name="positionFile" id="positionFile">
+		<input type="button" id="alertError" onclick="alert(this.value, false)">
+	</form>
+	<div id="upload_target"></div>
 </div>
 </body>
 </html>

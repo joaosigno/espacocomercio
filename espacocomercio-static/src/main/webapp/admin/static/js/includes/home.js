@@ -109,9 +109,11 @@ function generateGrafics(visitsByMonth, clientsByMonth, ordersByMonth, viewsByUR
     	}
     });
     d4[i] = {
-			label: (100 - t) + "% - Outros </p></td></tr><tr><td class=\"legendColorBox\"><div style=\"border:1px solid #ccc;padding:1px\"><div style=\"width:4px;height:0;border:5px solid rgb(140,172,198);overflow:hidden\"></div></div></td><td class=\"legendLabel\"><p style=\"text-align:right;font-size:14px;padding:0px;margin:0px;\"><strong>Total de visualizações: </strong>"+totalViews+"</p></td></tr>",
+			label: (100 - t) + "% - Outros",
 			data: 100 - t
 		}
+    
+    $('div#labelTotaldeVisualizacoes').html('<p style="text-align:right;font-size:14px;"><strong>Total de visualizações: </strong>'+totalViews+'</p>');
     
     var visitor = $("#visitor-stat"),
     order = $("#order-stat"),

@@ -51,7 +51,7 @@ function relatProductPage() {
 			var html = '';
 			$.each(data.generic[3], function(key, val) {
 				html += '<li class="contact-alt grd-white">';
-                html += '<a href="#">';
+                html += '<a href="#" onclick="preencheFormularioDeEdicao(\''+val.id+'\'); return false;">';
                 html += '<div class="contact-item">';
                 html += '<div class="contact-item-body">';
 				html += '<p class="contact-item-heading bold">'+val.name+'</p>';
@@ -302,6 +302,13 @@ function preencheFormularioDeEdicao(id) {
 		
 	});
 } 
+
+function cancelaFormularioDeEdicao() {
+	$('#btnlimpaformulario').click();
+	$('#lieditarproduto').hide();
+	$('#formulariocadastroproduto').show();
+	$('#processamentoeditarproduto').hide();
+}
 
 function preencheInitCategory(dataList) {
 	$.each(dataList, function(key, val) {

@@ -70,7 +70,7 @@ public class AdminProductController {
 	public @ResponseBody GenericResponse remove(final HttpServletRequest request) {
 		GenericResponse resp;
 		try {
-			resp = productBusiness.detele(request);
+			resp = productBusiness.delete(request);
 		} catch (Exception e) {
 			resp = PortalTools.getInstance().getRespError(e);
 		}

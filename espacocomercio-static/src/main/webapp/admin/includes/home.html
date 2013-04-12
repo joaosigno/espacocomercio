@@ -37,92 +37,95 @@
         </div>
         
         <div class="content-body">
-            <div class="shortcut-group">
-                <ul class="a-btn-group">
-                	<li>
-                        <a href="https://www.google.com/a/espacocomercio.com.br/ServiceLogin" target="_blank" class="a-btn grd-white" rel="tooltip" data-original-title="Novas Mensagens">
-                            <span></span>
-                            <span><i class="icofont-envelope color-silver-dark"></i></span>
-                            <span class="color-silver-dark"><i class="icofont-envelope-alt color-teal"></i></span>
-                            <div class="badge badge-info" id="newMessagesCount"></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Pedidos">
-                            <span></span>
-                            <span><i class="icofont-shopping-cart color-silver-dark"></i></span>
-                            <span class="color-silver-dark"><i class="icofont-shopping-cart color-red"></i></span>
-                            <div class="label label-important" id="newOrdersCount"></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Pagamentos">
-                            <span></span>
-                            <span><i class="icofont-barcode color-silver-dark"></i></span>
-                            <span class="color-silver-dark"><i class="icofont-barcode color-red"></i></span>
-                            <div class="label label-important" id="newPaymentsCount"></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Clientes">
-                            <span></span>
-                            <span><i class="icofont-bar-chart color-silver-dark"></i></span>
-                            <span class="color-silver-dark"><i class="typicn-lineChart"></i></span>
-                            <div class="badge badge-info" id="newClientsCount"></div>
-                        </a>
-                    </li>
-                    <li class="clearfix"></li>
-                </ul>
-            </div>
-            
-            <div class="divider-content"><span></span></div>
-            
-            <!-- tab stat -->
-            <div class="box-tab corner-all">
-                <div class="box-header corner-top">
-                    <div class="header-control pull-right">
-                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
-                    </div>
-                    <ul class="nav nav-tabs" id="tab-stat">
-                        <li class="active"><a data-toggle="tab" href="#stat-geral">Gráficos da evolução das Visitas, Pedidos e Clientes</a></li>
-                        <li><a data-toggle="tab" href="#stat-visitors">Gráfico das Visualizações de Páginas</a></li>
-                    </ul>
-                </div>
-                <div class="box-body">
-                    <div class="tab-content">
-                        <div class="tab-pane fade in active" id="stat-geral">
-                            <div class="row-fluid">
-                                <div class="span4">
-                                    <div class="dashboard-stat">
-                                        <div id="visitor-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
-                                        <div class="stat-label grd-green color-white">Visitantes</div>
-                                    </div>
-                                </div>
-                                <div class="span4">
-                                    <div class="dashboard-stat">
-                                        <div id="order-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
-                                        <div class="stat-label grd-teal color-white">Pedidos</div>
-                                    </div>
-                                </div>
-                                <div class="span4">
-                                    <div class="dashboard-stat">
-                                        <div id="user-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
-                                        <div class="stat-label grd-red color-white">Clientes</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="stat-visitors">
-                            <div class="row-fluid">
-                                <div class="span12">
-                                    <div class="dashboard-stat">
-                                        <div id="views-stat" class="chart" style="padding: 0px; position: relative;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        	<div id="processo"></div>
+        	<div id="conteudo" class="hide">
+	            <div class="shortcut-group">
+	                <ul class="a-btn-group">
+	                	<li>
+	                        <a href="https://www.google.com/a/espacocomercio.com.br/ServiceLogin" target="_blank" class="a-btn grd-white" rel="tooltip" data-original-title="Novas Mensagens">
+	                            <span></span>
+	                            <span><i class="icofont-envelope color-silver-dark"></i></span>
+	                            <span class="color-silver-dark"><i class="icofont-envelope-alt color-teal"></i></span>
+	                            <div class="badge badge-info" id="newMessagesCount"></div>
+	                        </a>
+	                    </li>
+	                    <li>
+	                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Pedidos">
+	                            <span></span>
+	                            <span><i class="icofont-shopping-cart color-silver-dark"></i></span>
+	                            <span class="color-silver-dark"><i class="icofont-shopping-cart color-red"></i></span>
+	                            <div class="label label-important" id="newOrdersCount"></div>
+	                        </a>
+	                    </li>
+	                    <li>
+	                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Pagamentos">
+	                            <span></span>
+	                            <span><i class="icofont-barcode color-silver-dark"></i></span>
+	                            <span class="color-silver-dark"><i class="icofont-barcode color-red"></i></span>
+	                            <div class="label label-important" id="newPaymentsCount"></div>
+	                        </a>
+	                    </li>
+	                    <li>
+	                        <a href="#" class="a-btn grd-white" rel="tooltip" data-original-title="Novos Clientes">
+	                            <span></span>
+	                            <span><i class="icofont-bar-chart color-silver-dark"></i></span>
+	                            <span class="color-silver-dark"><i class="typicn-lineChart"></i></span>
+	                            <div class="badge badge-info" id="newClientsCount"></div>
+	                        </a>
+	                    </li>
+	                    <li class="clearfix"></li>
+	                </ul>
+	            </div>
+	            
+	            <div class="divider-content"><span></span></div>
+	            
+	            <!-- tab stat -->
+	            <div class="box-tab corner-all">
+	                <div class="box-header corner-top">
+	                    <div class="header-control pull-right">
+	                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+	                    </div>
+	                    <ul class="nav nav-tabs" id="tab-stat">
+	                        <li class="active"><a data-toggle="tab" href="#stat-geral">Gráficos da evolução das Visitas, Pedidos e Clientes</a></li>
+	                        <li><a data-toggle="tab" href="#stat-visitors">Gráfico das Visualizações de Páginas</a></li>
+	                    </ul>
+	                </div>
+	                <div class="box-body">
+	                    <div class="tab-content">
+	                        <div class="tab-pane fade in active" id="stat-geral">
+	                            <div class="row-fluid">
+	                                <div class="span4">
+	                                    <div class="dashboard-stat">
+	                                        <div id="visitor-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
+	                                        <div class="stat-label grd-green color-white">Visitantes</div>
+	                                    </div>
+	                                </div>
+	                                <div class="span4">
+	                                    <div class="dashboard-stat">
+	                                        <div id="order-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
+	                                        <div class="stat-label grd-teal color-white">Pedidos</div>
+	                                    </div>
+	                                </div>
+	                                <div class="span4">
+	                                    <div class="dashboard-stat">
+	                                        <div id="user-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div>
+	                                        <div class="stat-label grd-red color-white">Clientes</div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div class="tab-pane fade" id="stat-visitors">
+	                            <div class="row-fluid">
+	                                <div class="span12">
+	                                    <div class="dashboard-stat">
+	                                        <div id="views-stat" class="chart" style="padding: 0px; position: relative;"></div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
             </div>
         </div>
     </div>

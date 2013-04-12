@@ -79,10 +79,10 @@ public class ProductAdminBusinessImpl implements ProductAdminBusiness {
 	}
 	
 	@Override
-	public GenericResponse detele(final HttpServletRequest request) {
+	public GenericResponse delete(final HttpServletRequest request) {
 		GenericResponse resp = new GenericResponse();
 		final Product product = repository.findOne(Integer.parseInt(request.getParameter("id")));
-		if (product.getSite().getId()==EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId()) {
+		if (product.getSite().getId().equals(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId())) {
 			for (CategoryHasProduct cp : chpRepository.findByProductId(Integer.parseInt(request.getParameter("id")))) {
 				chpRepository.delete(cp);
 			}
@@ -190,7 +190,7 @@ public class ProductAdminBusinessImpl implements ProductAdminBusiness {
 		final String images = request.getParameter("images");
 		final String description = request.getParameter("description");
 		final String quantity = request.getParameter("quantity");
-		final String unityvalue = request.getParameter("unityvalue").replace(",", ".");
+		final String unityvalue = request.getParameter("unityvalue").replace(".", "").replace(",", ".");
 		final String idProduct = request.getParameter("id");
 		final String category =  request.getParameter("category");
 		final String quantityFrete = request.getParameter("quantityFrete");

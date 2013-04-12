@@ -13,7 +13,7 @@ public interface ProductAdminBusiness {
 	
 	GenericResponse insertUpdate(HttpServletRequest request) throws java.lang.Exception;
 	
-	GenericResponse detele(HttpServletRequest request) throws java.lang.Exception;
+	GenericResponse delete(HttpServletRequest request) throws java.lang.Exception;
 	
 	void upload(HttpServletRequest request, HttpServletResponse response) throws java.lang.Exception;
 	

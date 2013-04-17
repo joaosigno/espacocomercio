@@ -24,12 +24,12 @@
         "Frete": {
         	"id": "send",
         	"icon": "icofont-dashboard",
-        	"url": "/ecommerce/admin/send"
+        	"url": "loadFrete();return false;"
         },
         "Formas de pgto": {
         	"id": "payment",
         	"icon": "icofont-money",
-        	"url": "/ecommerce/admin/payment"
+        	"url": "loadPayment();return false;"
         }
     }
 }

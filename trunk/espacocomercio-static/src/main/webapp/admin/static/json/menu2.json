@@ -11,6 +11,11 @@
         	"icon": "icofont-briefcase",
         	"url": "loadFinance();return false;"
         },
+        "Clientes": {
+        	"id": "client",
+        	"icon": "icofont-user",
+        	"url": "loadClient();return false;"
+        },
         "Categorias": {
         	"id": "category",
         	"icon": "icofont-reorder",
@@ -29,22 +34,17 @@
         "Frete": {
         	"id": "send",
         	"icon": "icofont-dashboard",
-        	"url": "/ecommerce/admin/send"
+        	"url": "loadFrete();return false;"
         },
         "Formas de pgto": {
         	"id": "payment",
         	"icon": "icofont-money",
-        	"url": "/ecommerce/admin/payment"
-        },
-        "Usuários": {
-        	"id": "user",
-        	"icon": "icofont-user",
-        	"url": "/ecommerce/admin/user"
+        	"url": "loadPayment();return false;"
         },
         "Configurações": {
         	"id": "config",
         	"icon": "icofont-lock",
-        	"url": "/ecommerce/admin/config"
+        	"url": "loadConfiguration();return false;"
         }
     }
 }

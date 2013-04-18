@@ -48,7 +48,8 @@ public class SiteBusinessImpl implements SiteBusiness {
 	@Override
 	public GenericResponse load(final HttpServletRequest request) throws java.lang.Exception {
 		final GenericResponse resp = new GenericResponse();
-		resp.setGeneric(new Object[] { EcommerceUtil.getInstance().getSessionAdmin(request).getSite() , ConvertTools.getInstance().normalizeString(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getName()) });
+		final Site site = EcommerceUtil.getInstance().getSessionAdmin(request).getSite();
+		resp.setGeneric(new Object[] { site , ConvertTools.getInstance().normalizeString(site.getName()) });
 		return resp;
 	}
 
@@ -164,7 +165,7 @@ public class SiteBusinessImpl implements SiteBusiness {
 						final File savedFile = generateGenericFile(photoFile);
 						item.write(savedFile);
 						
-						final String reponseText = "uploadSet('"+finalimage+"');";
+						final String reponseText = "uploadSetLogo('"+finalimage+"');";
 						
 						response.getWriter().print(reponseText);
 					} else {

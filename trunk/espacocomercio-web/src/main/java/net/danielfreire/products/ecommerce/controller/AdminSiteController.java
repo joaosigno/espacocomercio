@@ -16,31 +16,48 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class SiteController {
+public class AdminSiteController {
 	
 	@Autowired
-	SiteBusiness business;
+	private transient SiteBusiness business;
 	
 	@RequestMapping(value="/admin/site/load", method = RequestMethod.GET)
-	public @ResponseBody GenericResponse loadsite(HttpServletRequest request) {
+	public @ResponseBody GenericResponse loadsite(final HttpServletRequest request) {
+		GenericResponse resp;
 		try {
-			return business.load(request);
+			resp = business.load(request);
 		} catch (Exception e) {
-			return PortalTools.getInstance().getRespError(e);
+			resp = PortalTools.getInstance().getRespError(e);
 		}
+		 return resp;
 	}
 	
 	@RequestMapping(value="/admin/site/save", method = RequestMethod.POST)
-	public @ResponseBody GenericResponse save(HttpServletRequest request) {
+	public @ResponseBody GenericResponse save(final HttpServletRequest request) {
+		GenericResponse resp;
 		try {
-			return business.save(request);
+			resp = business.save(request);
 		} catch (Exception e) {
-			return PortalTools.getInstance().getRespError(e);
+			resp = PortalTools.getInstance().getRespError(e);
 		}
+		
+		return resp;
+	}
+	
+	@RequestMapping(value="/admin/site/update", method = RequestMethod.POST)
+	public @ResponseBody GenericResponse update(final HttpServletRequest request) {
+		GenericResponse resp;
+		try {
+			resp = business.save(request);
+		} catch (Exception e) {
+			resp = PortalTools.getInstance().getRespError(e);
+		}
+		
+		return resp;
 	}
 	
 	@RequestMapping(value="/admin/site/upload", method = RequestMethod.POST)
-	public void siteupload(HttpServletRequest request, HttpServletResponse response) {
+	public void siteupload(final HttpServletRequest request, final HttpServletResponse response) {
 		try {
 			business.upload(request, response);
 		} catch (Exception e) {

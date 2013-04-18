@@ -63,16 +63,37 @@
 												</div>
 											</div>
 											<div class="control-group">
+												<label class="control-label">Email:</label>
+												<div class="controls" style="text-align: left;">
+													<input name="email" type="text" class="span4" placeholder="Email do representante do site…" maxlength="255" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-email" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Email da loja:<span class="help-inline warning">Acessar pelo gmail.com</span></label>
+												<div class="controls" style="text-align: left;">
+													<input disabled type="text" class="span4" style="border: 1px solid #ccc;font-size:16px" id="gmailDaLoja">
+													<span id="spanError-email" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Senha do email da loja:</label>
+												<div class="controls" style="text-align: left;">
+													<input name="gmailpass" type="text" class="span4" placeholder="Senha do e-mail da loja…" maxlength="45" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-email" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
 												<label class="control-label">Facebook:</label>
 												<div class="controls" style="text-align: left;">
-													<input name="facebook" type="text" class="input-block-level" placeholder="URL da fã page…" maxlength="255" style="border: 1px solid #ccc;font-size:16px">
+													<input name="facebook" type="text" class="span4" placeholder="URL da fã page…" maxlength="255" style="border: 1px solid #ccc;font-size:16px">
 													<span id="spanError-facebook" class="help-inline"></span>
 												</div>
 											</div>
 											<div class="control-group">
 												<label class="control-label">Logo-tipo:</label>
 												<div class="controls" style="text-align: left;">
-													<a href="#" onclick="upload();">
+													<a href="#" onclick="uploadLogo();">
 														<img id="iposition" src="/library/img/imgfoto.png" class="img-rounded" width="128" height="131">
 													</a>
 													<input name="logo" type="hidden" class="input-block-level" placeholder="LOGO…" maxlength="255">
@@ -81,7 +102,7 @@
 											</div>
 											<div class="control-group">
 												<div class="controls" style="text-align: left;">
-													<button type="button" class="btn btn-primary" onclick="postJson('update', '/ecommerce-web/admin/site/save', $('form').serialize());">Salvar</button>
+													<button type="button" class="btn btn-primary" onclick="postJson('updateconfiguracoesdaloja', '/ecommerce-web/admin/site/update', $('form').serialize());">Salvar</button>
 												</div>
 											</div>
 										</form>
@@ -103,6 +124,14 @@
             </div>
         </div>
     </div>
+</div>
+
+<div style="display: none;">
+	<form action="/ecommerce-web/admin/site/upload" id="form_upload" enctype="multipart/form-data" method="post">
+		<input type="file" name="uploadFile" id="uploadFile" accept="image/*">
+		<input type="button" id="alertError" onclick="alert(this.value, false)">
+	</form>
+	<div id="upload_target"></div>
 </div>
 
 </body>

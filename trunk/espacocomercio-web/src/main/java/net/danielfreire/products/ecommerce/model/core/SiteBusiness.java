@@ -17,4 +17,6 @@ public interface SiteBusiness {
 	
 	String getNormalizeNameSiteBySessionAdmin(HttpServletRequest request);
 
+	GenericResponse update(HttpServletRequest request) throws java.lang.Exception;
+
 }

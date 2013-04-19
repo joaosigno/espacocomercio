@@ -3,6 +3,7 @@ package net.danielfreire.products.ecommerce.model.core;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -53,34 +54,17 @@ public class SiteBusinessImpl implements SiteBusiness {
 		return resp;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public GenericResponse save(final HttpServletRequest request) throws java.lang.Exception {
 		GenericResponse resp = new GenericResponse();
 		
-		final String idSite = request.getParameter("id");
-		final String name = request.getParameter(LBL_NAME);
-		final String description = request.getParameter("description");
-		final String facebook = request.getParameter("facebook");
 		final String logo = request.getParameter("logo");
-		final String email = request.getParameter("email");
-		
-		final String nameNormalize = ConvertTools.getInstance().normalizeString(name);
-		final String extension = logo.substring(logo.lastIndexOf('.') + 1);
-		
-		Site site = new Site();
-		if (ValidateTools.getInstancia().isNumber(idSite)) {
-			site.setIdSite(Integer.parseInt(idSite));
-		}
-		site.setDescription(description);
-		site.setName(name);
-		site.setFacebook(facebook);
-		site.setLogo("/ecommerce/"+nameNormalize+"/logo."+extension);
-		site.setEmail(email);
-		site.setGmailPass(PortalTools.PASS_AUTH_PATTERN);
-		
-		final Map<String, String> error = validateSite(site);
+		final Map<String, Object> siteRet = getSite(request, true);
+		final Map<String, String> error = (Map<String, String>) siteRet.get("error");
 		
 		if (error.isEmpty()) {
+			Site site = (Site) siteRet.get("site");
 			if (site.getId()==null) {
 				site = repository.save(site);
 				createInitUsers(site);
@@ -93,6 +77,139 @@ public class SiteBusinessImpl implements SiteBusiness {
 		return resp;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public GenericResponse update(final HttpServletRequest request) throws java.lang.Exception {
+		GenericResponse resp = new GenericResponse();
+		
+		final String logo = request.getParameter("logo");
+		final String nameNormOther = ConvertTools.getInstance().normalizeString(EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getName());
+		final String nameNormalize = ConvertTools.getInstance().normalizeString(request.getParameter(LBL_NAME));
+		final String extension = logo.substring(logo.lastIndexOf('.') + 1);
+		
+		final Map<String, Object> siteRet = getSite(request, true);
+		final Map<String, String> error = (Map<String, String>) siteRet.get("error");
+		
+		if (error.isEmpty()) {
+			final StringBuilder dirTo = new StringBuilder()
+				.append(PortalTools.getInstance().getEcommerceProperties(KEY_LOCATION_SITE))
+				.append("/")
+				.append(nameNormalize)
+				.append("/");
+			
+			final Site site = (Site) siteRet.get("site");
+			repository.save(site);
+			renameSite(nameNormOther, nameNormalize);
+			changeReferences(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), site, nameNormalize, nameNormOther, dirTo.toString());
+			changeLogo(logo, extension, dirTo.toString());
+			updateGmailPass(site);
+		} else {
+			resp = PortalTools.getInstance().getRespError(error);
+		}
+		
+		return resp;
+	}
+	
+	private void updateGmailPass(final Site site) throws java.lang.Exception {
+		new GoogleUtil().updatePassword(site);
+	}
+
+	private Map<String, Object> getSite(final HttpServletRequest request, final boolean isInsert) {
+		final String name = request.getParameter(LBL_NAME);
+		final String description = request.getParameter("description");
+		final String facebook = request.getParameter("facebook");
+		final String logo = request.getParameter("logo");
+		final String email = request.getParameter("email");
+		final String gmailpass = request.getParameter("gmailpass");
+		
+		final String nameNormalize = ConvertTools.getInstance().normalizeString(name);
+		final String extension = logo.substring(logo.lastIndexOf('.') + 1);
+		
+		Site site = null;
+		if (isInsert) {
+			final String idSite = request.getParameter("id");
+			site = new Site();
+			if (ValidateTools.getInstancia().isNumber(idSite)) {
+				site.setIdSite(Integer.parseInt(idSite));
+			}
+			site.setGmailPass(PortalTools.PASS_AUTH_PATTERN);
+		} else {
+			site = EcommerceUtil.getInstance().getSessionAdmin(request).getSite();
+			site.setGmailPass(gmailpass);
+		}
+		
+		site.setDescription(description);
+		site.setName(name);
+		site.setFacebook(facebook);
+		site.setLogo("/ecommerce/"+nameNormalize+"/logo."+extension);
+		site.setEmail(email);
+		
+		final Map<String, Object> ret = new HashMap<String, Object>();
+		ret.put("site", site);
+		ret.put("error", validateSite(site));
+		
+		return ret;
+	}
+	
+	private void changeLogo(final String logo, final String extension, final String dirTo) throws IOException {
+		final String photoFile = PortalTools.getInstance().getEcommerceProperties(KEY_LOCATION_SITE)+"/temp/"+logo;
+		final BufferedImage img = ImageIO.read(new File(photoFile));
+		final BufferedImage bufferedI = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+		final Graphics2D grph = (Graphics2D) bufferedI.getGraphics();
+		grph.drawImage(img, 0, 0, null);
+		grph.dispose();
+		final File logoTipo = new File(dirTo + "/logo." + extension);
+		if (logoTipo.isFile()) {
+			logoTipo.delete();
+		}
+		ImageIO.write(bufferedI, extension, logoTipo);
+	}
+
+	private void changeReferences(final Site siteOther, final Site siteNew, final String nameNormalize, final String nameNormaOther, final String dirTo) throws java.lang.Exception {
+		final Map<String, String> mapHome = new HashMap<String, String>();
+		mapHome.put(siteOther.getName(), siteNew.getName());
+		if (ValidateTools.getInstancia().isNullEmpty(siteOther.getFacebook()) && ValidateTools.getInstancia().isNotnull(siteNew.getFacebook())) {
+			mapHome.put("<!--ReservedToFacebook-->", "<div class=\"fb-like\" data-href=\""+siteNew.getFacebook()+"\" data-send=\"true\" data-layout=\"button_count\" data-show-faces=\"true\"></div><br><br>");
+			mapHome.put("<!--ReservedToFacebookConf-->", "<div id=\"fb-root\"></div><script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = \"//connect.facebook.net/en_US/all.js#xfbml=1\"; fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>");
+		} else if (ValidateTools.getInstancia().isNotnull(siteOther.getFacebook()) && ValidateTools.getInstancia().isNotnull(siteNew.getFacebook())) {
+			mapHome.put(siteOther.getFacebook(), siteNew.getFacebook());
+		} else {
+			mapHome.put("<div class=\"fb-like\" data-href=\""+siteOther.getFacebook()+"\" data-send=\"true\" data-layout=\"button_count\" data-show-faces=\"true\"></div><br><br>", "<!--ReservedToFacebook-->");
+			mapHome.put("<div id=\"fb-root\"></div><script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = \"//connect.facebook.net/en_US/all.js#xfbml=1\"; fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>", "<!--ReservedToFacebookConf-->");
+		}
+		ConvertTools.getInstance().replaceFile(mapHome, new File(dirTo + "/index.html"));
+		
+		final Map<String, String> mapFunctions = new HashMap<String, String>();
+		mapFunctions.put(siteOther.getName() + " " + siteOther.getDescription(), siteNew.getName() + " " + siteNew.getDescription());
+		mapFunctions.put(nameNormaOther, nameNormalize);
+		mapFunctions.put(siteOther.getLogo(), siteNew.getLogo());
+		ConvertTools.getInstance().replaceFile(mapFunctions, new File(dirTo+"/js/functions.js"));
+		
+		final Map<String, String> mapCategory = new HashMap<String, String>();
+		mapCategory.put(siteOther.getName() + " - Categoria", siteNew.getName() + " - Categoria");
+		ConvertTools.getInstance().replaceFile(mapCategory, new File(dirTo+"/category/index.html"));
+		
+		final Map<String, String> mapClient = new HashMap<String, String>();
+		mapClient.put(siteOther.getName() + " - Painel de controle", siteNew.getName() + " - Painel de controle");
+		ConvertTools.getInstance().replaceFile(mapClient, new File(dirTo+"/client/index.html"));
+		
+		final Map<String, String> mapMycart = new HashMap<String, String>();
+		mapMycart.put(siteOther.getName() + " - Meu carrinho", siteNew.getName() + " - Meu carrinho");
+		ConvertTools.getInstance().replaceFile(mapMycart, new File(dirTo+"/mycart/index.html"));
+		
+		final Map<String, String> mapProduct = new HashMap<String, String>();
+		mapProduct.put(siteOther.getName() + " - Produto", siteNew.getName() + " - Produto");
+		ConvertTools.getInstance().replaceFile(mapProduct, new File(dirTo+"/product/index.html"));
+	}
+
+	private void renameSite(final String nameNormaOther, final String nameNormalize) {
+		final String sitePath = PortalTools.getInstance().getEcommerceProperties(KEY_LOCATION_SITE) + "/";
+		final File otherSite = new File(sitePath + nameNormaOther);
+		final File newSite = new File(sitePath + nameNormalize);
+		
+		otherSite.renameTo(newSite);
+	}
+
 	private void createInitUsers(final Site site) throws java.lang.Exception {
 		ClientAdmin user = new ClientAdmin();
 		user.setPassword("dabf1985");
@@ -118,6 +235,7 @@ public class SiteBusinessImpl implements SiteBusiness {
 		error.putAll(ValidateTools.getInstancia().validateGeneric("facebook.invalid", !ValidateTools.getInstancia().isNullEmpty(site.getFacebook()) && !ValidateTools.getInstancia().isUrl(site.getFacebook())));
 		error.putAll(ValidateTools.getInstancia().validateGeneric("logo.invalid", ValidateTools.getInstancia().isNullEmpty(site.getLogo())));
 		error.putAll(ValidateTools.getInstancia().validateGeneric("email.invalid", !ValidateTools.getInstancia().isEmail(site.getEmail())));
+		error.putAll(ValidateTools.getInstancia().validateGeneric("gmailpass.invalid", !ValidateTools.getInstancia().isPassword(site.getGmailPass())));
 		
 		if (error.isEmpty()) {
 			final String[] blackList = PortalTools.getInstance().getEcommerceProperties("blacklist.site.name").split(",");
@@ -205,8 +323,8 @@ public class SiteBusinessImpl implements SiteBusiness {
 		final Map<String, String> mapHome = new HashMap<String, String>();
 		mapHome.put(KEY_TITLE_SITE, site.getName());
 		if (ValidateTools.getInstancia().isNullEmpty(site.getFacebook())) {
-			mapHome.put("${facebook-like}", "");
-			mapHome.put("${facebook-conf}", "");
+			mapHome.put("${facebook-like}", "<!--ReservedToFacebook-->");
+			mapHome.put("${facebook-conf}", "<!--ReservedToFacebookConf-->");
 		} else {
 			mapHome.put("${facebook-like}", "<div class=\"fb-like\" data-href=\""+site.getFacebook()+"\" data-send=\"true\" data-layout=\"button_count\" data-show-faces=\"true\"></div><br><br>");
 			mapHome.put("${facebook-conf}", "<div id=\"fb-root\"></div><script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = \"//connect.facebook.net/en_US/all.js#xfbml=1\"; fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>");
@@ -238,13 +356,7 @@ public class SiteBusinessImpl implements SiteBusiness {
 		ConvertTools.getInstance().replaceFile(mapProduct, new File(dirTo+"/product/index.html"));
 		
 		final String extension = logoOrigin.substring(logoOrigin.lastIndexOf('.') + 1);
-		final String photoFile = PortalTools.getInstance().getEcommerceProperties(KEY_LOCATION_SITE)+"/temp/"+logoOrigin;
-		final BufferedImage img = ImageIO.read(new File(photoFile));
-		final BufferedImage bufferedI = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
-		final Graphics2D grph = (Graphics2D) bufferedI.getGraphics();
-		grph.drawImage(img, 0, 0, null);
-		grph.dispose();
-		ImageIO.write(bufferedI, extension, new File(dirTo + "/logo." + extension));
+		changeLogo(logoOrigin, extension, dirTo);
 	}
 
 	@Override
@@ -258,3 +370,4 @@ public class SiteBusinessImpl implements SiteBusiness {
 	}
 
 }
+

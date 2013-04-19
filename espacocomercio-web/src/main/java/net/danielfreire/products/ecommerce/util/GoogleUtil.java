@@ -42,13 +42,7 @@ public class GoogleUtil {
 	}
 	
     public void createContact(final Site site, final ClientEcommerce client) throws java.lang.Exception {
-    	final AppsForYourDomainClient admin = new AppsForYourDomainClient(
-				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_USER), 
-				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_PASS), 
-				PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN));
-    	final UserEntry userEntry = admin.retrieveUser(ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN));
-    	userEntry.getLogin().setPassword(site.getGmailPass());
-    	admin.updateUser(ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN), userEntry);
+    	updatePassword(site);
     	
     	final ContactsService myService = new ContactsService("RupalMindfire-AddressApp");
     	myService.setUserCredentials(
@@ -82,6 +76,16 @@ public class GoogleUtil {
         final URL postUrl = new URL("https://www.google.com/m8/feeds/contacts/default/full");
         myService.insert(postUrl, contact);
     }
+
+	public void updatePassword(Site site) throws java.lang.Exception {
+		final AppsForYourDomainClient admin = new AppsForYourDomainClient(
+				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_USER), 
+				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_PASS), 
+				PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN));
+    	final UserEntry userEntry = admin.retrieveUser(ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN));
+    	userEntry.getLogin().setPassword(site.getGmailPass());
+    	admin.updateUser(ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN), userEntry);		
+	}
 	 
 	 
 }

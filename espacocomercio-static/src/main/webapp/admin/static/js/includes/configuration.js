@@ -42,3 +42,7 @@ function uploadSetLogo(urlImg) {
 	$('#iposition').attr('src', urlImg);
 	$('input[name=logo]').val(urlImg);
 }
+
+function alteracaodeloja(data) {
+	alert("Loja virtual alterada com sucesso.", true);
+}

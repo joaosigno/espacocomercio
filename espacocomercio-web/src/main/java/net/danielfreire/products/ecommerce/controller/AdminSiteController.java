@@ -48,7 +48,7 @@ public class AdminSiteController {
 	public @ResponseBody GenericResponse update(final HttpServletRequest request) {
 		GenericResponse resp;
 		try {
-			resp = business.save(request);
+			resp = business.update(request);
 		} catch (Exception e) {
 			resp = PortalTools.getInstance().getRespError(e);
 		}

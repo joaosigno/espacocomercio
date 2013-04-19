@@ -567,6 +567,10 @@ function callback(id, data) {
 			
 			cadastropgto(data);
 			
+		} else if (id=='updateconfiguracoesdaloja') {
+			
+			alteracaodeloja(data);
+			
 		}
 	} else {
 		errorForm(data);

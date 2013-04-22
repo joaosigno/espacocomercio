@@ -39,6 +39,7 @@ function uploadLogo() {
 }
 
 function uploadSetLogo(urlImg) {
+	$('input[name=changeLogo]').val('true');
 	$('#iposition').attr('src', urlImg);
 	$('input[name=logo]').val(urlImg);
 }

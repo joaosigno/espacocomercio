@@ -1,5 +1,7 @@
 package net.danielfreire.products.ecommerce.model.repository;
 
+import java.util.List;
+
 import net.danielfreire.products.ecommerce.model.domain.Product;
 import net.danielfreire.products.ecommerce.model.domain.Site;
 
@@ -11,6 +13,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 	
 	Page<Product> findBySite(Site site, Pageable pageable);
+	
+	List<Product> findBySite(Site site);
 	
 	Product findByKeyUrlAndSite(String keyUrl, Site site);
 	

@@ -15,9 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.danielfreire.products.ecommerce.model.domain.ClientAdmin;
+import net.danielfreire.products.ecommerce.model.domain.Product;
 import net.danielfreire.products.ecommerce.model.domain.Site;
 import net.danielfreire.products.ecommerce.model.repository.ClientAdminRepository;
 import net.danielfreire.products.ecommerce.model.repository.ClientEcommerceRepository;
+import net.danielfreire.products.ecommerce.model.repository.ProductRepository;
 import net.danielfreire.products.ecommerce.model.repository.SiteRepository;
 import net.danielfreire.products.ecommerce.util.EcommerceUtil;
 import net.danielfreire.products.ecommerce.util.GoogleUtil;
@@ -45,6 +47,8 @@ public class SiteBusinessImpl implements SiteBusiness {
 	private transient ClientAdminRepository crepository;
 	@Autowired
 	private transient ClientEcommerceRepository clientRepository;
+	@Autowired
+	private transient ProductRepository productRepo;
 
 	@Override
 	public GenericResponse load(final HttpServletRequest request) throws java.lang.Exception {
@@ -110,7 +114,7 @@ public class SiteBusinessImpl implements SiteBusiness {
 			if (changeLogo) {
 				changeLogo(logo, extension, dirTo.toString());
 			}
-			updateGmailPass(site);
+			updateGmailPass(nameOther, site);
 		} else {
 			resp = PortalTools.getInstance().getRespError(error);
 		}
@@ -118,8 +122,14 @@ public class SiteBusinessImpl implements SiteBusiness {
 		return resp;
 	}
 	
-	private void updateGmailPass(final Site site) throws java.lang.Exception {
-		new GoogleUtil().updatePassword(site);
+	private void updateGmailPass(String nameOther, final Site site) throws java.lang.Exception {
+		if (nameOther.equals(site.getName())) {
+			new GoogleUtil().updatePassword(site);
+		} else {
+			new GoogleUtil().removeGoogleAccount(ConvertTools.getInstance().normalizeString(nameOther));
+			new GoogleUtil().createGoogleAccount(site.getName(), ConvertTools.getInstance().normalizeString(site.getName()));
+			new GoogleUtil().updatePassword(site);
+		}
 	}
 
 	private Map<String, Object> getSite(final HttpServletRequest request, final boolean isInsert) {
@@ -208,6 +218,13 @@ public class SiteBusinessImpl implements SiteBusiness {
 		final Map<String, String> mapProduct = new HashMap<String, String>();
 		mapProduct.put(nameOther + " - Produto", siteNew.getName() + " - Produto");
 		ConvertTools.getInstance().replaceFile(mapProduct, new File(dirTo+"/product/index.html"));
+		
+		final List<Product> products = productRepo.findBySite(siteNew);
+		for (Product prod : products) {
+			prod.setImages(prod.getImages().replaceAll(nameNormaOther, nameNormalize));
+			productRepo.save(prod);
+			EcommerceUtil.getInstance().generateProductCache(prod, siteNew);
+		}
 	}
 
 	private void renameSite(final String nameNormaOther, final String nameNormalize) {
@@ -291,7 +308,7 @@ public class SiteBusinessImpl implements SiteBusiness {
 						final File savedFile = generateGenericFile(photoFile);
 						item.write(savedFile);
 						
-						final String reponseText = "uploadSetLogo('"+finalimage+"');";
+						final String reponseText = "uploadSetLogo('/ecommerce/temp/"+finalimage+"');";
 						
 						response.getWriter().print(reponseText);
 					} else {

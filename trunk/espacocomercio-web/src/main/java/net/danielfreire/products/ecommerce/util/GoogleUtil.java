@@ -41,6 +41,14 @@ public class GoogleUtil {
 		client.createUser(siteIdString, name, "- Espaço Comércio", PortalTools.PASS_AUTH_PATTERN);
 	}
 	
+	public void removeGoogleAccount(final String siteIdString) throws java.lang.Exception {
+		final AppsForYourDomainClient client = new AppsForYourDomainClient(
+				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_USER), 
+				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_PASS), 
+				PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN));
+		client.deleteUser(siteIdString);
+	}
+	
     public void createContact(final Site site, final ClientEcommerce client) throws java.lang.Exception {
     	updatePassword(site);
     	

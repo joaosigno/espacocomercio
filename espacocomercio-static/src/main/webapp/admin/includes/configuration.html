@@ -18,8 +18,10 @@
                         <a data-box="collapse"><i class="icofont-caret-up"></i></a>
                     </div>
                     <ul class="nav nav-tabs" id="tab-stat">
-                    	<li class="active"><a data-toggle="tab" href="#lojavirtual">Loja virtual</a></li>
-                        <li><a id="btnConsultaFrete" data-toggle="tab" href="#usuarios" onclick="loadGrid('/ecommerce-web/admin/user/consult', 'grid', 'formEdit', '/ecommerce-web/admin/user/remove', true);return false;">Usuários</a></li>
+                    	<li class="active"><a data-toggle="tab" href="#lojavirtual" onclick="hideOpcoesMenu();return false;">Loja virtual</a></li>
+                        <li><a id="btnConsultaUsuario" data-toggle="tab" href="#usuarios" onclick="hideOpcoesMenu();loadGrid('/ecommerce-web/admin/user/consult', 'grid', 'formEdit', '/ecommerce-web/admin/user/remove', false, 'editUser');return false;">Usuários</a></li>
+                        <li id="liadicionarusuario" style="display: none;"><a data-toggle="tab" href="#adicionarusuario" id="btnadicionarusuario">Adicionar usuário</a></li>
+                        <li id="lieditarusuario" style="display: none;"><a data-toggle="tab" href="#editarusuario" id="btneditarusuario">Alterar usuário</a></li>
                         <li><a data-toggle="tab" href="#ajuda">Ajuda</a></li>
                     </ul>
                 </div>
@@ -30,9 +32,85 @@
 								<div class="span12">
 									<div class="dashboard-stat">
 										<p>
-									    	<button class="btn pull-right btn-primary" type="button" onclick="location.href='../new';"><i class="icon-user icon-white"></i> Novo usuário</button>
+									    	<button class="btn pull-right btn-primary" type="button" onclick="formAdicionarUsuario();return false;"><i class="icofont-user icon-white"></i> Novo usuário</button>
 									    </p>
 										<div id="grid"></div>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="adicionarusuario">
+                            <div class="row-fluid">
+								<div class="span12">
+									<div class="dashboard-stat">
+										<form id="formCadastroUsuario" class="form-horizontal" style="display: block;padding-top: 40px; padding-bottom: 40px;">
+											<div class="control-group">
+												<label class="control-label">Usuário: <span class="help-block">Digite um e-mail válido para acesso ao sistema.</span></label>
+												<div class="controls" style="text-align: left;">
+													<input name="user" type="text" class="span5" placeholder="Digite um e-mail válido…" maxlength="100" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-user" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Senha: <span class="help-block">A senha deverá conter letras e números.</span></label>
+												<div class="controls" style="text-align: left;">
+													<input name="password" type="password" class="span3" placeholder="Senha…" maxlength="10" style="border: 1px solid #ccc;font-size:16px">
+													<input name="passwordConfirm" type="password" class="span3" placeholder="Confirmar…" maxlength="10" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-password" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Categoria: <span class="help-block">A categoria determina quais permissões o usuário terá no sistema.</span></label>
+												<div class="controls" style="text-align: left;">
+													<select name="permission" class="span5" style="border: 1px solid #ccc;font-size:16px"></select>
+													<span id="spanError-permission" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<div class="controls" style="text-align: left;">
+													<button type="button" class="btn btn-primary" onclick="submitFormAddUsuario();">Salvar</button>
+													<button type="reset" class="btn">Limpar</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="editarusuario">
+                            <div class="row-fluid">
+								<div class="span12">
+									<div class="dashboard-stat">
+										<form id="formEditarCadastroUsuario" class="form-horizontal" style="display: block;padding-top: 40px; padding-bottom: 40px;">
+											<div class="control-group">
+												<label class="control-label">Usuário: <span class="help-block">Digite um e-mail válido para acesso ao sistema.</span></label>
+												<div class="controls" style="text-align: left;">
+													<input name="user" type="text" class="span5" class="input-block-level" placeholder="Digite um e-mail válido…" maxlength="100" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-user" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Senha: <span class="help-block"><input type="checkbox" onclick="alterPasswordEditarUsuario()"> Alterar senha</span></label>
+												<div class="controls" style="text-align: left;">
+													<input name="password" type="password" class="span3" placeholder="Senha…" maxlength="10" disabled style="border: 1px solid #ccc;font-size:16px">
+													<input name="passwordConfirm" type="password" class="span3" placeholder="Confirmar…" maxlength="10" disabled style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-password" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Categoria: <span class="help-block">A categoria determina quais permissões o usuário terá no sistema.</span></label>
+												<div class="controls" style="text-align: left;">
+													<select name="permission" class="span5" style="border: 1px solid #ccc;font-size:16px"></select>
+													<span id="spanError-permission" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<div class="controls" style="text-align: left;">
+													<input type="hidden" name="id">
+													<button type="button" class="btn btn-primary" onclick="submitFormEditUsuario();">Salvar</button>
+												</div>
+											</div>
+										</form>
 									</div>
 								</div>
                             </div>
@@ -41,7 +119,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <div class="dashboard-stat">
-                                    	<form class="form-horizontal" style="display: block;padding-top: 40px; padding-bottom: 40px;">
+                                    	<form id="formLojaVirtual" class="form-horizontal" style="display: block;padding-top: 40px; padding-bottom: 40px;">
 											<div class="control-group">
 												<label class="control-label">Nome do site:</label>
 												<div class="controls" style="text-align: left;">
@@ -103,7 +181,7 @@
 											<div class="control-group">
 												<div class="controls" style="text-align: left;">
 													<input type="hidden" name="changeLogo" value="false">
-													<button type="button" class="btn btn-primary" onclick="postJson('updateconfiguracoesdaloja', '/ecommerce-web/admin/site/update', $('form').serialize());">Salvar</button>
+													<button type="button" class="btn btn-primary" onclick="if (confirm('Você esta ciente que se alterar o nome da loja virtual perderá todos os dados do e-mail atual? Mesmo assim deseja continuar?')) {postJson('updateconfiguracoesdaloja', '/ecommerce-web/admin/site/update', $('form#formLojaVirtual').serialize());}">Salvar</button>
 												</div>
 											</div>
 										</form>

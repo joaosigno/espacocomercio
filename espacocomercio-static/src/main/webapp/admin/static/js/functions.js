@@ -205,10 +205,13 @@ function convertMonth(num) {
 	if (num==12) return "dez";
 }
 
-function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
+function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl, opts) {
 	loading(divId);
 	if (editUrl==undefined || editUrl==null) {
 		editUrl = false;
+	}
+	if (opts==undefined || opts==null) {
+		opts = '';
 	}
 	
 	urlJson = insertParam(urlJson, 'tk', new Date().getTime());
@@ -331,7 +334,9 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl) {
 					
 				}
 				
-				if (!editUrl) {
+				if (opts == 'editUser') {
+					html += '<td style="text-align:center;"><a href="#" onclick="formEditarUsuario(\''+val.id+'\');return false;"><i class="icon-edit"></i></a>';
+				} else if (!editUrl) {
 					html += '<td id="' + idcomp + '" style="text-align:center;"><a href="#" onclick="editTable(\''+val.id+'\', \''+divId+'\', \''+formEditId+'\', \''+urlJson+'\', \''+urlDelete+'\');"><i class="icon-edit"></i></a>';
 				} else {
 					html += '<td style="text-align:center;"><a href="#" onclick="preencheFormularioDeEdicao(\''+val.id+'\');return false;"><i class="icon-edit"></i></a>';
@@ -570,6 +575,14 @@ function callback(id, data) {
 		} else if (id=='updateconfiguracoesdaloja') {
 			
 			alteracaodeloja(data);
+			
+		} else if (id=='adicionarusuario') {
+			
+			cadastrodeusuario(data);
+			
+		} else if (id=='editarusuario') {
+			
+			editardeusuario(data);
 			
 		}
 	} else {

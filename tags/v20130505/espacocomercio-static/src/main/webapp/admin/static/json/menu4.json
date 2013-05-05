@@ -1,0 +1,20 @@
+{
+    "title": "Administração",
+	"menus": {
+        "Home": {
+        	"id": "home",
+        	"icon": "icofont-bar-chart",
+        	"url": "loadHome();return false;"
+        },
+        "Categorias": {
+        	"id": "category",
+        	"icon": "icofont-reorder",
+        	"url": "loadCategory();return false;"
+        },
+        "Produtos": {
+        	"id": "product",
+        	"icon": "icofont-barcode",
+        	"url": "loadProduct();return false;"
+        }
+    }
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>Administração - EspaçoComércio.com.br</title>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="Daniel Freire">
+
+        <!-- styles -->
+        <link href="/ecommerce/admin/static/css/fonts.css" rel="stylesheet">
+        <link href="/ecommerce/admin/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/ecommerce/admin/static/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="/ecommerce/admin/static/css/style.css" rel="stylesheet">
+        <link href="/ecommerce/admin/static/css/style-responsive.css" rel="stylesheet">
+        <link href="/ecommerce/admin/static/css/style-helper.css" rel="stylesheet">
+        <link href="/ecommerce/admin/static/css/style-icon.css" rel="stylesheet">
+        <link href="/ecommerce/admin/static/css/font-awesome.css" rel="stylesheet">
+        <link href="/ecommerce/admin/static/css/animate.css" rel="stylesheet">
+        <link href="/ecommerce/admin/static/css/uniform.default.css" rel="stylesheet">
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="/ecommerce/admin/static/js/html5.js"></script>
+        <![endif]-->
+	</head>
+
+    <body>
+        <header class="header">
+            <div class="navbar-helper">
+                <div class="row-fluid">
+                
+                    <div class="span2">
+                        <div class="panel-sitename">
+                            <h2><a href="/ecommerce/admin"><span class="color-teal">Espaço</span>Comércio</a></h2>
+                        </div>
+                    </div>
+
+                    <div class="span6"><!-- for search --></div>
+                    
+                    <div class="span4">
+                        <div class="panel-ext">
+                        
+                            <div class="btn-group">
+                                <a class="btn btn-danger btn-small" data-toggle="dropdown" href="#" title="Mensagens" id="newMessagesCount"></a>
+                                <ul class="dropdown-menu dropdown-notification">
+                                    <li class="dropdown-header grd-white">
+                                    	<a href="https://www.google.com/a/espacocomercio.com.br/ServiceLogin" target="_blank">Mensagens</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="btn-group">
+                                <a class="btn btn-inverse btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Ir para
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <li><a id="aToLoja" tabindex="-1" href="/ecommerce/" target="_blank">Loja</a></li>
+                                    <li><a id="aToEmail" tabindex="-1" href="https://www.google.com/a/espacocomercio.com.br/ServiceLogin?Email=" target="_blank">E-mail</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="btn-group user-group">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <img class="corner-all" align="middle" src="/ecommerce/admin/static/img/user-thumb.jpg" title="Perfil" alt="Perfil">
+                                    <button class="btn btn-small btn-inverse">Perfil</button>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user" role="menu" aria-labelledby="dLabel">
+                                    <li>
+                                        <div class="media">
+                                            <a class="pull-left" href="#">
+                                                <img class="img-circle" src="/ecommerce/admin/static/img/user.jpg" title="perfil" alt="perfil">
+                                            </a>
+                                            <div class="media-body description">
+                                                <p><strong>Perfil</strong></p>
+                                                <p class="muted"><span id="spanEmailPerfil"></span></p>
+                                                <a href="#" onclick="loadConfiguration();return false;" class="btn btn-primary btn-small btn-block">Configurar</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="dropdown-footer">
+                                        <div>
+                                            <a class="btn btn-small pull-right" href="/ecommerce-web/admin/logout">Sair</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="section">
+        	<div class="row-fluid">
+    			<div class="span1" id="divAdminMenu"><!-- Menu --></div>
+    			
+    			<div id="contentAll"></div>
+    		</div>
+        </section>
+
+        <footer>
+            <a rel="to-top" href="#top"><i class="icofont-circle-arrow-up"></i></a>
+        </footer>
+
+        <script src="/ecommerce/admin/static/js/jquery.js"></script>
+        <script src="/ecommerce/admin/static/js/jquery-ui.min.js"></script>
+        <script src="/ecommerce/admin/static/js/bootstrap.js"></script>
+        <script src="/ecommerce/admin/static/js/jquery.peity.js"></script>
+
+        <script src="/ecommerce/admin/static/js/jquery.flot.js"></script>
+        <script src="/ecommerce/admin/static/js/jquery.flot.pie.js"></script>
+        <script src="/ecommerce/admin/static/js/jquery.flot.resize.js"></script>
+        <script src="/ecommerce/admin/static/js/jquery.flot.categories.js"></script>
+
+        <script src="/ecommerce/admin/static/js/holder.js"></script>
+        <script src="/library/js/jquery.maskmoney.min.js"></script>
+		<script src="/library/js/jquery.maskedinput-1.3.min.js"></script>
+		<script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script>
+		<script src="/library/js/jquery.form.js"></script>
+		
+        <script src="/ecommerce/admin/static/js/functions.js"></script>
+        <script src="/ecommerce/admin/static/js/includes/product.js"></script>
+        <script src="/ecommerce/admin/static/js/includes/category.js"></script>
+        <script src="/ecommerce/admin/static/js/includes/finance.js"></script>
+        <script src="/ecommerce/admin/static/js/includes/home.js"></script>
+        <script src="/ecommerce/admin/static/js/includes/frete.js"></script>
+        <script src="/ecommerce/admin/static/js/includes/payment.js"></script>
+        <script src="/ecommerce/admin/static/js/includes/configuration.js"></script>
+        <script src="/ecommerce/admin/static/js/includes/client.js"></script>
+        <script src="/ecommerce/admin/static/js/includes/order.js"></script>
+        
+        <script type="text/javascript">
+        	loadMenuAdmin();
+        	loadHome();
+        	window.setInterval('checkMessages()', 600000);
+        </script>
+        
+	</body>
+</html>

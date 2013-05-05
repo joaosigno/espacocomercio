@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Pedidos</title>
+</head>
+<body>
+<div class="span11">
+    <div class="content">
+        <div class="content-header">
+            <ul class="content-header-action pull-right">
+                <li>
+                    <a href="#">
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A600&quot;, &quot;#00A600&quot;]" style="display: none;">5,3,9,6,5,9,7,3,5,2</span>
+                        <div class="action-text color-green"><span id="spanAguardandoPagamento">0</span> <span class="helper-font-small color-silver-dark">Aguardando pagamento</span></div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#">
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A0B1&quot;, &quot;#00A0B1&quot;]" style="display: none;">9,7,9,6,3,5,3,5,5,2</span>
+                        <div class="action-text color-teal"><span id="spanPagamentoConfirmado">0</span> <span class="helper-font-small color-silver-dark">Pagamento confirmado</span></div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#">
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A0B1&quot;, &quot;#00A0B1&quot;]" style="display: none;">9,7,9,6,3,5,3,5,5,2</span>
+                        <div class="action-text color-teal"><span id="spanEnviadosEFinalizados">0</span> <span class="helper-font-small color-silver-dark">Enviados / Finalizados</span></div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#">
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#BF1E4B&quot;, &quot;#BF1E4B&quot;]" style="display: none;">6,5,9,7,3,5,2,5,3,9</span>
+                        <div class="action-text color-red"><span id="spanCancelados">0</span> <span class="helper-font-small color-silver-dark">Cancelados</span></div>
+                    </a>
+                </li>
+            </ul>
+            <h2><i class="icofont-home"></i> <span id="spanTitleEcommerce"></span> <small> Pedidos</small></h2>
+        </div>
+        
+        <div class="content-body">
+            <div class="box-tab corner-all" id="box-tab-Category">
+                <div class="box-header corner-top">
+                    <div class="header-control pull-right">
+                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                    </div>
+                    <ul class="nav nav-tabs" id="tab-stat">
+                        <li class="active"><a data-toggle="tab" href="#pedidoscadastrados" onclick="loadGrid('/ecommerce-web/admin/order/consult', 'grid', 'formEdit', '');return false;">Pedidos cadastrados</a></li>
+                    </ul>
+                </div>
+                <div class="box-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="pedidoscadastrados">
+                            <div class="row-fluid">
+								<div class="span12">
+									<div class="dashboard-stat">
+										<div class="input-append" style="text-align: left; padding-top: 20px;padding-left: 20px;">
+										  	<button class="btn" type="button" onclick="fnPesquisarClient();return false;"><i class="icon-search"></i></button>
+										</div>
+										<div id="grid"></div>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display: none;">
+	<form id="formEdit" action="/ecommerce-web/admin/order/update">
+		<input name="id" type="hidden">
+		<input name="discount" type="text">
+		<input name="sendCust" type="text">
+		<select name="statusOrder"></select>
+		<select name="payment"></select>
+	</form>
+</div>
+
+<div id="modalProducts" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Produtos comprados</h3>
+	</div>
+	<div class="modal-body">
+		<table class="table table-striped" id="tbProductCesta">
+		  <thead>
+		    <tr>
+		      <th>Produto</th>
+		      <th>Quantidade</th>
+		      <th>Valor Unitário</th>
+		    </tr>
+		  </thead>
+		  <tbody></tbody>
+		</table>
+	</div>
+	<div class="modal-footer">
+		Frete: <span id="freteValueSpan"></span><br>
+		Desconto: <span id="descValueSpan"></span><br>
+		Valor Total: <span id="totalValueSpan"></span>
+	</div>
+</div>
+
+<div id="modalClient" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Dados do cliente</h3>
+	</div>
+	<div class="modal-body">
+		<table class="table table-striped" id="tbClientOrder">
+		  <tbody>
+		    <tr>
+		      <td>Nome:</td>
+		      <td id="tdNomeClient"></td>
+		    </tr>
+		    <tr>
+		      <td>Email:</td>
+		      <td id="tdEmailClient"></td>
+		    </tr>
+		    <tr>
+		      <td>Telefone:</td>
+		      <td id="tdFoneClient"></td>
+		    </tr>
+		    <tr>
+		      <td>Endereço:</td>
+		      <td id="tdEnderecoClient"></td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

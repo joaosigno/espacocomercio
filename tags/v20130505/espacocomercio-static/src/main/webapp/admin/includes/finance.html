@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Finanças</title>
+</head>
+<body>
+<div class="span9">
+    <div class="content">
+        <div class="content-header">
+            <ul class="content-header-action pull-right">
+                <li>
+                    <a href="#">
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A600&quot;, &quot;#00A600&quot;]" style="display: none;">5,3,9,6,5,9,7,3,5,2</span>
+                        <div class="action-text color-green"><span id="spanVisitsTotal">0</span> <span class="helper-font-small color-silver-dark">Receitas</span></div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#">
+                        <canvas height="32" width="32"></canvas>
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#BF1E4B&quot;, &quot;#BF1E4B&quot;]" style="display: none;">6,5,9,7,3,5,2,5,3,9</span>
+                        <div class="action-text color-red"><span id="spanOrdersTotal">0</span> <span class="helper-font-small color-silver-dark">Despesas</span></div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#">
+                        <canvas height="32" width="32"></canvas>
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A0B1&quot;, &quot;#00A0B1&quot;]" style="display: none;">9,7,9,6,3,5,3,5,5,2</span>
+                        <div class="action-text color-teal"><span id="spanClientsTotal">0</span> <span class="helper-font-small color-silver-dark">Saldo</span></div>
+                    </a>
+                </li>
+                
+            </ul>
+            <h2><i class="icofont-home"></i> <span id="spanTitleEcommerce"></span> <small> Finanças</small></h2>
+        </div>
+        
+        <div class="content-body">
+            <div class="box-tab corner-all">
+                <div class="box-header corner-top">
+                    <div class="header-control pull-right">
+                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                    </div>
+                    <ul class="nav nav-tabs" id="tab-stat">
+                        <li class="active"><a data-toggle="tab" href="#relatorios">Relatórios</a></li>
+                        <li><a data-toggle="tab" href="#extratos" id="clickExtrato">Extrato</a></li>
+                        <li><a data-toggle="tab" href="#fluxodecaixa">Fluxo de caixa</a></li>
+                    </ul>
+                </div>
+                <div class="box-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="relatorios">
+                            <div class="row-fluid">
+<!--                                 <div class="span4"> -->
+<!--                                     <div class="dashboard-stat"> -->
+<!--                                         <div id="receitas-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div> -->
+<!--                                         <div class="stat-label grd-green color-white">Receitas</div> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                                 <div class="span4"> -->
+<!--                                     <div class="dashboard-stat"> -->
+<!--                                         <div id="despesas-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div> -->
+<!--                                         <div class="stat-label grd-red color-white">Despesas</div> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                                 <div class="span4"> -->
+<!--                                     <div class="dashboard-stat"> -->
+<!--                                         <div id="saldo-stat" class="chart" style="height: 120px; padding: 0px; position: relative;"></div> -->
+<!--                                         <div class="stat-label grd-teal color-white">Saldo</div> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+								<div class="span12">
+									<div class="dashboard-stat">
+									Em construção
+									</div>
+								</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="extratos">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="dashboard-stat">
+                                    Em construção
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="fluxodecaixa">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="dashboard-stat">
+                                    Em construção
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="span2">
+    <aside class="side-right" style="top: 60px;">
+        <div class="sidebar-right">
+            <div class="sidebar-right-header">
+                <div class="sr-header-left">
+                    <p class="bold">Extrato rápido</p>
+                    <a href="#" onclick="$('a#clickExtrato').click(); return false;"><small class="muted">Ver todos</small></a>
+                </div>
+            </div>
+            <div class="sidebar-right-content">
+                <div class="tab-content">
+                   
+                    <div class="tab-pane fade active in" id="extratorapido">
+                        <div class="side-contact">
+                            <ul class="contact-list" id="ulExtrato"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+</body>
+</html>

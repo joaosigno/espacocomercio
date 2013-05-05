@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Frete</title>
+</head>
+<body>
+<div class="span11">
+    <div class="content">
+        <div class="content-header">
+            <h2><i class="icofont-home"></i> <span id="spanTitleEcommerce"></span> <small> Formas de pagamento</small></h2>
+        </div>
+        
+        <div class="content-body">
+            <div class="box-tab corner-all" id="box-tab-Category">
+                <div class="box-header corner-top">
+                    <div class="header-control pull-right">
+                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                    </div>
+                    <ul class="nav nav-tabs" id="tab-stat">
+                        <li class="active"><a id="btnConsultaPgto" data-toggle="tab" href="#pgtocadastradas" onclick="loadGrid('/ecommerce-web/admin/payment/consult', 'grid', 'formEdit', '/ecommerce-web/admin/payment/remove');return false;">Formas de pagamento cadastrados</a></li>
+                        <li><a data-toggle="tab" href="#adicionarpgto">Adicionar forma de pagamento</a></li>
+                    </ul>
+                </div>
+                <div class="box-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="pgtocadastradas">
+                            <div class="row-fluid">
+								<div class="span12">
+									<div class="dashboard-stat">
+										<div id="grid"></div>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="adicionarpgto">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="dashboard-stat">
+                                    	<form class="form-horizontal" style="display: block;padding-top: 40px; padding-bottom: 40px;">
+											<div class="control-group">
+												<label class="control-label">Tipo:</label>
+												<div class="controls" style="text-align: left;">
+													<select name="name" style="border: 1px solid #ccc;font-size:16px">
+														<option>PagSeguro</option>
+													</select>
+													<span id="spanError-name" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Descrição:</label>
+												<div class="controls" style="text-align: left;">
+													<input name="description" type="text" class="input-block-level" placeholder="Descrição da forma de pagamento…" maxlength="255" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-description" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">E-mail:</label>
+												<div class="controls" style="text-align: left;">
+													<input name="url" type="text" class="input-block-level" placeholder="E-mail cadastrado no PagSeguro…" maxlength="255" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-url" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<div class="controls" style="text-align: left;">
+													<button type="button" class="btn btn-primary" onclick="postJson('formadepagamento_insert', '/ecommerce-web/admin/payment/insert', $('form').serialize());">Salvar</button>
+													<button type="reset" class="btn">Limpar</button>
+												</div>
+											</div>
+										</form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display: none;">
+	<form id="formEdit" action="/ecommerce-web/admin/payment/insert">
+		<input name="id" type="hidden">
+		<select name="name">
+			<option>PagSeguro</option>
+		</select>
+		<input name="description" type="text">
+		<input name="url" type="text">
+	</form>
+</div>
+</body>
+</html>

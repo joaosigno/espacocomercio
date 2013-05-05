@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Produtos</title>
+</head>
+<body>
+<div class="span9">
+    <div class="content">
+        <div class="content-header">
+            <ul class="content-header-action pull-right">
+                <li>
+                    <a href="#">
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A600&quot;, &quot;#00A600&quot;]" style="display: none;">5,3,9,6,5,9,7,3,5,2</span>
+                        <div class="action-text color-green"><span id="spanProductsTotal">0</span> <span class="helper-font-small color-silver-dark">Produtos</span></div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="#">
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#BF1E4B&quot;, &quot;#BF1E4B&quot;]" style="display: none;">6,5,9,7,3,5,2,5,3,9</span>
+                        <div class="action-text color-red"><span id="spanProductsSemEstoqueTotal">0</span> <span class="helper-font-small color-silver-dark">Sem estoque</span></div>
+                    </a>
+                </li>
+            </ul>
+            <h2><i class="icofont-home"></i> <span id="spanTitleEcommerce"></span> <small> Produtos</small></h2>
+        </div>
+        
+        <div class="content-body">
+            <div class="box-tab corner-all" id="box-tab-Category">
+                <div class="box-header corner-top">
+                    <div class="header-control pull-right">
+                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                    </div>
+                    <ul class="nav nav-tabs" id="tab-stat">
+                        <li class="active"><a data-toggle="tab" href="#dashboard" onclick="cancelaFormularioDeEdicao(); relatProductPage(); return false;">Dashboard</a></li>
+                        <li><a data-toggle="tab" href="#produtoscadastrados" id="btnprodutoscadastrados" onclick="cancelaFormularioDeEdicao(); loadGridProduct(); return false;">Produtos cadastrados</a></li>
+                        <li><a data-toggle="tab" href="#adicionarproduto" onclick="cancelaFormularioDeEdicao(); return false;">Adicionar produto</a></li>
+                        <li id="lieditarproduto" style="display: none;"><a data-toggle="tab" href="#adicionarproduto" id="btneditarproduto">Alterar produto</a></li>
+                    </ul>
+                </div>
+                <div class="box-body">
+                    <div class="tab-content">
+                    	<div class="tab-pane fade in active" id="dashboard">
+                            <div class="row-fluid">
+								<div class="span12">
+									<div class="dashboard-stat" id="divRelat"></div>
+								</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade in active" id="produtoscadastrados">
+                            <div class="row-fluid">
+								<div class="span12">
+									<div class="dashboard-stat">
+										<div class="input-append" style="text-align: left; padding-top: 20px;padding-left: 20px;">
+										  	<input id="inputPesquisar" class="span4" id="appendedInputButtons" placeholder="Pesquisar" type="text" style="border: 1px solid #ccc;font-size:14px">
+										  	<button class="btn" type="button" onclick="fnPesquisarProduto();return false;"><i class="icon-search"></i></button>
+										</div>
+									
+										<div id="grid"></div>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="adicionarproduto">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="dashboard-stat">
+                                    	<div id="processamentoeditarproduto" style="display:none;"></div>
+                                    	<form class="form-horizontal" style="display: block;padding-top: 40px; padding-bottom: 40px;" id="formulariocadastroproduto">
+											<div class="control-group">
+												<label class="control-label">Imagens: <span class="help-block">Click nas imagens ao lado para substituir por imagens que represente o produto.</span><span id="spanError-images" class="help-inline"></span></label>
+												<div class="controls" id="imagesDivUpload" style="text-align: left;"></div>
+												<input type="hidden" name="images" value="" id="imagesForm">
+											</div>
+											<div class="control-group">
+												<label class="control-label">Nome:</label>
+												<div class="controls" style="text-align: left;">
+													<input name="name" type="text" class="input-block-level" placeholder="Nome do produto…" maxlength="45" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-name" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Categorias: <span class="help-block">Click no botão "Adicionar" para atribuir categorias ao produto.</span><span id="spanError-category" class="help-inline"></span></label>
+												<div class="controls" style="text-align: left;">
+													<select id="comboCategory" class="span3"></select><button class="btn" type="button" onclick="addCategory()">Adicionar</button>
+													<div id="selectedsCategory"></div>
+													<input type="hidden" name="category" value="" id="category">
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Introdução:</label>
+												<div class="controls" style="text-align: left;">
+													<input name="introduction" type="text" class="input-block-level" placeholder="Introdução do produto…" maxlength="255" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-introduction" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Descrição:</label>
+												<div class="controls" style="text-align: left;">
+													<textarea name="description" class="input-block-level" placeholder="Descrição da categoria…"></textarea>
+													<span id="spanError-description" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Quantidade:</label>
+												<div class="controls" style="text-align: left;">
+													<input name="quantity" type="text" class="span3" placeholder="Quantidade…" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-quantity" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Quantidade por frete: <span class="help-block">Quantidade de produtos para cada frete cobrado (Exemplo: 1 frete = 10 produtos)</span></label>
+												<div class="controls" style="text-align: left;">
+													<input name="quantityFrete" type="text" class="span3" placeholder="Quantidade…" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-quantityFrete" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Valor:</label>
+												<div class="controls" style="text-align: left;">
+													<input name="unityvalue" type="text" class="span3" placeholder="Valor unitário…" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-unityvalue" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<div class="controls" style="text-align: left;">
+													<input type="hidden" name="id" value="">
+													<button type="button" class="btn btn-primary" onclick="preencheTextArea();postJson('cadatrodeprodutos_insert', '/ecommerce-web/admin/product/insert', $('form#formulariocadastroproduto').serialize());">Salvar</button>
+													<button type="reset" class="btn" id="btnlimpaformulario" onclick="preencheImages();cleanCategory();limpaTA();">Limpar</button>
+												</div>
+											</div>
+										</form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="span2">
+    <aside class="side-right" style="top: 60px;">
+        <div class="sidebar-right">
+            <div class="sidebar-right-header">
+                <div class="sr-header-left">
+                    <p class="bold">Produtos sem estoque</p>
+                </div>
+            </div>
+            <div class="sidebar-right-content">
+                <div class="tab-content">
+                   
+                    <div class="tab-pane fade active in" id="pedidos">
+                        <div class="side-contact">
+                            <ul class="contact-list" id="ulProdutosSemEstoque"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<div style="display: none;">
+	<form action="/ecommerce-web/admin/product/upload" id="form_upload" enctype="multipart/form-data" method="post">
+		<input type="file" name="uploadFile" id="uploadFile" accept="image/*">
+		<input type="hidden" name="positionFile" id="positionFile">
+		<input type="button" id="alertError" onclick="alert(this.value, false)">
+	</form>
+	<div id="upload_target"></div>
+</div>
+</body>
+</html>

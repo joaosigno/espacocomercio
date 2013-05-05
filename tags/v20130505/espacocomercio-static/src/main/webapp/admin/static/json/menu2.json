@@ -1,0 +1,50 @@
+{
+    "title": "Administração",
+	"menus": {
+        "Home": {
+        	"id": "home",
+        	"icon": "icofont-bar-chart",
+        	"url": "loadHome();return false;"
+        },
+        "Finanças": {
+        	"id": "finance",
+        	"icon": "icofont-briefcase",
+        	"url": "loadFinance();return false;"
+        },
+        "Clientes": {
+        	"id": "client",
+        	"icon": "icofont-user",
+        	"url": "loadClient();return false;"
+        },
+        "Categorias": {
+        	"id": "category",
+        	"icon": "icofont-reorder",
+        	"url": "loadCategory();return false;"
+        },
+        "Produtos": {
+        	"id": "product",
+        	"icon": "icofont-barcode",
+        	"url": "loadProduct();return false;"
+        },
+        "Pedidos": {
+        	"id": "order",
+        	"icon": "icofont-edit",
+        	"url": "loadOrderPage();return false;"
+        },
+        "Frete": {
+        	"id": "send",
+        	"icon": "icofont-dashboard",
+        	"url": "loadFrete();return false;"
+        },
+        "Formas de pgto": {
+        	"id": "payment",
+        	"icon": "icofont-money",
+        	"url": "loadPayment();return false;"
+        },
+        "Configurações": {
+        	"id": "config",
+        	"icon": "icofont-lock",
+        	"url": "loadConfiguration();return false;"
+        }
+    }
+}

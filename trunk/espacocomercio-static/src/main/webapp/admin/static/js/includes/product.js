@@ -315,3 +315,12 @@ function preencheInitCategory(dataList) {
 		genericAddCategory(val.category.name, val.category.id);
 	});
 }
+
+function fnPesquisarProduto() {
+	var inputPesquisar = $('input#inputPesquisar').val();
+	if (inputPesquisar=='') {
+		loadGrid('/ecommerce-web/admin/product/consult', 'grid', 'formEdit', '/ecommerce-web/admin/product/remove', true);
+	} else {
+		loadGrid('/ecommerce-web/admin/product/consult?filter='+inputPesquisar, 'grid', 'formEdit', '/ecommerce-web/admin/product/remove', true);
+	}
+}

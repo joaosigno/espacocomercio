@@ -13,22 +13,25 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ClientEcommerceRepository extends JpaRepository<ClientEcommerce, Integer> {
 	
-	public Page<ClientEcommerce> findBySite(Site site, Pageable p);
+	Page<ClientEcommerce> findBySite(Site site, Pageable pageable);
 	
-	public List<ClientEcommerce> findBySite(Site site);
+	@Query("select p from ClientEcommerce p where p.site = ?1 and (p.name like ?2 OR p.user like ?2 OR p.addressStreet like ?2 OR p.addressCity like ?2)")
+	Page<ClientEcommerce> findBySite(Site site, String filter, Pageable pageable);
 	
-	public List<ClientEcommerce> findBySiteAndCreationDateGreaterThanAndCreationDateLessThan(Site site, Calendar dtIni, Calendar dtEnd);
+	List<ClientEcommerce> findBySite(Site site);
+	
+	List<ClientEcommerce> findBySiteAndCreationDateGreaterThanAndCreationDateLessThan(Site site, Calendar dtIni, Calendar dtEnd);
 	
 	@Query("select count(id) from ClientEcommerce where site = ?1")
-	public Long countBySite(Site site);
+	Long countBySite(Site site);
 	
-	public ClientEcommerce findBySiteAndUser(Site site, String user);
+	ClientEcommerce findBySiteAndUser(Site site, String user);
 	
-	public List<ClientEcommerce> findByUserAndPassword(String user, String password);
+	List<ClientEcommerce> findByUserAndPassword(String user, String password);
 
-	public ClientEcommerce findBySiteAndUserAndPassword(Site site, String user, String password);
+	ClientEcommerce findBySiteAndUserAndPassword(Site site, String user, String password);
 
 	@Query("select count(id) from ClientEcommerce where site = ?1 and creationDate >= ?2")
-	public Long countBySiteAndCreationDateGreaterThan(Site site, Calendar dtInit);
+	Long countBySiteAndCreationDateGreaterThan(Site site, Calendar dtInit);
 
 }

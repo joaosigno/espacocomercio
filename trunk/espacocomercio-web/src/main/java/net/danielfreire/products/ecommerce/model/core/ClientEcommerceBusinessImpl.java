@@ -355,6 +355,11 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 		response.getWriter().print("<html><head><title>Cadastro ativado com sucesso</title></head><body><script>alert('Seu cadastro foi concluído com sucesso.'); location.href='/ecommerce/"+ConvertTools.getInstance().normalizeString(client.getSite().getName())+"';</script></body></html>");
 	}
 
+	@Override
+	public ClientEcommerce getClient(final Integer oid) {
+		return repository.findOne(oid);
+	}
+
 }
 
 

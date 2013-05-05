@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.danielfreire.products.ecommerce.model.domain.ClientEcommerce;
 import net.danielfreire.util.GenericResponse;
 
 public interface ClientEcommerceBusiness {
@@ -26,4 +27,6 @@ public interface ClientEcommerceBusiness {
 	void clearSession(HttpServletRequest request) throws java.lang.Exception;
 
 	void active(HttpServletRequest request, HttpServletResponse response) throws java.lang.Exception;
+
+	ClientEcommerce getClient(Integer oid);
 }

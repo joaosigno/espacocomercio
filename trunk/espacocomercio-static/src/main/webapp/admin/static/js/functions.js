@@ -6,6 +6,7 @@ function loadMenuAdmin() {
 			titlePage = data.generic[1];
 			$('span#spanEmailPerfil').text(data.generic[2]);
 			$('a#aToLoja').attr('href', '/ecommerce/'+data.generic[3]);
+			$('a#aToEmail').attr('href', 'https://www.google.com/a/espacocomercio.com.br/ServiceLogin?Email='+normalizeStringToURL(titlePage));
 		} else {
 			errorForm(data)
 		}
@@ -116,7 +117,9 @@ function activePlugins() {
         }
     });
     
-    $("span[data-chart=peity-bar]").peity("bar");
+    if ($('div.content-header-action').find('canvas').size()==0) {
+    	$("span[data-chart=peity-bar]").peity("bar");
+    }
 }
 
 function loading(divId) {
@@ -304,6 +307,8 @@ function loadGrid(urlJson, divId, formEditId, urlDelete, editUrl, opts) {
 						html += '<td id="' + idcomp + menu[e] + '">'+getLblPermissions(val[menu[e]].toString())+'</td>';
 					} else if (menu[e]=='address') { 
 						html += '<td style="text-align: center"><a href="#" onclick="viewAddress(\''+val.addressStreet+'\', \''+val.addressCity+'\', \''+val.addressZipcode+'\', \''+val.addressNumber+'\', \''+val.addressComplement+'\');"><i class="icon-plus"></i></a></td>';
+					} else if (menu[e]=='clientOrderData') { 
+						html += '<td style="text-align: center"><a href="#" onclick="viewClientModal(\''+val.client.id+'\');" style="text-decoration: underline">'+val.client.id+'-'+(val.client.name).split(' ')[0]+'</a></td>';
 					} else {
 						if(typeof(val[menu[e]]) == "string"){
 							if (val[menu[e]]!=undefined && val[menu[e]]!=null) {
@@ -419,6 +424,20 @@ function getLblOrderStatus(id) {
 	} 
 }
 
+function getIdOrderStatus(id) {
+	if (id=="Aguardando pagamento") {
+		return '1';
+	} else if (id=='Pagamento confirmado') {
+		return "2";
+	} else if (id=='Enviado (em trânsito)') {
+		return "3";
+	} else if (id=='Concluído') {
+		return "4";
+	} else if (id=='Cancelado') {
+		return "5";
+	} 
+}
+
 function getLblPermissions(id) {
 	if (id==2) {
 		return "1. Administrador da empresa.";
@@ -463,11 +482,11 @@ function editTable(id, divId, formId, urlJson, urlDelete) {
 			
 			if ($(this).attr('type')=='text') {
 				if (clas.indexOf('datePickerInput')!=-1) {
-					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level datePickerInput" style="border: 1px solid #ccc;">');
+					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level datePickerInput" style="border: 1px solid #ccc;font-size: 14px;">');
 				} else if (tdvalue.indexOf('R$ ')!=-1) {
-					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+(tdvalue.replace('R$ ', ''))+'" class="input-block-level money" style="border: 1px solid #ccc;">');
+					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+(tdvalue.replace('R$ ', ''))+'" class="input-block-level money" style="border: 1px solid #ccc;font-size: 14px;">');
 				} else {
-					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level" style="border: 1px solid #ccc;">');
+					$('td#'+idtk).html('<input type="text" id="input'+idtk+'" value="'+tdvalue+'" class="input-block-level" style="border: 1px solid #ccc;font-size: 14px;">');
 				}
 			}
 		}
@@ -479,7 +498,7 @@ function editTable(id, divId, formId, urlJson, urlDelete) {
 		
 		$(this).val(tdvalue);
 		
-		$('td#'+idtk).html('<select id="select'+idtk+'" class="input-block-level" style="border: 1px solid #ccc;">' + $(this).html() + '</select>');
+		$('td#'+idtk).html('<select id="select'+idtk+'" class="input-block-level" style="border: 1px solid #ccc;font-size: 14px;">' + $(this).html() + '</select>');
 		
 		if (idtk=='grid1statusOrder') {
 			$('#select'+idtk).val(getIdOrderStatus(tdvalue));

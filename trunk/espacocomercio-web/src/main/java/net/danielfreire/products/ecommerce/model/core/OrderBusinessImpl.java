@@ -14,7 +14,6 @@ import net.danielfreire.products.ecommerce.model.domain.Order;
 import net.danielfreire.products.ecommerce.model.domain.Payment;
 import net.danielfreire.products.ecommerce.model.domain.Product;
 import net.danielfreire.products.ecommerce.model.domain.ProductHasOrder;
-import net.danielfreire.products.ecommerce.model.repository.ClientEcommerceRepository;
 import net.danielfreire.products.ecommerce.model.repository.OrderRepository;
 import net.danielfreire.products.ecommerce.model.repository.PaymentRepository;
 import net.danielfreire.products.ecommerce.model.repository.ProductHasOrderRepository;
@@ -39,8 +38,6 @@ public class OrderBusinessImpl implements OrderBusiness {
 	private static final String LBL_DATE = "dateCreate";
 	@Autowired
 	private transient OrderRepository repository;
-	@Autowired
-	private transient ClientEcommerceRepository clientRepository;
 	@Autowired
 	private transient ProductHasOrderRepository pHasOrderRepo;
 	@Autowired
@@ -81,33 +78,27 @@ public class OrderBusinessImpl implements OrderBusiness {
 
 	@Override
 	public GridResponse consult(final HttpServletRequest request) throws java.lang.Exception {
-		GridResponse resp = new GridResponse();
 		final String page = request.getParameter("page");
-		final String clientId = request.getParameter("cid");
 		
-		final ClientEcommerce client = clientRepository.findOne(Integer.parseInt(clientId));
-		if (client.getSite().getId()==EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getId()) {
-			int pagination = 0;
-			if (ValidateTools.getInstancia().isNumber(page)) {
-				pagination = Integer.parseInt(page)-1;
-			} 
-			
-			final ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
-			titles.add(PortalTools.getInstance().getRowGrid("payment", "Forma de pgto", LBL_TEXT));
-			titles.add(PortalTools.getInstance().getRowGrid(LBL_DATE, "Data de criação", LBL_TEXT));
-			titles.add(PortalTools.getInstance().getRowGrid("datePayment", "Data de pgto", LBL_TEXT));
-			titles.add(PortalTools.getInstance().getRowGrid("statusOrder", "Status", LBL_TEXT));
-			titles.add(PortalTools.getInstance().getRowGrid("sendCust", "Custo de envio", LBL_TEXT));
-			titles.add(PortalTools.getInstance().getRowGrid("discount", "Desconto", LBL_TEXT));
-			titles.add(PortalTools.getInstance().getRowGrid("totalValue", "Valor total", LBL_TEXT));
-			titles.add(PortalTools.getInstance().getRowGrid("cesta", "Produtos", LBL_TEXT));
-			
-			final Page<Order> pageable = repository.findByClient(client, new PageRequest(pagination, 10));
-			
-			resp = PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
-		}
+		int pagination = 0;
+		if (ValidateTools.getInstancia().isNumber(page)) {
+			pagination = Integer.parseInt(page)-1;
+		} 
 		
-		return resp;
+		final ArrayList<GridTitleResponse> titles = new ArrayList<GridTitleResponse>();
+		titles.add(PortalTools.getInstance().getRowGrid("clientOrderData", "Cliente", LBL_TEXT));
+		titles.add(PortalTools.getInstance().getRowGrid("payment", "Forma de pgto", LBL_TEXT));
+		titles.add(PortalTools.getInstance().getRowGrid(LBL_DATE, "Data de criação", LBL_TEXT));
+		titles.add(PortalTools.getInstance().getRowGrid("datePayment", "Data de pgto", LBL_TEXT));
+		titles.add(PortalTools.getInstance().getRowGrid("statusOrder", "Status", LBL_TEXT));
+		titles.add(PortalTools.getInstance().getRowGrid("sendCust", "Custo de envio", LBL_TEXT));
+		titles.add(PortalTools.getInstance().getRowGrid("discount", "Desconto", LBL_TEXT));
+		titles.add(PortalTools.getInstance().getRowGrid("totalValue", "Valor total", LBL_TEXT));
+		titles.add(PortalTools.getInstance().getRowGrid("cesta", "Produtos", LBL_TEXT));
+		
+		final Page<Order> pageable = repository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), new PageRequest(pagination, 10, Direction.DESC, LBL_DATE));
+		
+		return PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
 	}
 
 	@Override
@@ -155,6 +146,7 @@ public class OrderBusinessImpl implements OrderBusiness {
 			order.setSendCust(send);
 			order.setStatusOrder(1);
 			order.setTotalValue(total);
+			order.setSite(client.getSite());
 			
 			order = repository.saveAndFlush(order);
 			
@@ -267,12 +259,18 @@ public class OrderBusinessImpl implements OrderBusiness {
 		final ClientAdmin user = EcommerceUtil.getInstance().getSessionAdmin(request);
 		List<Order> orders;
 		if (user.getPermission()<4) {
-			orders = repository.findLastOrdersBySite(user.getSite(), new PageRequest(0, 10));
+			orders = repository.findLastOrdersBySite(user.getSite(), new PageRequest(0, 10, Direction.DESC, LBL_DATE));
 		} else {
 			orders = new ArrayList<Order>();
 		}
 		return orders;
 	}
+
+	@Override
+	public Long countOrderByStatus(final int status, final HttpServletRequest request) {
+		return repository.countBySiteAndStatusOrder(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), status);
+	}
+
 	
 }
 

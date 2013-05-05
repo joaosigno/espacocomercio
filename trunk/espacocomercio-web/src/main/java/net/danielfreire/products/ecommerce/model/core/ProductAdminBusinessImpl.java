@@ -2,13 +2,7 @@ package net.danielfreire.products.ecommerce.model.core;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -134,6 +128,7 @@ public class ProductAdminBusinessImpl implements ProductAdminBusiness {
 	@Override
 	public GridResponse consult(final HttpServletRequest request) throws java.lang.Exception {
 		final String page = request.getParameter("page");
+		final String filter = request.getParameter("filter");
 		
 		int pagination = 0;
 		if (ValidateTools.getInstancia().isNumber(page)) {
@@ -147,7 +142,12 @@ public class ProductAdminBusinessImpl implements ProductAdminBusiness {
 		titles.add(PortalTools.getInstance().getRowGrid("quantity", "Quantidade", LBL_TEXT));
 		titles.add(PortalTools.getInstance().getRowGrid("unityvalue", "Valor unitário (R$)", LBL_TEXT));
 		
-		final Page<Product> pageable = repository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), new PageRequest(pagination, 10));
+		Page<Product> pageable;
+		if (ValidateTools.getInstancia().isNullEmpty(filter)) {
+			pageable = repository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), new PageRequest(pagination, 10));
+		} else {
+			pageable = repository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), "%"+filter+"%", new PageRequest(pagination, 10));
+		}
 		
 		return PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
 	}

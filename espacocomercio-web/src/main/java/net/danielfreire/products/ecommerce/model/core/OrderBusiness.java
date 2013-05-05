@@ -11,6 +11,12 @@ import net.danielfreire.util.GridResponse;
 
 public interface OrderBusiness {
 	
+	int ID_STS_AGUARD_PG = 1;
+	int ID_STS_PG_CONFIRM = 2;
+	int ID_STS_ENVIADO = 3;
+	int ID_STS_FINALIZADO = 4;
+	int ID_STS_CANCELADO = 5;
+
 	GenericResponse update(HttpServletRequest request) throws java.lang.Exception;
 	
 	GridResponse consult(HttpServletRequest request) throws java.lang.Exception;
@@ -28,4 +34,6 @@ public interface OrderBusiness {
 	Long countLastOrdersPayment(HttpServletRequest request);
 
 	List<Order> listLastOrders(HttpServletRequest request);
+	
+	Long countOrderByStatus(int status, HttpServletRequest request);
 }

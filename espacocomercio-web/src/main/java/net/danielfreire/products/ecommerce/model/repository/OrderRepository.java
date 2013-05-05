@@ -22,18 +22,19 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
 	List<Order> findByClient(ClientEcommerce client);
 	
-	@Query("select count(id) from Order where client.id in (select id from ClientEcommerce where site = ?1)")
+	@Query("select count(id) from Order where site = ?1")
 	Long countBySite(Site site);
 	
-	@Query("from Order where dateCreate >= ?2 and dateCreate <= ?3 and client.id in (select id from ClientEcommerce where site = ?1)")
+	@Query("from Order where dateCreate >= ?2 and dateCreate <= ?3 and site = ?1")
 	List<Order> findBySite(Site site, Calendar dtIni, Calendar dtEnd);
 
-	@Query("select count(id) from Order where dateCreate >= ?2 and client.id in (select id from ClientEcommerce where site = ?1)")
+	@Query("select count(id) from Order where dateCreate >= ?2 and site = ?1")
 	Long countBySiteAndDateCreateGreaterThan(Site site, Calendar dtInit);
 
-	@Query("select count(id) from Order where statusOrder = ?2 and client.id in (select id from ClientEcommerce where site = ?1)")
+	@Query("select count(id) from Order where statusOrder = ?2 and site = ?1")
 	Long countBySiteAndStatusOrder(Site site, Integer status);
 	
-	@Query("from Order where client.id in (select id from ClientEcommerce where site = ?1) order by dateCreate desc")
 	List<Order> findLastOrdersBySite(Site site, Pageable pageable);
+
+	Page<Order> findBySite(Site site, Pageable pageRequest);
 }

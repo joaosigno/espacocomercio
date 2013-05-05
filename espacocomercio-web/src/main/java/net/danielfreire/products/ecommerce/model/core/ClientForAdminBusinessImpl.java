@@ -130,6 +130,7 @@ public class ClientForAdminBusinessImpl implements ClientForAdminBusiness {
 	@Override
 	public GridResponse consult(final HttpServletRequest request) throws java.lang.Exception {
 		final String page = request.getParameter("page");
+		final String filter = request.getParameter("filter");
 		
 		int pagination = 0;
 		if (ValidateTools.getInstancia().isNumber(page)) {
@@ -148,7 +149,12 @@ public class ClientForAdminBusinessImpl implements ClientForAdminBusiness {
 		titles.add(PortalTools.getInstance().getRowGrid("addressComplement", "Complemento", LBL_TEXT));
 		titles.add(PortalTools.getInstance().getRowGrid("active", "Ativo", LBL_TEXT));
 		
-		final Page<ClientEcommerce> pageable = repository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), new PageRequest(pagination, 10));
+		Page<ClientEcommerce> pageable;
+		if (ValidateTools.getInstancia().isNullEmpty(filter)) {
+			pageable = repository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), new PageRequest(pagination, 10));
+		} else {
+			pageable = repository.findBySite(EcommerceUtil.getInstance().getSessionAdmin(request).getSite(), "%"+filter+"%", new PageRequest(pagination, 10));
+		}
 		
 		return PortalTools.getInstance().getGrid(pageable.getContent(), titles, pageable.getNumber()+1, pageable.getTotalPages());
 	}

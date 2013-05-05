@@ -58,7 +58,7 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                     <li><a id="aToLoja" tabindex="-1" href="/ecommerce/" target="_blank">Loja</a></li>
-                                    <li><a tabindex="-1" href="https://www.google.com/a/espacocomercio.com.br/ServiceLogin" target="_blank">E-mail</a></li>
+                                    <li><a id="aToEmail" tabindex="-1" href="https://www.google.com/a/espacocomercio.com.br/ServiceLogin?Email=" target="_blank">E-mail</a></li>
                                 </ul>
                             </div>
                             
@@ -76,7 +76,7 @@
                                             <div class="media-body description">
                                                 <p><strong>Perfil</strong></p>
                                                 <p class="muted"><span id="spanEmailPerfil"></span></p>
-                                                <a href="/ecommerce/admin/user" class="btn btn-primary btn-small btn-block">Configurar</a>
+                                                <a href="#" onclick="loadConfiguration();return false;" class="btn btn-primary btn-small btn-block">Configurar</a>
                                             </div>
                                         </div>
                                     </li>
@@ -130,6 +130,8 @@
         <script src="/ecommerce/admin/static/js/includes/frete.js"></script>
         <script src="/ecommerce/admin/static/js/includes/payment.js"></script>
         <script src="/ecommerce/admin/static/js/includes/configuration.js"></script>
+        <script src="/ecommerce/admin/static/js/includes/client.js"></script>
+        <script src="/ecommerce/admin/static/js/includes/order.js"></script>
         
         <script type="text/javascript">
         	loadMenuAdmin();

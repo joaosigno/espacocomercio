@@ -14,6 +14,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	
 	Page<Product> findBySite(Site site, Pageable pageable);
 	
+	@Query("select p from Product p where p.site = ?1 and (p.name like ?2 OR p.introduction like ?2 OR p.description like ?2)")
+	Page<Product> findBySite(Site site, String filter, Pageable pageRequest);
+	
 	List<Product> findBySite(Site site);
 	
 	Product findByKeyUrlAndSite(String keyUrl, Site site);
@@ -30,5 +33,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 	@Query("select sum(quantity) from Product where site = ?1")
 	Double countQuantityBySite(Site site);
-	
+
 }

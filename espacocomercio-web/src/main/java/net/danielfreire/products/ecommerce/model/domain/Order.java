@@ -24,6 +24,9 @@ public class Order extends AbstractPersistable<Integer> {
 	@ManyToOne
 	@JoinColumn(name="payment_id", referencedColumnName="id")
 	private Payment payment;
+	@ManyToOne
+	@JoinColumn(name="site_id", referencedColumnName="id")
+	private Site site;
 	@Column(name="totalvalue")
 	private Double totalValue;
 	@Column(name="sendcust")
@@ -86,6 +89,12 @@ public class Order extends AbstractPersistable<Integer> {
 	}
 	public void setStatusOrder(final Integer statusOrder) {
 		this.statusOrder = statusOrder;
+	}
+	public Site getSite() {
+		return site;
+	}
+	public void setSite(final Site site) {
+		this.site = site;
 	}
 	
 

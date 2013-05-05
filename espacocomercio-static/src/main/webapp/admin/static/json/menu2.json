@@ -29,7 +29,7 @@
         "Pedidos": {
         	"id": "order",
         	"icon": "icofont-edit",
-        	"url": "/ecommerce/admin/order"
+        	"url": "loadOrderPage();return false;"
         },
         "Frete": {
         	"id": "send",

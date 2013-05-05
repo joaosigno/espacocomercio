@@ -56,6 +56,7 @@ function formAdicionarUsuario() {
 
 function hideOpcoesMenu() {
 	$('li#liadicionarusuario').hide();
+	$('li#lieditarusuario').hide();
 }
 
 function submitFormAddUsuario() {

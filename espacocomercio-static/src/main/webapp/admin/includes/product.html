@@ -11,7 +11,6 @@
             <ul class="content-header-action pull-right">
                 <li>
                     <a href="#">
-                        <canvas height="32" width="32"></canvas>
                         <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A600&quot;, &quot;#00A600&quot;]" style="display: none;">5,3,9,6,5,9,7,3,5,2</span>
                         <div class="action-text color-green"><span id="spanProductsTotal">0</span> <span class="helper-font-small color-silver-dark">Produtos</span></div>
                     </a>
@@ -19,7 +18,6 @@
                 <li class="divider"></li>
                 <li>
                     <a href="#">
-                        <canvas height="32" width="32"></canvas>
                         <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#BF1E4B&quot;, &quot;#BF1E4B&quot;]" style="display: none;">6,5,9,7,3,5,2,5,3,9</span>
                         <div class="action-text color-red"><span id="spanProductsSemEstoqueTotal">0</span> <span class="helper-font-small color-silver-dark">Sem estoque</span></div>
                     </a>
@@ -39,7 +37,6 @@
                         <li><a data-toggle="tab" href="#produtoscadastrados" id="btnprodutoscadastrados" onclick="cancelaFormularioDeEdicao(); loadGridProduct(); return false;">Produtos cadastrados</a></li>
                         <li><a data-toggle="tab" href="#adicionarproduto" onclick="cancelaFormularioDeEdicao(); return false;">Adicionar produto</a></li>
                         <li id="lieditarproduto" style="display: none;"><a data-toggle="tab" href="#adicionarproduto" id="btneditarproduto">Alterar produto</a></li>
-                        <li><a data-toggle="tab" href="#ajuda">Ajuda</a></li>
                     </ul>
                 </div>
                 <div class="box-body">
@@ -55,6 +52,11 @@
                             <div class="row-fluid">
 								<div class="span12">
 									<div class="dashboard-stat">
+										<div class="input-append" style="text-align: left; padding-top: 20px;padding-left: 20px;">
+										  	<input id="inputPesquisar" class="span4" id="appendedInputButtons" placeholder="Pesquisar" type="text" style="border: 1px solid #ccc;font-size:14px">
+										  	<button class="btn" type="button" onclick="fnPesquisarProduto();return false;"><i class="icon-search"></i></button>
+										</div>
+									
 										<div id="grid"></div>
 									</div>
 								</div>
@@ -129,15 +131,6 @@
 												</div>
 											</div>
 										</form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="ajuda">
-                            <div class="row-fluid">
-                                <div class="span12">
-                                    <div class="dashboard-stat">
-                                    	<iframe class="featurette-image" width="420" height="315" src="http://www.youtube.com/embed/WxVKezyeDnY" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                 </div>
                             </div>

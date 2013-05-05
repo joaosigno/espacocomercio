@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Clientes</title>
+</head>
+<body>
+<div class="span11">
+    <div class="content">
+        <div class="content-header">
+            <ul class="content-header-action pull-right">
+                <li>
+                    <a href="#">
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A600&quot;, &quot;#00A600&quot;]" style="display: none;">5,3,9,6,5,9,7,3,5,2</span>
+                        <div class="action-text color-green"><span id="spanClientTotal">0</span> <span class="helper-font-small color-silver-dark">Clientes cadastrados</span></div>
+                    </a>
+                </li>
+            </ul>
+            <h2><i class="icofont-home"></i> <span id="spanTitleEcommerce"></span> <small> Clientes</small></h2>
+        </div>
+        
+        <div class="content-body">
+            <div class="box-tab corner-all" id="box-tab-Category">
+                <div class="box-header corner-top">
+                    <div class="header-control pull-right">
+                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                    </div>
+                    <ul class="nav nav-tabs" id="tab-stat">
+                        <li class="active"><a data-toggle="tab" href="#clientescadastradas" onclick="loadGrid('/ecommerce-web/admin/client/consult', 'grid', 'formEdit', '');return false;">Clientes cadastrados</a></li>
+                    </ul>
+                </div>
+                <div class="box-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="clientescadastradas">
+                            <div class="row-fluid">
+								<div class="span12">
+									<div class="dashboard-stat">
+										<div class="input-append" style="text-align: left; padding-top: 20px;padding-left: 20px;">
+										  	<input id="inputPesquisar" class="span4" id="appendedInputButtons" placeholder="Pesquisar" type="text" style="border: 1px solid #ccc;font-size:14px">
+										  	<button class="btn" type="button" onclick="fnPesquisarClient();return false;"><i class="icon-search"></i></button>
+										</div>
+										<div id="grid"></div>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display: none;">
+	<form id="formEdit" action="/ecommerce-web/admin/client/update">
+		<input name="id" type="hidden">
+		<input name="name" type="text">
+		<input name="user" type="text">
+		<input name="password" type="text">
+		<select name="newsletter">
+			<option>false</option>
+			<option>true</option>
+		</select>
+		<input name="addressStreet" type="text">
+		<input name="addressNumber" type="text">
+		<input name="addressZipcode" type="text">
+		<input name="addressCity" type="text">
+		<input name="addressComplement" type="text">
+		<select name="active">
+			<option>false</option>
+			<option>true</option>
+		</select>
+	</form>
+</div>
+</body>
+</html>

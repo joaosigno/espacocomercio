@@ -6,5 +6,9 @@
 				<include name="**" />
 			</fileset>
 		</copy>
+		<exec executable="/bin/sh" failonerror="true" dir=".">
+			<arg value="-c" />
+			<arg value="java -jar htmlcompressor-1.5.3.jar -t html -r -o ../target/ecommerce/ ../src/main/webapp" />
+		</exec>
 	</target>
 </project>

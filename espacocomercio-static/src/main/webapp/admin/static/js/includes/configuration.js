@@ -7,7 +7,7 @@ function loadConfiguration() {
 		
 		$.getJSON('/ecommerce-web/admin/site/load?tk='+new Date().getTime(), function(data) {
 			$('input[name=name]').val(data.generic[0].name);
-			$('input[name=description]').val(data.generic[0].description);
+			$('textarea[name=description]').val(data.generic[0].description);
 			$('input[name=facebook]').val(data.generic[0].facebook);
 			$('input[name=email]').val(data.generic[0].email);
 			$('input[name=gmailpass]').val(data.generic[0].gmailPass);

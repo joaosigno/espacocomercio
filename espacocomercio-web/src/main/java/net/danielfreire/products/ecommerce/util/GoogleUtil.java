@@ -29,7 +29,7 @@ import com.google.gdata.data.extensions.StructuredPostalAddress;
 
 public class GoogleUtil {
 
-	private static final String KEY_ECO_DOMAIN = "ecommerce.domain";
+	private static final String KEY_ECO_DOMAIN = "google.domain";
 	private static final String KEY_GOOGLE_USER = "account.google.user";
 	private static final String KEY_GOOGLE_PASS = "account.google.password";
 

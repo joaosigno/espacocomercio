@@ -14,7 +14,7 @@ public class Site extends AbstractPersistable<Integer> {
 	
 	@Column(name="name", length=45)
 	private String name;
-	@Column(name="description", length=255)
+	@Column(name="description", length=2000)
 	private String description;
 	@Column(name="facebook", length=255)
 	private String facebook;

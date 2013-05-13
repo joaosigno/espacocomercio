@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.danielfreire.products.ecommerce.model.core.ProductCategoryBusiness;
 import net.danielfreire.products.ecommerce.util.EcommerceUtil;
 import net.danielfreire.util.GenericResponse;
+import net.danielfreire.util.GridResponse;
 import net.danielfreire.util.PortalTools;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,67 @@ public class AdminCategoryController {
 					EcommerceUtil.getInstance().getSessionAdmin(request).getSite().getName()}); //1
 		} catch (Exception e) {
 			resp =  PortalTools.getInstance().getRespError(e);
+		}
+		
+		return resp;
+	}
+	
+	@RequestMapping(value="/admin/product/category/insert", method = RequestMethod.POST)
+	public @ResponseBody GenericResponse categoryinsert(final HttpServletRequest request) {
+		GenericResponse resp;
+		try {
+			resp = categoryBusiness.insert(request);
+		} catch (Exception e) {
+			resp = PortalTools.getInstance().getRespError(e);
+		}
+		
+		return resp;
+	}
+	
+	@RequestMapping(value="/admin/product/category/consult", method = RequestMethod.GET)
+	public @ResponseBody GridResponse categoryconsult(final HttpServletRequest request) {
+		GridResponse resp;
+		try {
+			resp = categoryBusiness.consult(request);
+		} catch (Exception e) {
+			PortalTools.getInstance().getRespError(e);
+			resp = new GridResponse();
+		}
+		
+		return resp;
+	}
+	
+	@RequestMapping(value="/admin/product/category/list", method = RequestMethod.GET)
+	public @ResponseBody GenericResponse categorylist(final HttpServletRequest request) {
+		GenericResponse resp;
+		try {
+			resp = categoryBusiness.list(request);
+		} catch (Exception e) {
+			resp = PortalTools.getInstance().getRespError(e);
+		}
+		
+		return resp;
+	}
+	
+	@RequestMapping(value="/admin/product/category/update", method = RequestMethod.POST)
+	public @ResponseBody GenericResponse categoryupdate(final HttpServletRequest request) {
+		GenericResponse resp;
+		try {
+			resp = categoryBusiness.update(request);
+		} catch (Exception e) {
+			resp = PortalTools.getInstance().getRespError(e);
+		}
+		
+		return resp;
+	}
+	
+	@RequestMapping(value="/admin/product/category/remove", method = RequestMethod.POST)
+	public @ResponseBody GenericResponse categoryremove(final HttpServletRequest request) {
+		GenericResponse resp;
+		try {
+			resp = categoryBusiness.remove(request);
+		} catch (Exception e) {
+			resp = PortalTools.getInstance().getRespError(e);
 		}
 		
 		return resp;

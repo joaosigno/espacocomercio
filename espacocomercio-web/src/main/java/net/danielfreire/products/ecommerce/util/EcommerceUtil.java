@@ -1,5 +1,6 @@
 package net.danielfreire.products.ecommerce.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,31 +20,38 @@ public class EcommerceUtil {
 
 	private static EcommerceUtil util = new EcommerceUtil();
 	
-	public static synchronized EcommerceUtil getInstance() {
+	public static EcommerceUtil getInstance() {
         return util;
     }
 	
-	public void sessionAdminUser(HttpServletRequest request, ClientAdmin clientAdmin) {
+	public void sessionAdminUser(final HttpServletRequest request, final ClientAdmin clientAdmin) {
 		clientAdmin.setPassword("***");
-		request.getSession().removeAttribute(PortalTools.getInstance().ID_ADMIN_SESSION);
-		request.getSession().setAttribute(PortalTools.getInstance().ID_ADMIN_SESSION, clientAdmin);
+		request.getSession().removeAttribute(PortalTools.ID_ADMIN_SESSION);
+		request.getSession().setAttribute(PortalTools.ID_ADMIN_SESSION, clientAdmin);
 	}
 	
-	public ClientAdmin getSessionAdmin(HttpServletRequest request) {
-		return (ClientAdmin) request.getSession().getAttribute(PortalTools.getInstance().ID_ADMIN_SESSION);
+	public ClientAdmin getSessionAdmin(final HttpServletRequest request) {
+		return (ClientAdmin) request.getSession().getAttribute(PortalTools.ID_ADMIN_SESSION);
 	}
 	
-	public void generateMenuPortal(Site site, List<ProductCategory> list) throws Exception {
+	public void generateMenuPortal(final Site site, final List<ProductCategory> list) throws java.lang.Exception {
+		final List<ProductCategory> listForMenu = new ArrayList<ProductCategory>();
+		if (!list.isEmpty()) {
+			for (ProductCategory category : list) {
+				category.setSite(null);
+				listForMenu.add(category);
+			}
+		}
 		FileUtil.getInstance().createFile(
 				PortalTools.getInstance().getEcommerceProperties("location.generatesite")+"/"+ConvertTools.getInstance().normalizeString(site.getName())+"/data/", 
 				"menu.json", 
-				new Gson().toJson(list));
+				new Gson().toJson(listForMenu));
 	}
 	
-	public void generateProductCache(Product p, Site site) throws Exception {
+	public void generateProductCache(final Product product, final Site site) throws java.lang.Exception {
 		FileUtil.getInstance().createFile(
 				PortalTools.getInstance().getEcommerceProperties("location.generatesite")+"/"+ConvertTools.getInstance().normalizeString(site.getName())+"/data/",
-				"product"+p.getKeyUrl()+".json", 
-				new Gson().toJson(p));
+				"product"+product.getKeyUrl()+".json", 
+				new Gson().toJson(product));
 	}
 }

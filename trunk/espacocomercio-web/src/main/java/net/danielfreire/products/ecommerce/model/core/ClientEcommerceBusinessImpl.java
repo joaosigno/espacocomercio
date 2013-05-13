@@ -120,7 +120,6 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 	public GenericResponse insert(final HttpServletRequest request) throws java.lang.Exception {
 		GenericResponse resp = new GenericResponse();
 		
-		final String contextid = request.getParameter("contextid");
 		final String sid = request.getParameter(LBL_SID);
 		
 		final Map<String, Object> map = getClient(request);
@@ -130,7 +129,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 			client.setId(null);
 			repository.save(client);
 			
-			new MailUtil().newUser(client.getUser(), client.getName(), client.getPassword(), sid, contextid, client.getSite().getLogo(), client.getSite().getName());
+			new MailUtil().newUser(client.getUser(), client.getName(), client.getPassword(), sid, ConvertTools.getInstance().normalizeString(client.getSite().getName()), client.getSite().getLogo(), client.getSite().getName());
 			if (client.getId()==null) {
 				new GoogleUtil().createContact(client.getSite(), client);
 				messageBusiness.createMessage(client.getName(), "Novo cliente", client.getUser(), "Um novo cliente ("+client.getName()+" - "+client.getUser()+") acaba de se registrar na sua loja virtual.", "system", client.getSite().getId());

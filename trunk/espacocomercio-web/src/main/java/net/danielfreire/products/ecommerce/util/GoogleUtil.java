@@ -85,14 +85,14 @@ public class GoogleUtil {
         myService.insert(postUrl, contact);
     }
 
-	public void updatePassword(Site site) throws java.lang.Exception {
+	public void updatePassword(final Site site) throws java.lang.Exception {
 		final AppsForYourDomainClient admin = new AppsForYourDomainClient(
 				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_USER), 
 				PortalTools.getInstance().getEcommerceProperties(KEY_GOOGLE_PASS), 
 				PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN));
-    	final UserEntry userEntry = admin.retrieveUser(ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN));
+    	final UserEntry userEntry = admin.retrieveUser(ConvertTools.getInstance().normalizeString(site.getName()));
     	userEntry.getLogin().setPassword(site.getGmailPass());
-    	admin.updateUser(ConvertTools.getInstance().normalizeString(site.getName()) + "@" + PortalTools.getInstance().getEcommerceProperties(KEY_ECO_DOMAIN), userEntry);		
+    	admin.updateUser(ConvertTools.getInstance().normalizeString(site.getName()), userEntry);		
 	}
 	 
 	 

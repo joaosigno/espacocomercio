@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Formulário de cadastro de clientes</title>
+</head>
+<body>
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Meu cadastro</h3>
+	</div>
+	<div class="modal-body">
+		<form id="formCadClient">
+			<div class="controls">
+				<input name="name" type="text" id="inputName" placeholder="Nome completo" class="span6">
+				<span id="okName" class="badge badge-success hide"><i class="icon-ok"></i></span>
+				<span id="errorName" class="badge badge-important hide" data-toggle="tooltip" data-placement="left"><i class="icon-remove"></i></span>
+			</div>
+			<div class="controls controls-row">
+				<input name="phone1" type="text" id="inputPhone1" placeholder="Telefone celular" class="span3" maxlength="15">
+				<input name="phone2" type="text" id="inputPhone2" placeholder="Telefone residencial" class="span3" maxlength="14">
+				<span id="okPhone" class="badge badge-success hide"><i class="icon-ok"></i></span>
+				<span id="errorPhone" class="badge badge-important hide" data-toggle="tooltip" data-placement="left"><i class="icon-remove"></i></span>
+			</div>
+			<div class="controls controls-row">
+				<input name="user" type="text" id="inputUser" placeholder="Email válido" class="span3">
+				<input name="userConfirm" type="text" id="inputUserConfirm" placeholder="Confirmar email" class="span3">
+				<span id="okMail" class="badge badge-success hide"><i class="icon-ok"></i></span>
+				<span id="errorMail" class="badge badge-important hide" data-toggle="tooltip" data-placement="left"><i class="icon-remove"></i></span>
+			</div>
+			<div class="controls controls-row">
+				<input name="password" type="password" id="inputPassword" placeholder="Senha" class="span3">
+				<input name="passwordConfirm" type="password" id="inputPasswordConfirm" placeholder="Confirmar senha" class="span3">
+			</div>
+			<div class="controls controls-row">
+				<input name="addressZipcode" type="text" placeholder="CEP" class="span1">
+				<input name="addressStreet" type="text" placeholder="Endereço" class="span4">
+				<input name="addressNumber" type="text" placeholder="Nro" class="span1">
+			</div>
+			<div class="controls controls-row">
+				<input name="addressCity" type="text" placeholder="Cidade / Estado" class="span3">
+				<input name="addressComplement" type="text" placeholder="Complemento" class="span3">
+			</div>
+			<div class="controls controls-row">
+				<img id="idimgcaptcha" src="" alt="Digite as letras e números" class="span2 non-margin" />
+				<input name="captcha" type="text" class="span4" placeholder="Digite o conteúdo da imagem no campo ao lado">
+			</div>
+			<div class="controls">
+				<small><input type="checkbox" name="newsletter" value="true"> Desejo receber notícias e anúncios promocionais.</small>
+			</div>
+			<div class="controls">
+				<small><input type="checkbox" name="privacity" value="true"> Aceito e confirmo ter lido a <a>política de privacidade e segurança</a> da empresa</small>
+			</div>
+			<input type="hidden" name="sid" value="${site.id.cripto}">
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+		<button id="svnButtonFormCad" class="btn btn-primary" data-loading-text="Processando...">Salvar</button>
+	</div>
+	<script type="text/javascript">
+		$('input').keydown(function() {
+			$('span[data-toggle="tooltip"]').tooltip('hide');
+		});
+	
+		$('input[name="name"]').blur(function() {
+			var v = $(this).val();
+			var msg = '';
+			var id = "Name";
+			
+			if ($.trim(v)=='' || v.split(' ').length<2) {
+				msg = 'Preencha corretamente com o seu nome completo.';
+			}
+
+			changeValid(id, msg)
+		});
+		
+		$('input[name="phone1"]').blur(function() {
+			var v = $(this).val();
+			var msg = '';
+			var id = "Phone";
+			
+			if ($.trim(v)=='' || v.length<14) {
+				msg = 'Preencha corretamente seu número de celular.';
+			}
+
+			changeValid(id, msg)
+		});
+
+		$('input[name="user"]').blur(function() {
+			var v = $(this).val();
+			var msg = '';
+			var id = "Mail";
+			
+			if (!isEmail(v)) {
+				msg = 'Preencha corretamente o seu endereço de email.';
+			}
+
+			changeValid(id, msg)
+		});
+		
+		$('input[name="userConfirm"]').blur(function() {
+			var v = $(this).val();
+			var msg = '';
+			var id = "Mail";
+			
+			if ($.trim(v)) {
+				msg = 'Preencha corretamente o seu endereço de email.';
+			} else if (v!=$('input[name="user"]').val()) {
+				msg = 'A confirmação falhou, verifique se os emails digitandos são iguais.';
+			}
+
+			changeValid(id, msg)
+		});
+
+		function changeValid(id, msg) {
+			if (msg=='') {
+				$('#ok'+id).show();
+				$('#error'+id).hide();
+				$('#error'+id).tooltip('hide');
+			} else {
+				$('#ok'+id).hide();
+				$('#error'+id).attr('data-original-title', msg);
+				$('#error'+id).show();
+				$('#error'+id).tooltip('show');
+			}
+		}
+
+		/* Máscaras ER */
+		function mascara(o,f){
+		    v_obj=o
+		    v_fun=f
+		    setTimeout("execmascara()",1)
+		}
+		function execmascara(){
+		    v_obj.value=v_fun(v_obj.value)
+		}
+		function mtel(v){
+		    v=v.replace(/\D/g,"");             //Remove tudo o que não é dígito
+		    v=v.replace(/^(\d{2})(\d)/g,"($1) $2"); //Coloca parênteses em volta dos dois primeiros dígitos
+		    v=v.replace(/(\d)(\d{4})$/,"$1-$2");    //Coloca hífen entre o quarto e o quinto dígitos
+		    return v;
+		}
+		function id( el ){
+			return document.getElementById( el );
+		}
+		window.onload = function(){
+			id('inputPhone1').onkeypress = function(){
+				mascara( this, mtel );
+			}
+			id('inputPhone2').onkeypress = function(){
+				mascara( this, mtel );
+			}
+		}
+
+		function isEmail(email){
+		    var exclude=/[^@\-\.\w]|^[_@\.\-]|[\._\-]{2}|[@\.]{2}|(@)[^@]*\1/;
+		    var check=/@[\w\-]+\./;
+		    var checkend=/\.[a-zA-Z]{2,3}$/;
+		    if(((email.search(exclude) != -1)||(email.search(check)) == -1)||(email.search(checkend) == -1)){return false;}
+		    else {return true;}
+		}
+	</script>
+</body>
+</html>

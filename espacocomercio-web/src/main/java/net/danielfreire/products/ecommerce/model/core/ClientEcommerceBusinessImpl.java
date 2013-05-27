@@ -19,7 +19,8 @@ import net.danielfreire.util.GenericResponse;
 import net.danielfreire.util.MailUtil;
 import net.danielfreire.util.PortalTools;
 import net.danielfreire.util.ValidateTools;
-import nl.captcha.Captcha;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,7 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 	private static final String LBL_ERRORS = "errors";
 	private static final String LBL_CLIENT = "client";
 	private static final String LBL_SID = "sid";
+	private static final String ADDRESS_INVALID = "Address.invalid";
 	
 	@Autowired
 	private transient ClientEcommerceRepository repository;
@@ -47,6 +49,8 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 	
 	private Map<String, Object> getClient(final HttpServletRequest request) {
 		final String name 				= request.getParameter(LBL_NAME);
+		final String phone1 			= request.getParameter("phone1");
+		final String phone2 			= request.getParameter("phone2");
 		final String user 				= request.getParameter(LBL_USER);
 		final String password 			= request.getParameter(LBL_PASSWORD);
 		final String addressStreet 		= request.getParameter(LBL_STREET);
@@ -59,28 +63,22 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 		
 		Site site = null;
 		String active = "false";
-		boolean captchaIsValid = true;
 		
 		if (addressZipcode!=null) {
 			addressZipcode = addressZipcode.replace("-", "");
 		}
 		
 		site = siteRepository.findOne(Integer.parseInt(PortalTools.getInstance().decode(request.getParameter(LBL_SID))));
-		final Captcha captcha = (Captcha) request.getSession().getAttribute(Captcha.NAME);
-		if (!captcha.isCorrect(request.getParameter("captcha"))) {
-			captchaIsValid = false;
-		}
 		
 		final HashMap<String, String> errors = new HashMap<String, String>();
-		errors.putAll(ValidateTools.getInstancia().validateGeneric("name.invalid", ValidateTools.getInstancia().isNullEmpty(name)));
-		errors.putAll(ValidateTools.getInstancia().validateGeneric("email.invalid", !ValidateTools.getInstancia().isEmail(user)));
-		errors.putAll(ValidateTools.getInstancia().validateGeneric("email.exists", !ValidateTools.getInstancia().isNumber(idClient) && repository.findBySiteAndUser(site, user)!=null));
-		errors.putAll(ValidateTools.getInstancia().validateGeneric("password.invalid", !ValidateTools.getInstancia().isPassword(password)));
-		errors.putAll(ValidateTools.getInstancia().validateGeneric("addressStreet.invalid", ValidateTools.getInstancia().isNullEmpty(addressStreet)));
-		errors.putAll(ValidateTools.getInstancia().validateGeneric("addressNumber.invalid", ValidateTools.getInstancia().isNullEmpty(addressNumber)));
-		errors.putAll(ValidateTools.getInstancia().validateGeneric("addressZipcode.invalid", !ValidateTools.getInstancia().isCep(addressZipcode)));
-		errors.putAll(ValidateTools.getInstancia().validateGeneric("addressCity.invalid", ValidateTools.getInstancia().isNullEmpty(addressCity)));
-		errors.putAll(ValidateTools.getInstancia().validateGeneric("captcha.invalid", !captchaIsValid));
+		errors.putAll(ValidateTools.getInstancia().validateGeneric("Name.invalid", ValidateTools.getInstancia().isNullEmpty(name)));
+		errors.putAll(ValidateTools.getInstancia().validateGeneric("Mail.invalid", !ValidateTools.getInstancia().isEmail(user)));
+		errors.putAll(ValidateTools.getInstancia().validateGeneric("Mail.exists", !ValidateTools.getInstancia().isNumber(idClient) && repository.findBySiteAndUser(site, user)!=null));
+		errors.putAll(ValidateTools.getInstancia().validateGeneric("Password.invalid", !ValidateTools.getInstancia().isPassword(password)));
+		errors.putAll(ValidateTools.getInstancia().validateGeneric(ADDRESS_INVALID, ValidateTools.getInstancia().isNullEmpty(addressStreet)));
+		errors.putAll(ValidateTools.getInstancia().validateGeneric(ADDRESS_INVALID, ValidateTools.getInstancia().isNullEmpty(addressNumber)));
+		errors.putAll(ValidateTools.getInstancia().validateGeneric(ADDRESS_INVALID, !ValidateTools.getInstancia().isCep(addressZipcode)));
+		errors.putAll(ValidateTools.getInstancia().validateGeneric(ADDRESS_INVALID, ValidateTools.getInstancia().isNullEmpty(addressCity)));
 		
 		if (ValidateTools.getInstancia().isNullEmpty(newsletter)) {
 			newsletter = "false";
@@ -97,6 +95,8 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 			}
 			client.setName(name);
 			client.setSite(site);
+			client.setPhone1(phone1);
+			client.setPhone2(phone2);
 			client.setActive(ConvertTools.getInstance().convertBoolean(active));
 			client.setAddressCity(addressCity);
 			client.setAddressComplement(addressComplement);
@@ -120,23 +120,30 @@ public class ClientEcommerceBusinessImpl implements ClientEcommerceBusiness {
 	public GenericResponse insert(final HttpServletRequest request) throws java.lang.Exception {
 		GenericResponse resp = new GenericResponse();
 		
-		final String sid = request.getParameter(LBL_SID);
-		
-		final Map<String, Object> map = getClient(request);
-		
-		if (map.get(LBL_ERRORS)==null) {
-			final ClientEcommerce client = (ClientEcommerce) map.get(LBL_CLIENT);
-			client.setId(null);
-			repository.save(client);
-			
-			new MailUtil().newUser(client.getUser(), client.getName(), client.getPassword(), sid, ConvertTools.getInstance().normalizeString(client.getSite().getName()), client.getSite().getLogo(), client.getSite().getName());
-			if (client.getId()==null) {
+		final ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+        reCaptcha.setPrivateKey("6LeE6eESAAAAAOZOofoC-RSIDARU2ThEaDKNOUxi");
+        
+        final ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(request.getRemoteAddr(), request.getParameter("recaptcha_challenge_field"), request.getParameter("recaptcha_response_field"));
+        
+        if (reCaptchaResponse.isValid()) {
+        	final String sid = request.getParameter(LBL_SID);
+    		
+    		final Map<String, Object> map = getClient(request);
+    		
+    		if (map.get(LBL_ERRORS)==null) {
+    			final ClientEcommerce client = (ClientEcommerce) map.get(LBL_CLIENT);
+    			client.setId(null);
+    			repository.save(client);
+    			
+    			new MailUtil().newUser(client.getUser(), client.getName(), client.getPassword(), sid, ConvertTools.getInstance().normalizeString(client.getSite().getName()), client.getSite().getLogo(), client.getSite().getName());
 				new GoogleUtil().createContact(client.getSite(), client);
 				messageBusiness.createMessage(client.getName(), "Novo cliente", client.getUser(), "Um novo cliente ("+client.getName()+" - "+client.getUser()+") acaba de se registrar na sua loja virtual.", "system", client.getSite().getId());
-			}
-		} else {
-			resp = PortalTools.getInstance().getRespError((HashMap<String, String>) map.get(LBL_ERRORS));
-		}
+    		} else {
+    			resp = PortalTools.getInstance().getRespError((HashMap<String, String>) map.get(LBL_ERRORS));
+    		}
+        } else {
+        	resp = PortalTools.getInstance().getRespError(ValidateTools.getInstancia().validateGeneric("Captcha.invalid", true));
+        }
 		
 		return resp;
 	}

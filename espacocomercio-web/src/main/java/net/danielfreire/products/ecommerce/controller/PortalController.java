@@ -81,11 +81,14 @@ public class PortalController {
 	
 	@RequestMapping(value="/client/new", method = RequestMethod.POST)
 	public @ResponseBody GenericResponse clientNew(HttpServletRequest request) {
+		GenericResponse resp;
 		try {
-			return clientEcommerceBusiness.insert(request);
+			resp = clientEcommerceBusiness.insert(request);
 		} catch (Exception e) {
-			return PortalTools.getInstance().getRespError(e);
+			resp = PortalTools.getInstance().getRespError(e);
 		}
+		
+		return resp;
 	}
 	
 	@RequestMapping(value="/login", method = RequestMethod.POST)

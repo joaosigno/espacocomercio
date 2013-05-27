@@ -33,10 +33,12 @@
 			<div class="controls controls-row">
 				<input name="password" type="password" id="inputPassword" placeholder="Senha" class="span3">
 				<input name="passwordConfirm" type="password" id="inputPasswordConfirm" placeholder="Confirmar senha" class="span3">
+				<span id="okPassword" class="badge badge-success hide"><i class="icon-ok"></i></span>
+				<span id="errorPassword" class="badge badge-important hide" data-toggle="tooltip" data-placement="left"><i class="icon-remove"></i></span>
 			</div>
 			<h4>Endereço de entrega</h4>
 			<div class="controls controls-row">
-				<input name="addressZipcode" type="text" placeholder="CEP" class="span2">
+				<input name="addressZipcode" type="text" placeholder="CEP" class="span2" maxlength="9">
 				<input name="addressStreet" type="text" placeholder="Endereço" class="span3" disabled="disabled">
 				<input name="addressNumber" type="text" placeholder="Nro" class="span1">
 				<span id="okAddress" class="badge badge-success hide"><i class="icon-ok"></i></span>
@@ -48,14 +50,14 @@
 			</div>
 			<h4>Segurança e privacidade</h4>
 			<div class="controls controls-row">
-				<img id="idimgcaptcha" src="" alt="Digite as letras e números" class="span2 non-margin" />
-				<input name="captcha" type="text" class="span4" placeholder="Digite o conteúdo da imagem no campo ao lado">
+				<div id="recaptcha_div"></div>
 			</div>
 			<div class="controls">
 				<small><input type="checkbox" name="newsletter" value="true"> Desejo receber notícias e anúncios promocionais.</small>
 			</div>
 			<div class="controls">
 				<small><input type="checkbox" name="privacity" value="true"> Aceito e confirmo ter lido a <a>política de privacidade e segurança</a> da empresa</small>
+				<span id="errorTerms" class="badge badge-important hide" data-toggle="tooltip" data-placement="left"><i class="icon-remove"></i></span>
 			</div>
 			<input type="hidden" name="sid" value="${site.id.cripto}">
 		</form>
@@ -64,152 +66,7 @@
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
 		<button id="svnButtonFormCad" class="btn btn-primary" data-loading-text="Processando...">Salvar</button>
 	</div>
-	<script type="text/javascript">
-		$('input').keydown(function() {
-			$('span[data-toggle="tooltip"]').tooltip('hide');
-		});
 	
-		$('input[name="name"]').blur(function() {
-			var v = $(this).val();
-			var msg = '';
-			var id = "Name";
-			
-			if ($.trim(v)=='' || v.split(' ').length<2) {
-				msg = 'Preencha corretamente com o seu nome completo.';
-			}
-
-			changeValid(id, msg)
-		});
-		
-		$('input[name="phone1"]').blur(function() {
-			var v = $(this).val();
-			var msg = '';
-			var id = "Phone";
-			
-			if ($.trim(v)=='' || v.length<14) {
-				msg = 'Preencha corretamente seu número de celular.';
-			}
-
-			changeValid(id, msg)
-		});
-
-		$('input[name="user"]').blur(function() {
-			var v = $(this).val();
-			var msg = '';
-			var id = "Mail";
-			
-			if (!isEmail(v)) {
-				msg = 'Preencha corretamente o seu endereço de email.';
-			}
-
-			changeValid(id, msg)
-		});
-		
-		$('input[name="userConfirm"]').blur(function() {
-			var v = $(this).val();
-			var msg = '';
-			var id = "Mail";
-			
-			if ($.trim(v)=='') {
-				msg = 'Preencha corretamente o seu endereço de email.';
-			} else if (v!=$('input[name="user"]').val()) {
-				msg = 'A confirmação falhou, verifique se os emails digitandos são iguais.';
-			}
-
-			changeValid(id, msg)
-		});
-
-		function changeValid(id, msg) {
-			if (msg=='') {
-				$('#ok'+id).show();
-				$('#error'+id).hide();
-				$('#error'+id).tooltip('hide');
-			} else {
-				$('#ok'+id).hide();
-				$('#error'+id).attr('data-original-title', msg);
-				$('#error'+id).show();
-				$('#error'+id).tooltip('show');
-			}
-		}
-
-		/* Máscaras ER */
-		function mascara(o,f){
-		    v_obj=o
-		    v_fun=f
-		    setTimeout("execmascara()",1)
-		}
-		function execmascara(){
-		    v_obj.value=v_fun(v_obj.value)
-		}
-		function mtel(v){
-		    v=v.replace(/\D/g,"");             //Remove tudo o que não é dígito
-		    v=v.replace(/^(\d{2})(\d)/g,"($1) $2"); //Coloca parênteses em volta dos dois primeiros dígitos
-		    v=v.replace(/(\d)(\d{4})$/,"$1-$2");    //Coloca hífen entre o quarto e o quinto dígitos
-		    return v;
-		}
-		function id( el ){
-			return document.getElementById( el );
-		}
-		window.onload = function(){
-			id('inputPhone1').onkeypress = function(){
-				mascara( this, mtel );
-			}
-			id('inputPhone2').onkeypress = function(){
-				mascara( this, mtel );
-			}
-		}
-
-		function isEmail(email){
-		    var exclude=/[^@\-\.\w]|^[_@\.\-]|[\._\-]{2}|[@\.]{2}|(@)[^@]*\1/;
-		    var check=/@[\w\-]+\./;
-		    var checkend=/\.[a-zA-Z]{2,3}$/;
-		    if(((email.search(exclude) != -1)||(email.search(check)) == -1)||(email.search(checkend) == -1)){return false;}
-		    else {return true;}
-		}
-
-		$('input[name=addressZipcode]').blur(function() {
-			var v = $(this).val();
-			var msg = '';
-			var id = "Address";
-			
-			if ($.trim(v)=='' || !isCEP(v)) {
-				msg = 'Preencha corretamente o seu CEP.';
-			} else  {
-				$.getScript("http://cep.republicavirtual.com.br/web_cep.php?formato=javascript&cep="+v, function() {
-					
-					if (resultadoCEP["resultado"]=='1') {
-						
-						var address = resultadoCEP["tipo_logradouro"] + " " + resultadoCEP["logradouro"] + " - " + resultadoCEP["bairro"];
-						var uf = resultadoCEP["cidade"] + " / " + resultadoCEP["uf"];
-
-						$('input[name=addressStreet]').val(unescape(address));
-						$('input[name=addressCity]').val(unescape(uf));
-						
-					} else {
-						
-						$('input[name=addressStreet]').removeAttr("disabled");
-						$('input[name=addressCity]').removeAttr("disabled");
-					}
-					
-			    });
-			}
-
-			changeValid(id, msg)
-		});
-
-		function isCEP(strCEP) {
-            var objER = /^[0-9]{5}-[0-9]{3}$/;
-
-            strCEP = $.trim(strCEP);
-            if(strCEP.length > 0) {
-                if(objER.test(strCEP))
-                    return true;
-                else
-                    return false;
-            }
-            else
-                return false;
-        }
-	</script>
+	<script src="../static/js/functions.form.js"></script>
 </body>
 </html>

@@ -64,14 +64,21 @@ function linksNonSession() {
 	$('a#ancorToMyData').attr('data-toggle', 'modal');
 	$('a#ancorToMyData').attr('href', '#divModal');
 	$('a#ancorToMyData').attr('data-toggle', 'modal');
-	$('div#divModal').load('../static/html/form-cad-client.html', function() {
-		$('img#idimgcaptcha').attr('src', '/ecommerce-web/captcha.jpg');
-		window.setTimeout('$(\'img#idimgcaptcha\').attr(\'src\', \'\');', 500);
-		window.setTimeout('$(\'img#idimgcaptcha\').attr(\'src\', \'/ecommerce-web/captcha.jpg\');', 500);
-		$('img#idimgcaptcha').attr('src', '/ecommerce-web/captcha.jpg');
-	});
+	$('a#ancorToMyData').click(function() {
+		$('div#divModal').load('../static/html/form-cad-client.html', function() {
+			Recaptcha.create("6LeE6eESAAAAADeLcwnmlNXRR3Rxp1jb8otcu-yc", 'recaptcha_div', {
+	            theme: "clean",
+	            callback: customizeCaptcha
+	        });
+		});
+	})
 	
 	$('a#ancorToLogin').click(function () {
 		myData(false);
 	});
+}
+
+function customizeCaptcha() {
+	$('input#recaptcha_response_field').removeAttr('style');
+	$('#recaptcha_logo').remove();
 }

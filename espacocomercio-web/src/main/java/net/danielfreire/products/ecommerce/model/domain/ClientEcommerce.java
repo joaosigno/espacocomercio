@@ -42,6 +42,10 @@ public class ClientEcommerce extends AbstractPersistable<Integer> {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="creationDate")
 	private Calendar creationDate;
+	@Column(name="phone1", length=15)
+	private String phone1;
+	@Column(name="phone2", length=15)
+	private String phone2;
 	
 	public ClientEcommerce() {
 		super();
@@ -127,6 +131,22 @@ public class ClientEcommerce extends AbstractPersistable<Integer> {
 
 	public void setCreationDate(final Calendar creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public String getPhone1() {
+		return phone1;
+	}
+
+	public void setPhone1(final String phone1) {
+		this.phone1 = phone1;
+	}
+
+	public String getPhone2() {
+		return phone2;
+	}
+
+	public void setPhone2(final String phone2) {
+		this.phone2 = phone2;
 	}
 
 }

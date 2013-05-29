@@ -3,15 +3,11 @@ $(function() {
 	loadSession();
 	loadMenu();
 	
-	$('#da-slider').cslider({
-		autoplay	: true,
-		interval : 6000
-	});
-	
 });
 
 var serviceContext = "/ecommerce-web";
 var siteIdCripto = "${site.id.cripto}";
+var siteContext = "${site.nameNormalize}";
 
 function loadMenu() {
 	$.getJSON( '../data/menu.json?tk='+new Date().getTime(),  function(data) {
@@ -65,14 +61,12 @@ function linksNonSession() {
 	$('a#ancorToMyData').attr('href', '#divModal');
 	$('a#ancorToMyData').attr('data-toggle', 'modal');
 	$('a#ancorToMyData').click(function() {
-		$('div#divModal').load('../static/html/form-cad-client.html', function() {
-			Recaptcha.create("6LeE6eESAAAAADeLcwnmlNXRR3Rxp1jb8otcu-yc", 'recaptcha_div', {
-	            theme: "clean",
-	            callback: customizeCaptcha
-	        });
-		});
+		myFormData();
 	})
 	
+	$('a#ancorToLogin').attr('data-toggle', 'modal');
+	$('a#ancorToLogin').attr('href', '#divModal');
+	$('a#ancorToLogin').attr('data-toggle', 'modal');
 	$('a#ancorToLogin').click(function () {
 		myData(false);
 	});
@@ -81,4 +75,27 @@ function linksNonSession() {
 function customizeCaptcha() {
 	$('input#recaptcha_response_field').removeAttr('style');
 	$('#recaptcha_logo').remove();
+}
+
+function myData(isOrder) {
+	$('div#divModal').load('../static/html/form-to-login.html?isOrder='+isOrder);
+}
+
+function myFormData() {
+	$('div#divModal').load('../static/html/form-cad-client.html', function() {
+		Recaptcha.create("6LeE6eESAAAAADeLcwnmlNXRR3Rxp1jb8otcu-yc", 'recaptcha_div', {
+            theme: "clean",
+            callback: customizeCaptcha
+        });
+	});
+}
+
+function logout() {
+	$.post(serviceContext+'/logoutSession', '', function(data){
+		if (data.status) {
+			$('a#ancorToHome').click();
+		} else {
+			alert(data.messageError.generic);
+		}
+	}, "json");
 }

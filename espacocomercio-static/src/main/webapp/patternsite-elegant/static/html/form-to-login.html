@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Formulário de Login</title>
+</head>
+<body>
+	<div class="modal-header">
+		<button id="btnClose" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Acesse sua conta</h3>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="span3">
+				<form id="formLogin">
+					<input name="user" type="text" placeholder="Usuário" class="input-block-level">
+					<input name="password" type="password" placeholder="Senha" class="input-block-level">
+					<input type="hidden" name="sid" value="${site.id.cripto}">
+					<div id="divErrorLogin" class="alert alert-error hide">
+						<button class="close" data-dismiss="alert" type="button">×</button>
+						<span id="spanErrorLogin">Os dados informados estão incorretos.</span>
+					</div>
+					<button id="btnAccessLogin" class="btn btn-primary pull-right" type="button">Acessar</button>
+					<a id="btnToForgotPassword" class="pull-left" href="#">Esqueci minha senha</a>
+				</form>
+			</div>
+			<div class="span3 pull-right">
+				<h4>Seja cliente</h4>
+				Para ser cliente basta se cadastrar.<br>
+				<button id="btnToFormMyData" class="btn btn-primary" type="button">Quero me cadastrar</button>
+			</div>
+		</div>
+	</div>
+	
+	<script src="../static/js/topages/form-to-login.js"></script>
+</body>
+</html>

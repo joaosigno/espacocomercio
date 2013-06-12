@@ -603,6 +603,15 @@ function callback(id, data) {
 			
 			editardeusuario(data);
 			
+		} else if (id=='updateconfiguracoesredessociais') {
+			
+			alteracaoderedessociais();
+			
+		} else if (id=='updateconfiguracoesformasdepagamento') {
+			
+			alert('Configurações de pagamento alteradas com sucesso.');
+			loadFormaPgto();
+			
 		}
 	} else {
 		errorForm(data);

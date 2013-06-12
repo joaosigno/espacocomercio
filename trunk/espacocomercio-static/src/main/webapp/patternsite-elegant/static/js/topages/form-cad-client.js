@@ -6,6 +6,10 @@ $('input[name="name"]').blur(function() {
 	changeValid("Name", validName($(this).val()));
 });
 
+$('input[name="cpf"]').blur(function() {
+	changeValid("Name", validCpf($(this).val()));
+});
+
 $('input[name="phone1"]').blur(function() {
 	changeValid("Phone", validPhone($(this).val()));
 });
@@ -50,10 +54,23 @@ $('input[name=addressZipcode]').keypress(function() {
 	mascara( this, mcep );
 });
 
+$('input[name=cpf]').keypress(function() {
+	mascara( this, mcpf );
+});
+
 function validName(v) {
 	var msg = '';
 	if ($.trim(v)=='' || v.split(' ').length<2) {
 		msg = 'Preencha corretamente com o seu nome completo.';
+	}
+	
+	return msg;
+}
+
+function validCpf(v) {
+	var msg = '';
+	if ($.trim(v)=='' || v=='000.000.000-00' || v.length<14) {
+		msg = 'Preencha corretamente com o seu CPF.';
 	}
 	
 	return msg;
@@ -175,6 +192,13 @@ function mcep(v){
     v=v.replace(/(\d)(\d{3})$/,"$1-$2");
     return v;
 }
+function mcpf(v){
+    v=v.replace(/\D/g,"");
+    v=v.replace(/^(\d{3})(\d)/g,"$1.$2");
+    v=v.replace(/(\d{3})(\d{3})(\d)/g,"$1.$2.$3");
+    v=v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})$/,"$1.$2.$3-$4");
+    return v;
+}
 function id( el ){
 	return document.getElementById( el );
 }
@@ -202,34 +226,52 @@ function isCEP(strCEP) {
 }
 
 function submitFormCadUser() {
-	var m1 = validName($('input[name="name"]').val());
-	var m2 = validPhone($('input[name="phone1"]').val());
-	var m3 = validUser($('input[name="user"]').val());
-	var m4 = validUserConfirm($('input[name="userConfirm"]').val());
-	var m5 = validCep($('input[name="addressZipcode"]').val());
-	var m6 = validAddressNumber($('input[name="addressNumber"]').val());
-	var m7 = validPassword($('input[name="password"]').val());
-	var m8 = validPasswordConfirm($('input[name="passwordConfirm"]').val());
-	var m9 = $.trim($('#recaptcha_response_field').val());
+	var m1 = validName($('form#formCadClient').find('input[name="name"]').val());
+	var m2 = validPhone($('form#formCadClient').find('input[name="phone1"]').val());
+	var m3 = validUser($('form#formCadClient').find('input[name="user"]').val());
+	var m4 = validUserConfirm($('form#formCadClient').find('input[name="userConfirm"]').val());
+	var m5 = validCep($('form#formCadClient').find('input[name="addressZipcode"]').val());
+	var m6 = validAddressNumber($('form#formCadClient').find('input[name="addressNumber"]').val());
+	var m7 = validPassword($('form#formCadClient').find('input[name="password"]').val());
+	var m8 = validPasswordConfirm($('form#formCadClient').find('input[name="passwordConfirm"]').val());
+	var m9 = $.trim($('form#formCadClient').find('#recaptcha_response_field').val());
 	var m10 = $('form#formCadClient').find('input[name=privacity]').is(":checked");
+	var m11 = validCpf($('form#formCadClient').find('input[name="cpf"]').val());
 	
-	if (m1=='' && m2=='' && m3=='' && m4=='' && m5=='' && m6=='' && m7=='' && m8=='' && m9!='' && m10) { 
-		$.post('/ecommerce-web/client/new', $('form#formCadClient').serialize(), function(data){
+	if (m1=='' && m2=='' && m3=='' && m4=='' && m5=='' && m6=='' && m7=='' && m8=='' && m9!='' && m10 && m11=='') { 
+		$.getJSON('../data/site.json?tk='+new Date().getTime(), function(dataSite) {
+			$('form#formCadClient').find('input[name="sid"]').val(dataSite.idc);
+			$('form#formCadClient').find('input[name="addressStreet"]').removeAttr('disabled');
+			$('form#formCadClient').find('input[name="addressCity"]').removeAttr('disabled');
 			
-			if (data.status) {
-				$('form#formCadClient').html('<div style="text-align: center"><h4>Cadastro realizado com sucesso.</h4>Você receberá no seu e-mail um link para ativação do cadastro, para comprar será necessário a ativação da conta.</div>');
-				$('#svnButtonFormCad').attr('onclick', '');
-				$('#svnButtonFormCad').text('Ok');
-				$('#svnButtonFormCad').attr('data-dismiss', 'modal');
-			} else {
-				$.each(data.messageError, function(key, val) {
-					changeValid(key, val);
-				});
-			}
-			
-		}, "json");
+			$.post('/ecommerce-web/client/new', $('form#formCadClient').serialize(), function(data){
+				$('form#formCadClient').find('input[name="addressStreet"]').attr('disabled', 'disabled');
+				$('form#formCadClient').find('input[name="addressCity"]').attr('disabled', 'disabled');
+				
+				if (data.status) {
+					$('form#formCadClient').html('<div style="text-align: center"><h4>Cadastro realizado com sucesso.</h4>Você receberá no seu e-mail um link para ativação do cadastro, para comprar será necessário a ativação da conta.</div>');
+					$('#svnButtonFormCad').attr('onclick', '');
+					$('#svnButtonFormCad').text('Ok');
+					$('#svnButtonFormCad').attr('data-dismiss', 'modal');
+				} else {
+					$.each(data.messageError, function(key, val) {
+						if (key=='Cpf') {
+							changeValid("Name", val);
+						} else {
+							changeValid(key, val);
+						}
+					});
+					Recaptcha.create("6LeE6eESAAAAADeLcwnmlNXRR3Rxp1jb8otcu-yc", 'recaptcha_div', {
+			            theme: "clean",
+			            callback: customizeCaptcha
+			        });
+				}
+				
+			}, "json");
+		});
 	} else {
 		changeValid("Name", m1);
+		changeValid("Name", m11);
 		changeValid("Phone", m2);
 		changeValid("Mail", m4);
 		changeValid("Mail", m3);
@@ -238,7 +280,6 @@ function submitFormCadUser() {
 		changeValid("Password", m8);
 		changeValid("Password", m7);
 		if (m9=='') {
-			$('div.recaptcha_input_area').append('<span id="errorCaptcha" class="badge badge-important hide" data-toggle="tooltip" data-placement="left"><i class="icon-remove"></i></span>');
 			changeValid("Captcha", "Preencha o conteúdo da imagem acima.");
 		}
 		if (!m10) {

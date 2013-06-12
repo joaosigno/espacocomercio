@@ -1,11 +1,5 @@
-function getURLParameter(name) {
-    return decodeURI(
-        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
-    );
-}
-
 function forgotPassword() {
-	$.getJSON( serviceContext+'/forgotPassword', $('form#formLogin').serialize()+"&contextid="+siteContext, function(data) {
+	$.getJSON( serviceContext+'/forgotPassword', $('form#formLogin').serialize()+"&contextid="+siteContext+'&sid='+siteIdCripto, function(data) {
 		if (data.status) {
 			$('#btnClose').click();
 			alert('Sua nova senha foi enviada com sucesso para o seu e-mail.');
@@ -16,16 +10,17 @@ function forgotPassword() {
 	});
 }
 
-function login(isOrder) {
-	if (isOrder==undefined || isOrder==null || isOrder=='') {
-		isOrder = false;
-	}
-	$.post(serviceContext+'/login', $('form#formLogin').serialize()+'&contextid='+siteContext, function(data){
+function login() {
+	$.post(serviceContext+'/login', $('form#formLogin').serialize()+'&contextid='+siteContext+'&sid='+siteIdCripto, function(data){
 		if (data.status) {
-			if (isOrder) {
-				paymentOrder();
-			} else {
+			loadSession();
+			$('div#divModal').modal('hide');
+			if (gotoLogin==0) {
 				location.href='../client/';
+			} else if (gotoLogin==1) {
+				myCart();
+			} else if (gotoLogin==2) {
+				paymentOrder();
 			}
 		} else {
 			$('span#spanErrorLogin').text(data.messageError.generic);
@@ -35,7 +30,7 @@ function login(isOrder) {
 }
 
 $('button#btnAccessLogin').click(function () {
-	login(getURLParameter('isOrder'));
+	login();
 });
 
 $('a#btnToForgotPassword').click(function () {

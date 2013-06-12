@@ -1,0 +1,46 @@
+<form id="formRedessociais" class="form-horizontal"
+	style="display: block; padding-top: 40px; padding-bottom: 40px;">
+	<div class="control-group">
+		<label class="control-label">Facebook:</label>
+		<div class="controls" style="text-align: left;">
+			<input name="facebook" type="text" class="span4"
+				placeholder="URL da fã page…" maxlength="255"
+				style="border: 1px solid #ccc; font-size: 16px">
+			<span id="spanError-facebook" class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Twitter:</label>
+		<div class="controls" style="text-align: left;">
+			<input name="twitter" type="text" class="span4"
+				placeholder="URL da fã page…" maxlength="255"
+				style="border: 1px solid #ccc; font-size: 16px">
+			<span id="spanError-twitter" class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Google Plus:</label>
+		<div class="controls" style="text-align: left;">
+			<input name="googleplus" type="text" class="span4"
+				placeholder="URL da fã page…" maxlength="255"
+				style="border: 1px solid #ccc; font-size: 16px">
+			<span id="spanError-googleplus" class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Youtube:</label>
+		<div class="controls" style="text-align: left;">
+			<input name="youtube" type="text" class="span4"
+				placeholder="URL da fã page…" maxlength="255"
+				style="border: 1px solid #ccc; font-size: 16px">
+			<span id="spanError-youtube" class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls" style="text-align: left;">
+			<input type="hidden" name="changeLogo" value="false">
+			<button type="button" class="btn btn-primary"
+				onclick="postJson('updateconfiguracoesredessociais', '/ecommerce-web/admin/site/update-social-network', $('form#formRedessociais').serialize());">Salvar</button>
+		</div>
+	</div>
+</form>

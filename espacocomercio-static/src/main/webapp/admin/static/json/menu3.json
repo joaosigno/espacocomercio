@@ -26,10 +26,10 @@
         	"icon": "icofont-dashboard",
         	"url": "loadFrete();return false;"
         },
-        "Formas de pgto": {
-        	"id": "payment",
+        "Promoções": {
+        	"id": "promotion",
         	"icon": "icofont-money",
-        	"url": "loadPayment();return false;"
+        	"url": "loadPromotion();return false;"
         }
     }
 }

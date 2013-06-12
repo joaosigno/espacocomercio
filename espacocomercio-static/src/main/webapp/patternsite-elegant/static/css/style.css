@@ -2221,3 +2221,7 @@ margin-bottom:10px;
 .modal {
 	z-index: 4000;
 }
+
+.padding-pattern {
+	padding: 10px;
+}

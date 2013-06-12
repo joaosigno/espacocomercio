@@ -1,0 +1,62 @@
+<p style="text-align: left;">O Espaço Comércio dispõe a você uma integração completa com o Bcash (antigo pagamento digital), esta integração dá a você o direito de divulgar seus produtos no Buscapé.<br>
+	As vendas realizadas pela sua loja virtual serão cobradas pela Bcash que disponibilizará a seus clientes um ambiente totalmente seguro e com a credibilidade que a marca possui.<br>
+	Você poderá acompanhar seus pedidos tanto aqui na administração da sua loja quanto lá na administração do Bcash.<br>
+	<object type="application/x-shockwave-flash" data="https://a248.e.akamai.net/f/248/96284/12h/www.bcash.com.br/webroot/banners/site/meios/meios_468x60.swf" width="468" height="60"><param name="movie" value="https://a248.e.akamai.net/f/248/96284/12h/www.bcash.com.br/webroot/banners/site/meios/meios_468x60.swf" /><param name="wmode" value="transparent" /></object> 
+	<br><br>Para concluir a integração e começar a vender, faça os seguintes passos:<br> 
+	1. Cadastre-se no Bcash (<a href="http://www.bcash.com.br/" target="_blank">www.bcash.com.br</a>);<br>
+	2. Acesse com seu usuário e senha e clique no menu "Ferramentas";<br>
+	3. Complete o formulário abaixo com as informações corretas;<br>
+	4. Preencha os "Informe a url de retorno da sua loja:" e "Informe a url de aviso da sua loja:" conforme os correspondentes no formuário abaixo.</p>
+<form id="formFormadePagamento" class="form-horizontal"
+	style="display: block; padding-top: 40px; padding-bottom: 40px;">
+	<div class="control-group">
+		<label class="control-label">Email de cadastro:</label>
+		<div class="controls" style="text-align: left;">
+			<input name="name" type="text" class="span4"
+				placeholder="" maxlength="255"
+				style="border: 1px solid #ccc; font-size: 16px">
+			<span id="spanError-name" class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Chave acesso:</label>
+		<div class="controls" style="text-align: left;">
+			<input name="description" type="text" class="span4"
+				placeholder="" maxlength="255"
+				style="border: 1px solid #ccc; font-size: 16px">
+			<span id="spanError-description" class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Código da Loja:</label>
+		<div class="controls" style="text-align: left;">
+			<input name="url" type="text" class="span4"
+				placeholder="" maxlength="255"
+				style="border: 1px solid #ccc; font-size: 16px">
+			<span id="spanError-url" class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Url de retorno da sua loja:</label>
+		<div class="controls" style="text-align: left;">
+			<input type="text" class="span4"
+				placeholder="" maxlength="255"
+				style="border: 1px solid #ccc; font-size: 16px" disabled="disabled" value="a definir">
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Url de aviso da sua loja:</label>
+		<div class="controls" style="text-align: left;">
+			<input type="text" class="span4"
+				placeholder="" maxlength="255"
+				style="border: 1px solid #ccc; font-size: 16px" disabled="disabled" value="a definir">
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls" style="text-align: left;">
+			<input type="hidden" name="changeLogo" value="false">
+			<button type="button" class="btn btn-primary"
+				onclick="postJson('updateconfiguracoesformasdepagamento', '/ecommerce-web/admin/payment/update', $('form#formFormadePagamento').serialize());">Salvar</button>
+		</div>
+	</div>
+</form>

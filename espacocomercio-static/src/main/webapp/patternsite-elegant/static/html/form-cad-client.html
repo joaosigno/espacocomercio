@@ -12,8 +12,9 @@
 	<div class="modal-body">
 		<form id="formCadClient">
 			<h4>Dados pessoais</h4>
-			<div class="controls">
-				<input name="name" type="text" id="inputName" placeholder="Nome completo" class="span6">
+			<div class="controls controls-row">
+				<input name="name" type="text" id="inputName" placeholder="Nome completo" class="span4">
+				<input name="cpf" type="text" id="inputCpf" placeholder="CPF" class="span2" maxlength="14">
 				<span id="okName" class="badge badge-success hide"><i class="icon-ok"></i></span>
 				<span id="errorName" class="badge badge-important hide" data-toggle="tooltip" data-placement="left"><i class="icon-remove"></i></span>
 			</div>
@@ -51,6 +52,7 @@
 			<h4>Segurança e privacidade</h4>
 			<div class="controls controls-row">
 				<div id="recaptcha_div"></div>
+				<span id="errorCaptcha" class="badge badge-important hide" data-toggle="tooltip" data-placement="right"><i class="icon-remove"></i></span>
 			</div>
 			<div class="controls">
 				<small><input type="checkbox" name="newsletter" value="true"> Desejo receber notícias e anúncios promocionais.</small>
@@ -59,7 +61,7 @@
 				<small><input type="checkbox" name="privacity" value="true"> Aceito e confirmo ter lido a <a>política de privacidade e segurança</a> da empresa</small>
 				<span id="errorTerms" class="badge badge-important hide" data-toggle="tooltip" data-placement="left"><i class="icon-remove"></i></span>
 			</div>
-			<input type="hidden" name="sid" value="${site.id.cripto}">
+			<input type="hidden" name="sid" value="">
 		</form>
 	</div>
 	<div class="modal-footer">

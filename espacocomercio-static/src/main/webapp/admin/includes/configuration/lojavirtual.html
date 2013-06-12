@@ -1,0 +1,78 @@
+<form id="formLojaVirtual" class="form-horizontal"
+	style="display: block; padding-top: 40px; padding-bottom: 40px;">
+	<div class="control-group">
+		<label class="control-label">Nome do site:</label>
+		<div class="controls" style="text-align: left;">
+			<input name="name" type="text" class="span3"
+				placeholder="Nome do site…" maxlength="45"
+				onblur="generateExibicao()" onkeyup="generateExibicao()"
+				style="border: 1px solid #ccc; font-size: 16px">
+			<span id="spanError-name" class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Exibição:</label>
+		<div class="controls" style="text-align: left;">
+			http://www.espacocomercio.com.br/ecommerce/<span
+				id="nameSiteWeb" style="color: darkgreen;"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Descrição/História:</label>
+		<div class="controls" style="text-align: left;">
+			<textarea name="description" class="input-block-level"
+				placeholder="Descrição da loja…"
+				style="border: 1px solid #ccc; font-size: 16px"></textarea>
+			<span id="spanError-description" class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Email:</label>
+		<div class="controls" style="text-align: left;">
+			<input name="email" type="text" class="span4"
+				placeholder="Email do representante do site…"
+				maxlength="255"
+				style="border: 1px solid #ccc; font-size: 16px">
+			<span id="spanError-email" class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Email da loja:<span
+			class="help-inline warning">Acessar pelo gmail.com</span></label>
+		<div class="controls" style="text-align: left;">
+			<input disabled type="text" class="span4"
+				style="border: 1px solid #ccc; font-size: 16px"
+				id="gmailDaLoja"> <span id="spanError-email"
+				class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Senha do email da
+			loja:</label>
+		<div class="controls" style="text-align: left;">
+			<input name="gmailpass" type="text" class="span4"
+				placeholder="Senha do e-mail da loja…" maxlength="45"
+				style="border: 1px solid #ccc; font-size: 16px">
+			<span id="spanError-email" class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Logo-tipo:</label>
+		<div class="controls" style="text-align: left;">
+			<a href="#" onclick="uploadLogo();"> <img
+				id="iposition" src="/library/img/imgfoto.png"
+				class="img-rounded" width="128" height="131">
+			</a> <input name="logo" type="hidden"
+				class="input-block-level" placeholder="LOGO…"
+				maxlength="255"> <span id="spanError-logo"
+				class="help-inline"></span>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls" style="text-align: left;">
+			<input type="hidden" name="changeLogo" value="false">
+			<button type="button" class="btn btn-primary"
+				onclick="if (confirm('Você esta ciente que se alterar o nome da loja virtual perderá todos os dados do e-mail atual? Mesmo assim deseja continuar?')) {postJson('updateconfiguracoesdaloja', '/ecommerce-web/admin/site/update', $('form#formLojaVirtual').serialize());}">Salvar</button>
+		</div>
+	</div>
+</form>

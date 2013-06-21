@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Categorias</title>
+</head>
+<body>
+<div class="span11">
+    <div class="content">
+        <div class="content-header">
+            <ul class="content-header-action pull-right">
+                <li>
+                    <a href="#">
+                        <span data-chart="peity-bar" data-height="32" data-colours="[&quot;#00A600&quot;, &quot;#00A600&quot;]" style="display: none;">5,3,9,6,5,9,7,3,5,2</span>
+                        <div class="action-text color-green"><span id="spanPromotionTotal">0</span> <span class="helper-font-small color-silver-dark">Promoções</span></div>
+                    </a>
+                </li>
+            </ul>
+            <h2><i class="icofont-home"></i> <span id="spanTitleEcommerce"></span> <small> Promoções</small></h2>
+        </div>
+        
+        <div class="content-body">
+            <div class="box-tab corner-all" id="box-tab-Category">
+                <div class="box-header corner-top">
+                    <div class="header-control pull-right">
+                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                    </div>
+                    <ul class="nav nav-tabs" id="tab-stat">
+                        <li class="active"><a data-toggle="tab" href="#promocoescadastradas" onclick="loadGrid('/ecommerce-web/admin/promotion/consult', 'grid', 'formEdit', '/ecommerce-web/admin/promotion/remove');return false;">Promoções cadastradas</a></li>
+                        <li><a data-toggle="tab" href="#criarpromocoes">Criar promoção</a></li>
+                    </ul>
+                </div>
+                <div class="box-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="promocoescadastradas">
+                            <div class="row-fluid">
+								<div class="span12">
+									<div class="dashboard-stat">
+										<div id="grid"></div>
+									</div>
+								</div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="criarpromocoes">
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="dashboard-stat">
+                                    	<form class="form-horizontal" style="display: block;padding-top: 40px; padding-bottom: 40px;">
+											<div class="control-group">
+												<label class="control-label">Promoção: <font color="red">*</font></label>
+												<div class="controls" style="text-align: left;">
+													<input name="name" type="text" class="span6" placeholder="Nome da promoção.." maxlength="45" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-name" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Brinde? <br><small>Adicione o nome do brinde relacionado a promoção, caso a mesma possua.</small></label>
+												<div class="controls" style="text-align: left;">
+													<input name="toast" type="text" class="span6" placeholder="Descrição do brinde…" maxlength="255" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-toast" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Frete grátis?</label>
+												<div class="controls" style="text-align: left;">
+													<select class="span2" name="sentFree">
+														<option value="false">Não</option>
+														<option value="true">Sim</option>
+													</select>
+													<span id="spanError-sentFree" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Desconto? <br><small>Adicione o valor do desconto relacionado a promoção, caso a mesma possua.</small></label>
+												<div class="controls" style="text-align: left;">
+													<input name="discount" type="text" class="span3" placeholder="Valor do desconto…" maxlength="255" style="border: 1px solid #ccc;font-size:16px">
+													<span id="spanError-discount" class="help-inline"></span>
+												</div>
+											</div>
+											
+											<div class="control-group">
+												<label class="control-label">Regras <br><small>Defina as regras para escolha automática dos produtos para esta promoção.</small></label>
+												<div class="controls" style="text-align: left;">
+													<input type="hidden" name="rules">
+													<div id="divRules"></div>
+													<div id="formRules">
+														<button id="btnAddRules" class="btn btn-small btn-warning" onclick="formRules(); return false;" type="button">+ Adicionar regra</button>
+													</div>
+												</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label">Produtos <br><small>Escolha manualmente quais produtos participarão da promoção.</small></label>
+												<div class="controls" style="text-align: left;">
+													<input type="hidden" name="products">
+													<div id="divProducts"></div>
+													<div id="formProducts">
+														<button class="btn btn-small btn-warning" type="button">+ Adicionar produto</button>
+													</div>
+												</div>
+											</div>
+											
+											<div class="control-group">
+												<label class="control-label">Ativo:</label>
+												<div class="controls" style="text-align: left;">
+													<select class="span3" name="active">
+														<option value="false">Não</option>
+														<option value="true">Sim</option>
+													</select>
+													<span id="spanError-active" class="help-inline"></span>
+												</div>
+											</div>
+											<div class="control-group">
+												<div class="controls" style="text-align: left;">
+													<button type="button" class="btn btn-primary" onclick="postJson('cadastropromotion', '/ecommerce-web/admin/promotion/insert', $('form').serialize());" data-loading-text="Processando...">Salvar</button>
+													<button type="reset" class="btn">Limpar</button>
+												</div>
+											</div>
+										</form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
